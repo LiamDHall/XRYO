@@ -6,12 +6,13 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
         {% block add_meta %}
         {% endblock %}
 
         <!--Bootstrap CSS-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!--Font Awesome Icons-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.1/css/all.css" integrity="sha384-xxzQGERXS00kBmZW/6qxqJPyxW3UR0BPsL4c8ILaIWXva5kFi7TxkIIaMiKtqV1Q" crossorigin="anonymous">
         <!--Base CSS-->
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
         {% block add_css %}
@@ -32,8 +33,87 @@
   </head>
   <body>
     <!--Site Header-->
-    <header>
+    <header class="site-header">
 
+        <!--Info Banner-->
+        <div class="info-banner flex-container">
+            <p class="info-banner__text mb-0 flex-start"><strong>Free shipping on orders over £100</strong></p>
+
+            <!--Search--> 
+            <form id="search" class="search flex-end flex-largest text-right" action="#" method="GET">
+                <input type="text" name="query" class="search-input" placeholder="Search" aria-label="search input">
+                <button class="search-btn" name="form-submit" value="search" aria-label="search"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+
+        <nav class="site-header__nav flex-container">
+
+            <!--logo-->
+            <a class="logo flex-item" href="{% url 'home' %}" alt="XRYO logo">
+                <img src="{{ MEDIA_URL }}logos/log_small.png"/>
+            </a>
+            
+            <!--Bootstrap Collapsible Menu-->
+            <div class="navbar-expand-custom flex-item flex-largest">
+                
+                <!--Mobile Nav Collapse Button-->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <!--Site Nav-->
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="site-header__navbar navbar-nav">
+                        <li class="mobile-only">
+                           <button class="nav-item" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="ture" aria-label="Toggle navigation"><i class="fas fa-times"></i> Close</button>
+                        </li>
+                        <li>
+                           <a class="nav-item" href="#">All Products</a>
+                        </li>
+                        <li>
+                           <a class="nav-item" href="#">Goggles</a>
+                        </li>
+                        <li>
+                           <a class="nav-item" href="#">Beanies</a>
+                        </li>
+                        <li>
+                           <a class="nav-item" href="#">Hoodies</a>
+                        </li>
+                        <li>
+                           <a class="nav-item" href="#">Jumpers</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!--Mobile Search Button-->
+            <button class="mobile-search-toggle search-btn d-sm-none flex-item" type="button" aria-label="toggle search"><i class="fas fa-search"></i></button>
+
+            <!--Account-->
+            <div class="account flex-item">
+                <i class="site-header__icon fas fa-user-circle"></i>
+            </div>
+            
+            <!--Basket-->
+            <div class="basket flex-item">
+                <a href="#" class="table">
+                    <div class="basket__icon table-cell">
+                        <i class="site-header__icon fas fa-shopping-bag"></i>
+                        <span class="basket__number">22 {{ bag_porduct_no }}</span>
+                    </div>
+                    <span class="table-cell">£000.00 {{ bag_total }}</span>
+                </a>
+            </div>
+        </nav>
+
+        <!--Mobile Search-->
+        <div class="mobile-search d-sm-none">
+            <form id="mobile-search" class="search" action="#" method="GET">
+                <input type="text" name="query" class="search-input" placeholder="Search" aria-label="search input">
+                <button class="search-btn" name="form-submit" value="search" aria-label="search"><i class="fas fa-search"></i></button>
+                <button class="search-btn" type="button" aria-label="close search"><i class="fas fa-times"></i></button>
+            </form>
+        </div>
     </header>
 
     {% if messages %}
@@ -56,7 +136,7 @@
     </footer>
 
     {% block add_postload_js %}
-    <!--Post Load JS-->
+        <!--Post Load JS-->
     {% endblock %}
   </body>
 </html>
