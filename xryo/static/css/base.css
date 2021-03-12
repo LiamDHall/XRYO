@@ -342,3 +342,51 @@ button:focus {
         font-size: 0.8rem;
     }
 }
+
+/*------------------------------------------------------Footer--*/
+.footer {
+    background-color: #1b1b1b;
+    color: white;
+    width: 100%;
+}
+
+.footer .row {
+    padding: 30px;
+    width: 100%;
+    margin: 0;
+}
+
+.footer__back-to-top {
+    display: inline-block;
+    text-align: center;
+    color: black;
+    background-color: white;
+    width: 100%;
+    padding: 20px 0 !important;
+    border: 2px solid black;
+}
+
+.footer__back-to-top:hover {
+    color: var(--primary-cta);
+}
+
+.footer__title {
+    color: var(--primary-cta);
+}
+
+.footer__list {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+/*------------------------------------------------------Footer Mobile & Responsive--*/
+@media screen and (max-width: 1024px) {
+    .footer__list {
+        font-size: 1.75rem;
+    }
+
+    .footer__list li {
+        margin-top: 16px;
+    }
+}
