@@ -1,7 +1,6 @@
 /*------------------------------------------------------Google Font--*/
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap');
 
-
 /* 
 Bootstrap Custom Breakpoint @ 1024px 
 Source: https://www.codeply.com/go/J70zkpygvk (NOT MY OWN CODE)
@@ -46,10 +45,8 @@ body {
 }
 
 main {
-    padding: 100px;
-    margin: 0 auto;
+    padding-top: 95px;
     min-height: 100%;
-
 }
 
 a, a:hover {
@@ -61,8 +58,13 @@ ul {
     margin-bottom: 0;
 }
 
-button:focus {
-    outline: none;
+.row {
+    width: 100%;
+    margin: 0 auto;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 700;
 }
 
 /*--Flex Box--*/
@@ -110,7 +112,46 @@ button:focus {
     display: table-cell;
     vertical-align: middle;
 }
-/*------------------------------------------------------Colour Varibales--*/
+
+/*--Buttons--*/
+button:focus {
+    outline: none;
+}
+
+.cta {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 9px 20px;
+    border-width: 0px;
+    border-radius: 30px;
+}
+
+.cta--prim {
+    color: white;
+    background-color: var(--primary-cta);
+}
+
+.cta--second {
+    color: black;
+    background-color: white;
+}
+
+.cta--third {
+    color: white;
+    background-color: black;
+}
+
+.cta:hover {
+    color: white;
+    background-color: slategray;
+}
+
+.cta--hero {
+    margin-top: 10px;
+}
+
+/*---Colour Varibales--*/
 :root {
     --primary-cta: rgb(0, 140, 255);
 }

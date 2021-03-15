@@ -1,0 +1,82 @@
+/*------------------------------------------------------Hero--*/
+.hero {
+    width: 100%;
+}
+
+.hero--second {
+    margin-top: 15px;
+}
+
+.hero__image-main {
+    background: url(/media/images/main-hero-image.JPG) no-repeat;
+    background-position: 60% 70%;
+    background-size: cover;
+    position: relative;
+    height: 70vh;
+}
+
+.hero__image-second {
+    background: url(/media/images/goggletwo.jpg) no-repeat;
+    background-position: 100% 50%;
+    background-size: cover;
+    position: relative;
+    height: 50vh;
+}
+
+.hero__inner {
+    position: absolute;
+    padding: 25px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.hero__inner--left {
+    left: 5%;
+}
+
+.hero__inner--right {
+    right: 5%;
+}
+
+.hero__title {
+    font-weight: 700 !important;
+    font-size: 2.5rem;
+    color: black;
+}
+
+.hero__tagline {
+    font-size: 2rem;
+}
+
+/*------------------------------------------------------Newsletter--*/
+.newsletter {
+    font-weight: 700;
+    background-color: yellow;
+    padding: 20px 0;
+    text-align: center;
+    align-items: center;
+}
+
+/*------------------------------------------------------Social--*/
+.social {
+    font-weight: 700;
+    background-color: var(--primary-cta);
+    padding: 10px 0;
+    text-align: center;
+    align-items: center;
+    color: white;
+}
+
+.social h3 {
+    margin: 0;
+}
+
+.social li {
+    display: inline;
+    font-size: 3rem;
+    padding: 0 20px;
+}
