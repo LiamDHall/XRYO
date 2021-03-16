@@ -1,0 +1,31 @@
+[
+    {
+        "pk": 1,
+        "model": "products.product",
+        "fields": {
+            "name": "XRYO Pathfinder Goggles",
+            "description": "Explore without limits. XRYO Pathfinder Goggles are the best choice in all weathers. With our anti-fog protection you will never have to worry about losing visibility. All Pathfinder Lens offer 100% UV protection",
+            "rating": 0,
+            "rating_total": 0,
+            "no_of_ratings": 0,
+            "category": 1,
+            "images": [
+                "goggle_case.JPG",
+                "goggle_strap.JPG"
+            ]
+        }
+    },
+    {
+        "pk": 2,
+        "model": "products.product",
+        "fields": {
+            "name": "Badge Beanie",
+            "description": "Keep your head warm this Winter with our 100% Acrylic Beanie.",
+            "rating": 0,
+            "rating_total": 0,
+            "no_of_ratings": 0,
+            "category": 2,
+            "images": []
+        }
+    }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "pk": 1,
+    "model": "products.category",
+    "fields": {
+      "name": "goggles",
+      "display_name": "Goggles"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "products.category",
+    "fields": {
+      "name": "beanies",
+      "display_name": "Beanies"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "products.category",
+    "fields": {
+      "name": "hoodies",
+      "display_name": "Hoodies"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "products.category",
+    "fields": {
+      "name": "jumpers",
+      "display_name": "Jumpers"
+    }
+  }
+]
