@@ -3,6 +3,10 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class Category(models.Model):
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     name = models.CharField(max_length=100)
     display_name = models.CharField(max_length=100, null=True, blank=True)
 
