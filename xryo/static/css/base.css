@@ -67,6 +67,10 @@ ul {
   font-weight: 700;
 }
 
+small {
+    font-size: 0.875rem;
+}
+
 /*--Flex Box--*/
 .flex-container {
     display: flex;
