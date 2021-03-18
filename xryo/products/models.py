@@ -9,15 +9,14 @@ def get_upload_path(instance, filename):
     """
 
     model = instance.album.model.__class__._meta
-    album = instance.album.model.name
+    album = instance.album.model.name.lower().replace(' ', '_')
     name = model.verbose_name_plural.lower().replace(' ', '_')
     return f'{name}/{album}/{filename}'
 
 
 def create_image_album(sender, instance, created, **kwargs):
-    """Create ImageAlbum for every new Product
+    """Create ImageAlbum for every new Product or Variant
     """
-
     name = instance.name
     if created:
         ImageAlbum.objects.create(name=name)
@@ -47,6 +46,9 @@ class Image(models.Model):
         on_delete=models.SET_NULL
     )
 
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
 
@@ -68,6 +70,10 @@ class Product(models.Model):
         'Category', null=True, blank=True, on_delete=models.SET_NULL
     )
     name = models.CharField(max_length=100)
+    price = models.DecimalField(
+        max_digits=6, decimal_places=2, null=True, blank=True
+    )
+    sku = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(blank=True)
     rating = models.DecimalField(max_digits=6, decimal_places=1, default=0.00)
     rating_total = models.IntegerField(default=0)
@@ -98,6 +104,20 @@ class Variant(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     sku = models.CharField(max_length=100, null=True, blank=True)
     name = models.CharField(max_length=100)
+    album = models.OneToOneField(
+        ImageAlbum,
+        related_name='variant_model',
+        null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
 
     def __str__(self):
         return self.name
+
+
+""" Signal to trigger the auto creation of the ImageAlbum,
+must be below Variant class
+"""
+
+signals.post_save.connect(create_image_album, sender=Variant, weak=False,
+                          dispatch_uid='models.create_image_album')
