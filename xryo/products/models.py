@@ -8,10 +8,9 @@ def get_upload_path(instance, filename):
     (if not already) in the media folder and the file will be uploaded.
     """
 
-    model = instance.album.model.__class__._meta
-    album = instance.album.model.name.lower().replace(' ', '_')
-    name = model.verbose_name_plural.lower().replace(' ', '_')
-    return f'{name}/{album}/{filename}'
+    album = instance.album.variant_model.name.lower().replace(' ', '_')
+    name = instance.album.variant_model.product.name.lower().replace(' ', '_')
+    return f'products/{name}/{album}/{filename}'
 
 
 def create_image_album(sender, instance, created, **kwargs):
@@ -37,7 +36,6 @@ class ImageAlbum(models.Model):
 
 class Image(models.Model):
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to=get_upload_path)
     default = models.BooleanField(default=False)
     album = models.ForeignKey(
         ImageAlbum,
@@ -45,6 +43,8 @@ class Image(models.Model):
         null=True, blank=True,
         on_delete=models.SET_NULL
     )
+
+    image = models.ImageField(upload_to=get_upload_path)
 
     def __str__(self):
         return self.name
