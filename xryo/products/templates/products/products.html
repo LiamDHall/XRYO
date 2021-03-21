@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="container-fuild">
-        <div class="row">
+        <div class="row pl-15 pr-15">
             <div class="col">
                 <h2>Products</h2>
             </div>
@@ -23,25 +23,23 @@
                                     <div class="card border-0">
                                         <a href="#" class="">
                                             {% if variant.album %}
-                                                {% for image in images %}
-                                                    {% if image.album == variant.album %}
-                                                        {% if image.default == True %}
-                                                            <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
-                                                        {% endif %}
+                                                {% for image in variant.album.images.all %}                                        
+                                                    {% if image.default == True %}
+                                                        <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endif %}
                                         </a>
-                                    <a href="#">
-                                        <div class="card-body p-1">
-                                            {% if product.variant_set.all|length > 1 %}
-                                                <small class="mb-0">{{ product.variant_set.all|length }} Variants</small>
-                                            {% endif %}
-                                            <p class="mb-0 {% if product.variant_set.all|length <= 1 %}mt-4{% endif %}"><strong>{{ product.name|title }}</strong></p>
-                                            <p class="float-left mb-0">{{ variant.name|title }}</p>
-                                            <p class="float-right mb-0">£{{ variant.price }}</p>
-                                        </div>
-                                    </a>
+                                        <a href="#">
+                                            <div class="card-body p-1">
+                                                {% if product.variant_set.all|length > 1 %}
+                                                    <small class="mb-0">{{ product.variant_set.all|length }} Variants</small>
+                                                {% endif %}
+                                                <p class="mb-0 {% if product.variant_set.all|length <= 1 %}mt-4{% endif %}"><strong>{{ product.name|title }}</strong></p>
+                                                <p class="float-left mb-0">{{ variant.name|title }}</p>
+                                                <p class="float-right mb-0">£{{ variant.price }}</p>
+                                            </div>
+                                        </a>
                                     </div>
                                 </div> 
                             {% endfor %}
@@ -49,20 +47,20 @@
                             <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
                                 <div class="card border-0">
                                     <a href="#" class="">
-                                        {% for image in images %}
-                                            {% if image.album == product.album %}
+                                        {% if product.album %}
+                                            {% for image in product.album.images.all %}
                                                 {% if image.default == True %}
-                                                    <img class="card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="Card image cap">
+                                                    <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
                                                 {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
+                                            {% endfor %}
+                                        {% endif %}
                                     </a>
-                                <a href="#">
-                                    <div class="card-body p-1">
-                                        <p class="mb-0 mt-4"><strong>{{ product.name|title }}</strong></p>
-                                        <p class="float-right mb-0">£{{ product.price }}</p>
-                                    </div>
-                                </a>
+                                    <a href="#">
+                                        <div class="card-body p-1">
+                                            <p class="mb-0 mt-4"><strong>{{ product.name|title }}</strong></p>
+                                            <p class="float-right mb-0">£{{ product.price }}</p>
+                                        </div>
+                                    </a>
                                 </div>
                             </div> 
                         {% endif %}
