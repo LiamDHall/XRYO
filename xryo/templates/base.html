@@ -41,8 +41,8 @@
             <p class="info-banner__text mb-0 flex-start"><strong>Free shipping on orders over £100</strong></p>
 
             <!--Search--> 
-            <form id="search" class="search flex-end flex-largest text-right" action="#" method="GET">
-                <input type="text" name="query" class="search-input" placeholder="Search" aria-label="search input">
+            <form id="search" class="search flex-end flex-largest text-right" action="{% url 'products' %}" method="GET">
+                <input type="text" name="search-text" class="search-input" placeholder="Search" aria-label="search input">
                 <button class="search-btn" name="form-submit" value="search" aria-label="search"><i class="fas fa-search"></i></button>
             </form>
         </div>
@@ -109,8 +109,8 @@
 
         <!--Mobile Search-->
         <div class="mobile-search d-sm-none">
-            <form id="mobile-search" class="search" action="#" method="GET">
-                <input type="text" name="query" class="search-input" placeholder="Search" aria-label="search input">
+            <form id="mobile-search" class="search" action="{% url 'products' %}" method="GET">
+                <input type="text" name="search-text" class="search-input" placeholder="Search" aria-label="search input">
                 <button class="search-btn" name="form-submit" value="search" aria-label="search"><i class="fas fa-search"></i></button>
                 <button class="search-btn" type="button" aria-label="close search"><i class="fas fa-times"></i></button>
             </form>

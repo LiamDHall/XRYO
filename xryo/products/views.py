@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.contrib import messages
+from django.db.models import Q
 from .models import Product, Variant, ImageAlbum, Image
-
 # Create your views here.
 
 
@@ -10,12 +11,26 @@ def all_products(request):
     """
 
     products = Product.objects.all()
+    query = None
+
+    if request.GET:
+        if 'search-text' in request.GET:
+            query = request.GET['search-text']
+            print(query)
+            if not query:
+                messages.error(request, "Empty Search")
+                return redirect(reverse('home'))
+
+            queries = Q(name__icontains=query) | Q(description__icontains=query)
+            products = products.filter(queries)
+
     variants = Variant.objects.all()
     album = ImageAlbum.objects.all()
     images = Image.objects.all()
 
     context = {
         'products': products,
+        'search_term': query,
         'variants': variants,
         'album': album,
         'images': images,
@@ -30,8 +45,6 @@ def product_detail(request, product_id):
 
     product = get_object_or_404(Product, pk=product_id)
 
-    print(f'PRODUCT === {product}')
-
     context = {
         'product': product,
     }
@@ -45,9 +58,6 @@ def product_variant(request, product_id, variant_id):
 
     product = get_object_or_404(Product, pk=product_id)
     variant = get_object_or_404(Variant, pk=variant_id)
-
-    print(f'VARIANT === {variant}')
-    print(f'PRODUCT === {product}')
 
     context = {
         'variant': variant,
