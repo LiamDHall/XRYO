@@ -21,7 +21,9 @@
                             {% for variant in product.variant_set.all %}
                                 <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
                                     <div class="card border-0">
-                                        <a href="#" class="">
+                                        Product == {{ product.id }}
+                                        Variant == {{ variant.id }}
+                                        <a href="{% url 'product_variant' product.id variant.id %}">
                                             {% if variant.album %}
                                                 {% for image in variant.album.images.all %}                                        
                                                     {% if image.default == True %}
@@ -30,7 +32,7 @@
                                                 {% endfor %}
                                             {% endif %}
                                         </a>
-                                        <a href="#">
+                                        <a href="{% url 'product_variant' product.id variant.id %}">
                                             <div class="card-body p-1">
                                                 {% if product.variant_set.all|length > 1 %}
                                                     <small class="mb-0">{{ product.variant_set.all|length }} Variants</small>
@@ -46,7 +48,7 @@
                         {% else %}
                             <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
                                 <div class="card border-0">
-                                    <a href="#" class="">
+                                    <a href="{% url 'product_detail' product.id %}" class="">
                                         {% if product.album %}
                                             {% for image in product.album.images.all %}
                                                 {% if image.default == True %}
@@ -55,7 +57,7 @@
                                             {% endfor %}
                                         {% endif %}
                                     </a>
-                                    <a href="#">
+                                    <a href="{% url 'product_detail' product.id %}">
                                         <div class="card-body p-1">
                                             <p class="mb-0 mt-4"><strong>{{ product.name|title }}</strong></p>
                                             <p class="float-right mb-0">£{{ product.price }}</p>

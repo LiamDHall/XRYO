@@ -120,6 +120,7 @@ small {
 /*--Buttons--*/
 button:focus {
     outline: none;
+    box-shadow: none !important;
 }
 
 .cta {

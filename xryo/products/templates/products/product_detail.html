@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block add_css %}
+    <link rel="stylesheet" href="{% static 'products/css/products.css' %}">
+    <!--Swiper-->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="container-fuild">
+        <div class="row">
+            
+            <!--Product Image-->
+            <div class="col-12 col-md-7 col-lg-4 offset-lg-2 pl-md-4 pr-md-4">
+                {% if product.album %}
+                    {% for image in product.album.images.all %}
+                        {% if image.default == True %}
+                            <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <!--Image Carousel-->
+                {% if product.album and product.album.images.all|length > 1 %}
+                    <div class="swiper-outer">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper">
+                                <!-- Slides -->
+                                {% for image in product.album.images.all %}
+                                    <div class="swiper-slide">
+                                        <img class="img-thumbnail" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!--Navigation buttons-->
+                        <div class="swiper-btn-container">
+                            <div class="swiper-button swiper-button-prev"></div>
+                            <div class="swiper-button swiper-button-next"></div>
+                        </div>
+                    </div>
+                    <!--Pagination-->
+                    <div class="swiper-pagination"></div>
+                {% endif %}
+            </div>
+
+            <!--Product Detail-->
+            <div class="col-12 col-md-5 col-lg-4 my-3 pl-md-0 pr-md-4">
+                <div class="product-details-container">
+                    <div class="clearfix">
+                        <small class="mb-0 float-left">{{ product.category.display_name }}</small>
+                        {% if product.rating %}
+                            <small class="float-right"><i class="fas fa-star mr-1"></i>{{ product.rating }} / 5</small>
+                        {% else %}
+                            <small class="float-right">No Rating</small>
+                        {% endif %}
+                    </div>
+                    <p class="mt-2 mb-0 clearfix"><strong>{{ product.name }}</strong></p>
+                    <p class="mt-2 mb-0">{{ variant.name }}</p>
+                    <p class="lead mt-3 mb-3 font-weight-bold">
+                        {% if product.price %}
+                            £{{ product.price }}
+                        {% else %}
+                            £{{ variant.price }}
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!--Variant Selector-->
+                {% if product.variant_set.all|length > 1 %}
+                    <small class="font-weight-bold">Colour</small>
+                        <ul class="variant-list d-flex list-unstyled list-group-horizontal">
+                            {% for variant in product.variant_set.all %}
+                                <li>
+                                    <a href="{% url 'product_variant' product.id variant.id %}" class="d-inline-block">
+                                        {% if variant.album %}
+                                            {% for image in variant.album.images.all %}                                        
+                                                {% if image.default == True %}
+                                                    <img class="card-img rounded-0 test" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                {% endif %}
+
+                <!--Add To Bag-->
+                <form class="form" action="#" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-12">
+                            <button class="cta cta--prim w-100 mt-3 mb-3"><span class="pr-1"><i class="fas fa-shopping-bag"></i></span> ADD TO BAG</button>
+                        </div>
+                        <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                    </div>
+                </form>
+                <hr class="m-0">
+                <button class="btn font-weight-bold text-left py-2 px-0 w-100" type="button" data-toggle="collapse" data-target="#description" aria-expanded="false" aria-label="Toggle Description">
+                    DESCRIPTION <span class="text-right">+</span>
+                </button>
+                <hr class="m-0">
+                <div id="description" class="collapse mt-3">
+                    <p>{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block add_postload_js %}
+        <!--Swiper-->
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script src="{% static 'products/js/products.js' %}"></script>
+    {% endblock %}
+{% endblock %}

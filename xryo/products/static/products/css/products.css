@@ -1,0 +1,81 @@
+/*------------------------------------------------------Product CSS--*/
+.variant-list li{
+    margin-right: 5px;
+    width: 60px;
+}
+
+.variant-list li:last-child {
+    margin-right: 0px;
+}
+
+/*--Swiper Carousel--*/
+.swiper-outer {
+    position: relative;
+}
+
+.swiper-container {
+    margin-top: 10px;
+    width: 90%;
+    overflow: hidden;
+}
+
+.swiper-btn-container {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    padding: 1.5rem;
+}
+
+.img-thumbnail{
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+}
+
+.swiper-button {
+    height: 5px;
+    width: 5px;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight:900;
+    background-color: black;
+    color: white !important;
+    position: relative;
+    top: 22px !important;
+    width: 5% !important;
+    height: 100% !important;
+}
+
+.swiper-button-next {
+    right: 0 !important;
+}
+
+.swiper-button-prev {
+    left: 0 !important;
+}
+
+.swiper-button-next:after {
+    font-family: "Font Awesome 5 Free" !important;
+    content: "\f054" !important;
+    font-size: 15px !important;
+}
+
+.swiper-button-prev:after {
+    font-family: "Font Awesome 5 Free" !important;
+    content: "\f053" !important;
+    font-size: 15px !important;
+}
+
+.swiper-pagination {
+    position: static !important;
+}
+
+.swiper-pagination-bullet {
+    border-radius: 0 !important;
+    background-color: black !important;
+    width: 30px !important;
+    height: 5px !important;
+    margin: 0 2px;
+}
+
