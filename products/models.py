@@ -3,20 +3,19 @@ from django.db.models import signals
 
 
 def get_upload_path(instance, filename):
-    """Creates the upload path for the image based off the album
-    selected, with Pillow installed the file directory will be created
+    """Creates the upload path for the image,
+    with Pillow installed the file directory will be created
     (if not already) in the media folder and the file will be uploaded.
     """
 
-    model = instance.album.model.__class__._meta
-    album = instance.album.model.name.lower().replace(' ', '_')
-    name = model.verbose_name_plural.lower().replace(' ', '_')
-    return f'{name}/{album}/{filename}'
+    return f'product_images/{filename}'
 
 
 def create_image_album(sender, instance, created, **kwargs):
     """Create ImageAlbum for every new Product or Variant
+        Joining Table
     """
+
     name = instance.name
     if created:
         ImageAlbum.objects.create(name=name)
@@ -115,6 +114,7 @@ class Variant(models.Model):
 
     def __str__(self):
         return self.name
+
 
 """ Signal to trigger the auto creation of the ImageAlbum,
 must be below Variant class
