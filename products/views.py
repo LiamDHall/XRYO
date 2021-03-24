@@ -31,9 +31,20 @@ def all_products(request):
             queries = Q(name__icontains=query) | Q(description__icontains=query)
             products = products.filter(queries)
 
+    # No of Products
+    no_of_products = 0
+
+    if len(products) > 0:
+        for product in products:
+            if len(product.variant_set.all()) > 0:
+                no_of_products += len(product.variant_set.all())
+            else:
+                no_of_products += 1
+
     context = {
         'products': products,
         'search_term': query,
+        'no_of_products': no_of_products,
         'selected_catergory': categories,
     }
 
