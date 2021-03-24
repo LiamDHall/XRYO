@@ -39,7 +39,7 @@
                                                 {% endif %}
                                                 <p class="mb-0 {% if product.variant_set.all|length <= 1 %}mt-4{% endif %}"><strong>{{ product.name|title }}</strong></p>
                                                 <p class="float-left mb-0">{{ variant.name|title }}</p>
-                                                <p class="float-right mb-0">£{{ variant.price }}</p>
+                                                <p class="float-right mb-0">£{{ product.price }}</p>
                                             </div>
                                         </a>
                                     </div>
