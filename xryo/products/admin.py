@@ -25,7 +25,6 @@ class VariantAdmin(admin.ModelAdmin):
         'name',
         'product',
         'sku',
-        'price',
     )
 
 

@@ -8,9 +8,10 @@ def get_upload_path(instance, filename):
     (if not already) in the media folder and the file will be uploaded.
     """
 
-    album = instance.album.variant_model.name.lower().replace(' ', '_')
-    name = instance.album.variant_model.product.name.lower().replace(' ', '_')
-    return f'products/{name}/{album}/{filename}'
+    model = instance.album.model.__class__._meta
+    album = instance.album.model.name.lower().replace(' ', '_')
+    name = model.verbose_name_plural.lower().replace(' ', '_')
+    return f'{name}/{album}/{filename}'
 
 
 def create_image_album(sender, instance, created, **kwargs):
@@ -69,6 +70,7 @@ class Product(models.Model):
     category = models.ForeignKey(
         'Category', null=True, blank=True, on_delete=models.SET_NULL
     )
+    class_name = 'product'
     name = models.CharField(max_length=100)
     price = models.DecimalField(
         max_digits=6, decimal_places=2, null=True, blank=True
@@ -99,9 +101,9 @@ signals.post_save.connect(create_image_album, sender=Product, weak=False,
 
 class Variant(models.Model):
     product = models.ForeignKey(
-        'Product', null=True, blank=True, on_delete=models.SET_NULL
+        'Product', on_delete=models.CASCADE
     )
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    class_name = 'variant'
     sku = models.CharField(max_length=100, null=True, blank=True)
     name = models.CharField(max_length=100)
     album = models.OneToOneField(
@@ -113,7 +115,6 @@ class Variant(models.Model):
 
     def __str__(self):
         return self.name
-
 
 """ Signal to trigger the auto creation of the ImageAlbum,
 must be below Variant class
