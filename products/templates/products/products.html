@@ -1,76 +1,99 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block content %}
-    <div class="container-fuild">
-        <div class="row pl-15 pr-15">
-            <div class="col">
-                <h2>Products</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="row">
-                    <div class="col">
-                        
-                    </div>
-                </div>
-                <div class="row">
-                    {% for product in products %}
-                        {% if product.variant_set.all|length > 0 %}
-                            {% for variant in product.variant_set.all %}
-                                <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
-                                    <div class="card border-0">
-                                        Product == {{ product.id }}
-                                        Variant == {{ variant.id }}
-                                        <a href="{% url 'product_variant' product.id variant.id %}">
-                                            {% if variant.album %}
-                                                {% for image in variant.album.images.all %}                                        
-                                                    {% if image.default == True %}
-                                                        <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endif %}
-                                        </a>
-                                        <a href="{% url 'product_variant' product.id variant.id %}">
-                                            <div class="card-body p-1">
-                                                {% if product.variant_set.all|length > 1 %}
-                                                    <small class="mb-0">{{ product.variant_set.all|length }} Variants</small>
-                                                {% endif %}
-                                                <p class="mb-0 {% if product.variant_set.all|length <= 1 %}mt-4{% endif %}"><strong>{{ product.name|title }}</strong></p>
-                                                <p class="float-left mb-0">{{ variant.name|title }}</p>
-                                                <p class="float-right mb-0">£{{ product.price }}</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div> 
-                            {% endfor %}
-                        {% else %}
-                            <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
-                                <div class="card border-0">
-                                    <a href="{% url 'product_detail' product.id %}" class="">
-                                        {% if product.album %}
-                                            {% for image in product.album.images.all %}
-                                                {% if image.default == True %}
-                                                    <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                    </a>
-                                    <a href="{% url 'product_detail' product.id %}">
-                                        <div class="card-body p-1">
-                                            <p class="mb-0 mt-4"><strong>{{ product.name|title }}</strong></p>
-                                            <p class="float-right mb-0">£{{ product.price }}</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div> 
-                        {% endif %}
-                    {% endfor %}
-                </div>
+{% block add_css %}
+    <link rel="stylesheet" href="{% static 'products/css/products.css' %}">
+{% endblock %}
+
+{% block page_header %}
+    <!--Page Header-->
+    <div class="page-header w-100 mb-3">
+        <h1 class="d-inline-block">
+            {% if search_term %}
+                Search = {{ search_term|title }}
+            {% elif selected_catergory %}
+                {% for cat in selected_catergory %}
+                    {{ cat.name|title }}
+                {% endfor %}
+            {% else %}
+                All Products
+            {% endif %}
+        </h1>
+        <p class="d-inline-block">[{{ no_of_products }}]</p>
+        <hr class="w-100">
+        <div class="filters">
+            <p class="d-inline-block font-weight-bold mb-0">Filters:</p>
+            <button class="btn d-inline-block font-weight-bold text-left ml-3" type="button" data-toggle="collapse" data-target="#sort" aria-expanded="false" aria-label="Toggle Price">
+                SORT <span class="sort-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div id="sort" class="sort filters__dropdown collapse">
+                <p class="font-weight-bold mb-0 d-inline-block">SORT BY:</p>
+                <a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fuild">
+        <div class="row">
+            {% for product in products %}
+                {% if product.variant_set.all|length > 0 %}
+                    {% for variant in product.variant_set.all %}
+                        <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
+                            <div class="card border-0">
+                                Product == {{ product.id }}
+                                Variant == {{ variant.id }}
+                                <a href="{% url 'product_variant' product.id variant.id %}">
+                                    {% if variant.album %}
+                                        {% for image in variant.album.images.all %}                                        
+                                            {% if image.default == True %}
+                                                <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </a>
+                                <a href="{% url 'product_variant' product.id variant.id %}">
+                                    <div class="card-body p-1">
+                                        {% if product.variant_set.all|length > 1 %}
+                                            <small class="mb-0">{{ product.variant_set.all|length }} Variants</small>
+                                        {% endif %}
+                                        <p class="mb-0 {% if product.variant_set.all|length <= 1 %}mt-4{% endif %}"><strong>{{ product.name|title }}</strong></p>
+                                        <p class="float-left mb-0">{{ variant.name|title }}</p>
+                                        <p class="float-right mb-0">£{{ product.price }}</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div> 
+                    {% endfor %}
+                {% else %}
+                    <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
+                        <div class="card border-0">
+                            <a href="{% url 'product_detail' product.id %}" class="">
+                                {% if product.album %}
+                                    {% for image in product.album.images.all %}
+                                        {% if image.default == True %}
+                                            <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'product_detail' product.id %}">
+                                <div class="card-body p-1">
+                                    <p class="mb-0 mt-4"><strong>{{ product.name|title }}</strong></p>
+                                    <p class="float-right mb-0">£{{ product.price }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div> 
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
     {% block add_postload_js %}
         <!--Product JS-->
         <script src="{% static 'products/js/products.js' %}"></script>

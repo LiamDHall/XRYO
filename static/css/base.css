@@ -45,7 +45,7 @@ body {
 }
 
 main {
-    padding-top: 95px;
+    padding-top: 120px;
     min-height: 100%;
 }
 
@@ -387,6 +387,11 @@ button:focus {
     .info-banner__text {
         font-size: 0.8rem;
     }
+}
+
+/*------------------------------------------------------Page Header--*/
+.page-header {
+    padding: 0 30px;
 }
 
 /*------------------------------------------------------Footer--*/
