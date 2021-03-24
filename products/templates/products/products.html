@@ -71,4 +71,8 @@
             </div>
         </div>
     </div>
+    {% block add_postload_js %}
+        <!--Product JS-->
+        <script src="{% static 'products/js/products.js' %}"></script>
+    {% endblock %}
 {% endblock %}
