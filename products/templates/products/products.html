@@ -28,12 +28,18 @@
             </button>
             <div id="sort" class="sort filters__dropdown collapse">
                 <p class="font-weight-bold mb-0 d-inline-block">SORT BY:</p>
-                <a href=""></a>
-                <a href=""></a>
-                <a href=""></a>
-                <a href=""></a>
+                <button class="sort__btn {%if selected_sorting == 'name_asc' %} current {% endif %}" value="name_asc" type="button">A-Z</button>
+                <button class="sort__btn {%if selected_sorting == 'name_desc' %} current {% endif %}" value="name_desc" type="button">Z-A</button>
+                <button class="sort__btn {%if selected_sorting == 'price_desc' %} current {% endif %}" value="price_asc" type="button">Price: LOW-HIGH</button>
+                <button class="sort__btn {%if selected_sorting == 'price_asc' %} current {% endif %}" value="price_desc" type="button">Price: HIGH-LOW</button>
             </div>
         </div>
+        {% if selected_categories or selected_sorting != 'None_None' %}
+        <div class="py-3">
+            <p class="d-inline-block font-weight-bold mb-0">Current Sorting:</p>
+            <a href="{% url 'products' %}" class="clear-sort">{{ selected_sorting }} <i class="fas fa-times"></i></a>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}
 

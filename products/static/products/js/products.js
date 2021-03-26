@@ -19,3 +19,25 @@ $(window).scroll(function (event) {
         $('.filters').removeAttr("style");
     }
 });
+
+// Sort Toggler
+$('.sort__btn').on('click', function() {
+    var sortBtn = $(this);
+    var currentUrl = new URL(window.location);
+    var sortKey = sortBtn.val();
+    if(sortKey != "reset"){
+        var sort = sortKey.split("_")[0];
+        var direction = sortKey.split("_")[1];
+
+        currentUrl.searchParams.set("sort", sort);
+        currentUrl.searchParams.set("direction", direction);
+
+        window.location.replace(currentUrl);
+    }
+    else {
+        currentUrl.searchParams.delete("sort");
+        currentUrl.searchParams.delete("direction");
+
+        window.location.replace(currentUrl);
+    }
+})
