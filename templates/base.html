@@ -38,7 +38,7 @@
 
         <!--Info Banner-->
         <div class="info-banner flex-container">
-            <p class="info-banner__text mb-0 flex-start"><strong>Free shipping on orders over £100</strong></p>
+            <p class="info-banner__text mb-0 flex-start"><strong>Free shipping on orders over £{{ free_delivery_min }}</strong></p>
 
             <!--Search--> 
             <form id="search" class="search flex-end flex-largest text-right" action="{% url 'products' %}" method="GET">
@@ -100,9 +100,21 @@
                 <a href="{% url 'view_bag' %}" class="table">
                     <div class="basket__icon table-cell">
                         <i class="site-header__icon fas fa-shopping-bag"></i>
-                        <span class="basket__number">22 {{ bag_porduct_no }}</span>
+                        <span class="basket__number">
+                            {% if bag_item_count %}
+                                {{ bag_item_count }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </span>
                     </div>
-                    <span class="table-cell">£000.00 {{ bag_total }}</span>
+                    <span class="table-cell">
+                        {% if bag_total %}
+                            £{{ bag_total|floatformat:2 }}
+                        {% else %}
+                            £0.00
+                        {% endif %}
+                    </span>
                 </a>
             </div>
         </nav>
