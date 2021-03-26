@@ -50,8 +50,8 @@
         <nav class="site-header__nav flex-container">
 
             <!--logo-->
-            <a class="logo flex-item" href="{% url 'home' %}" alt="XRYO logo">
-                <img src="{{ MEDIA_URL }}logos/log_small.png"/>
+            <a class="logo flex-item" href="{% url 'home' %}">
+                <img id="logo-img" src="{{ MEDIA_URL }}logos/logo_small.png" alt="XRYO logo"/>
             </a>
             
             <!--Bootstrap Collapsible Menu-->
@@ -208,6 +208,26 @@
 
     {% block add_postload_js %}
         <!--Post Load JS-->
+        <script>
+            // Toggle between desktop and mobile logo
+            $(window).resize(function() {
+                toggleLogo()
+            });
+
+            function toggleLogo() {
+                var windowWidth = window.innerWidth;
+                
+                if(window.innerWidth < 475) {
+                    var mediaPath = '{{ MEDIA_URL }}logos/logo_small.png'
+                }
+
+                else {
+                    var mediaPath = '{{ MEDIA_URL }}logos/logo_full.png'
+                }
+
+                $('#logo-img').prop('src', mediaPath)
+            }
+        </script>
     {% endblock %}
   </body>
 </html>
