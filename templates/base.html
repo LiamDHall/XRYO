@@ -88,7 +88,7 @@
             </div>
             
             <!--Mobile Search Button-->
-            <button class="mobile-search-toggle search-btn d-sm-none flex-item" type="button" aria-label="toggle search"><i class="fas fa-search"></i></button>
+            <button class="mobile-search-toggle search-btn d-sm-none flex-item" type="button" data-toggle="collapse" data-target="#mobile-search-container" aria-expanded="false" aria-label="toggle search"><i class="fas fa-search"></i></button>
 
             <!--Account-->
             <div class="account flex-item">
@@ -120,11 +120,11 @@
         </nav>
 
         <!--Mobile Search-->
-        <div class="mobile-search d-sm-none">
-            <form id="mobile-search" class="search" action="{% url 'products' %}" method="GET">
+        <div id="mobile-search-container" class="mobile-search collapse d-sm-none">
+            <form id="mobile-search-form" class="search" action="{% url 'products' %}" method="GET">
                 <input type="text" name="search-text" class="search-input" placeholder="Search" aria-label="search input">
                 <button class="search-btn" name="form-submit" value="search" aria-label="search"><i class="fas fa-search"></i></button>
-                <button class="search-btn" type="button" aria-label="close search"><i class="fas fa-times"></i></button>
+                <button class="search-btn" type="button" data-toggle="collapse" data-target="#mobile-search-container" aria-expanded="true" aria-label="close search"><i class="fas fa-times"></i></button>
             </form>
         </div>
     </header>
