@@ -1,4 +1,4 @@
-# Mixology
+# XRYO
 
 *Liam Hall Milestone Project 4 (Django Full Stack Framework)*
 
