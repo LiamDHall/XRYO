@@ -43,13 +43,15 @@
                                     {% if item.product.album %}
                                         {% for image in item.product.album.images.all %}
                                             {% if image.default == True %}
+                                            <a href="{% url 'product_detail' item.product.id %}">
                                                 <img class="img-fluid" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
+                                            </a>
                                             {% endif %}
                                         {% endfor %}
                                     {% endif %}
                                 </td>
                                 <td colspan="2" class="p-3">
-                                    <p class="my-0"><strong>{{ item.product.name|title }}</strong></p>
+                                    <a href="{% url 'product_detail' item.product.id %}" class="my-0"><strong>{{ item.product.name|title }}</strong></a>
                                     <p class="small text-muted">SKU: {{ item.product.sku|upper }}</p>
                                     <p><strong>Size: </strong>{% if item.product.has_sizes %}{{ item.size|upper }}{% else %}One Size Fits Most{% endif %}</p>
                                     <p class="font-weight-bold my-0">Quantity</p>
