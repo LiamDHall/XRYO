@@ -130,6 +130,7 @@ button:focus {
     padding: 9px 20px;
     border-width: 0px;
     border-radius: 30px;
+    text-align: center;
 }
 
 .cta--prim {
@@ -392,6 +393,7 @@ button:focus {
 /*------------------------------------------------------Page Header--*/
 .page-header {
     padding: 0 30px;
+    margin: 0 auto;
 }
 
 /*------------------------------------------------------Footer--*/
