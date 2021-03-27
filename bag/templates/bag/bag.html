@@ -49,10 +49,12 @@
                                     {% endif %}
                                 </td>
                                 <td colspan="2" class="p-3">
-                                    <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                                    <p class="my-0"><strong>{{ item.product.name|title }}</strong></p>
                                     <p class="small text-muted">SKU: {{ item.product.sku|upper }}</p>
-                                    <p>£{{ item.product.price }}</p>
+                                    <p><strong>Size: </strong>{% if item.product.has_sizes %}{{ item.size|upper }}{% else %}One Size Fits Most{% endif %}</p>
+                                    <p class="font-weight-bold my-0">Quantity</p>
                                     <p>{{ item.quantity }}</p>
+                                    <p>£{{ item.product.price }}</p>
                                 </td>
                                 <td class="py-3 text-right align-middle">
                                     <p class="my-0">£{{ item.product.price }}</p>

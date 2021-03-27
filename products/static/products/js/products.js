@@ -3,23 +3,6 @@ $('.img-thumbnail').on('click', function() {
     $('.display-image').prop('src', this.src);
 });
 
-// Fix Filter to Site Header if Scrolled Pasted
-var filterBottom = $('.filters').offset().top
-
-$(window).scroll(function (event) {
-    var scroll = $(window).scrollTop();
-    var siteHeaderHeight = $('.site-header').height() 
-    var filterTopPos = filterBottom - siteHeaderHeight
-    if(scroll > filterTopPos){
-        $('.filters').addClass('attach-to-header')
-        $('.filters').css('top', `${siteHeaderHeight}px`)
-    }
-    else {
-        $('.filters').removeClass('attach-to-header')
-        $('.filters').removeAttr("style");
-    }
-});
-
 // Sort Toggler
 $('.sort__btn').on('click', function() {
     var sortBtn = $(this);
@@ -40,4 +23,13 @@ $('.sort__btn').on('click', function() {
 
         window.location.replace(currentUrl);
     }
+})
+
+// Size Toggler
+$('.size-btn').on('click', function() {
+    console.log('i ran')
+    $('.size-btn').removeClass('checked')
+    $(this).addClass('checked')
+    
+    $(this).children('input').prop('checked', true)
 })

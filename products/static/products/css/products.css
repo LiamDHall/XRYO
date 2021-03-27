@@ -79,6 +79,30 @@
     margin: 0 2px;
 }
 
+/*--Size Input--*/
+.size input {
+    display: none;
+}
+
+.size-btn {
+    border: 1px solid black;
+    width: 40px;
+    padding: 8px 0;
+    margin-right: 5px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.size-btn label {
+    margin: 0;
+}
+
+.checked {
+    color: white;
+    background-color: black;
+    border: none;
+}
+
 /*--Filters--*/
 .filters__dropdown {
     width: 100%;

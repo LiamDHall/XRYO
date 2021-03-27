@@ -56,8 +56,7 @@
                             <small class="float-right">No Rating</small>
                         {% endif %}
                     </div>
-                    <p class="mt-2 mb-0 clearfix"><strong>{{ product.name }}</strong></p>
-                    <p class="mt-2 mb-0">{{ variant.name }}</p>
+                    <p class="mt-2 mb-0 clearfix"><strong>{{ product.name|title }}</strong></p>
                     <p class="lead mt-3 mb-3 font-weight-bold">
                         {% if product.price %}
                             £{{ product.price }}
@@ -91,6 +90,31 @@
                 <form class="form" action="{% url 'product_to_bag' product.id %}" method="POST">
                     {% csrf_token %}
                     <div class="form-row">
+                        {% if product.sizes %}
+                        <div class="size col-12">
+                            <p class="font-weight-bold">Size</p>
+                            <div class="size-btn d-inline-block checked">
+                                <input type="radio" id="s" name="product_size" value="s" checked>
+                                <label class="size__btn" for="s">S</label>
+                            </div>
+                            <div class="size-btn d-inline-block">
+                                <input type="radio" id="m" name="product_size" value="m">
+                                <label for="m">M</label>
+                            </div>
+                            <div class="size-btn d-inline-block">
+                                <input type="radio" id="l" name="product_size" value="l">
+                                <label for="l">L</label>
+                            </div>
+                            <div class="size-btn d-inline-block">
+                                <input type="radio" id="xl" name="product_size" value="xl">
+                                <label for="xl">XL</label>
+                            </div>    
+                            <div class="size-btn d-inline-block">
+                                <input type="radio" id="xxl" name="product_size" value="xxl">
+                                <label for="male">XXL</label>
+                            </div>
+                        </div>
+                        {% endif %}
                         <div class="col-12">
                             <button class="cta cta--prim w-100 mt-3 mb-3"><span class="pr-1"><i class="fas fa-shopping-bag"></i></span> ADD TO BAG</button>
                         </div>
