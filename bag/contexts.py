@@ -1,11 +1,25 @@
 from decimal import Decimal
 from django.conf import settings
+from django.shortcuts import get_object_or_404
+from products.models import Product, Variant
+
 
 def bag_contents(request):
 
     bag_content = []
     bag_item_count = 0
     bag_total = 0
+    bag = request.session.get('bag', {})
+
+    for product_id, quantity in bag.items():
+        product = get_object_or_404(Product, pk=product_id)
+        bag_total += quantity * product.price
+        bag_item_count += quantity
+        bag_content.append({
+            'product_id': product_id,
+            'quantity': quantity,
+            'product': product,
+        })
 
     if bag_total < settings.FREE_DELIVERY_MIN:
         delivery_charge = Decimal(settings.DELIVERY_CHARGE)
