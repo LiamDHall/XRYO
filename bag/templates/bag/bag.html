@@ -55,9 +55,28 @@
                                     <a href="{% url 'product_detail' item.product.id %}" class="my-0"><strong>{{ item.product.name|title }}</strong></a>
                                     <p class="small text-muted">SKU: {{ item.product.sku|upper }}</p>
                                     <p><strong>Size: </strong>{% if item.product.sizes %}{{ item.size|upper }}{% else %}One Size Fits Most{% endif %}</p>
-                                    <p class="font-weight-bold my-0">Quantity</p>
-                                    <p>{{ item.quantity }}</p>
-                                    <p>£{{ item.product.price }}</p>
+                                    <p class="font-weight-bold mb-2">Quantity</p>
+                                    <form class="form-qty-update" method="POST" action="#">
+                                        {% csrf_token %}
+                                        <select name="quantity" id="qty_{{ item.product_id }}">
+                                            <option value="defaultOption" disabled="" hidden=""></option>
+                                            {% for i in '0123456789'|make_list %}
+                                                <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        {% if item.product.has_sizes %}
+                                            <input type="hidden" name="product_size" value="{{ item.size }}">
+                                        {% endif %}
+                                    </form>
+                                    <a class="update-link text-info"><small>Update</small></a>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p>£{{ item.product.price }}</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <a class="remove-item text-danger float-right" id="remove_{{ item.product_id }}" data-size="{{ item.size }}"><small><i class="fas fa-times"></i> Remove</small></a>
+                                        </div>
+                                    </div> 
                                 </td>
                                 <td class="py-3 text-right align-middle">
                                     <p class="my-0">£{{ item.product.price }}</p>
@@ -120,5 +139,26 @@
     {% block add_postload_js %}
         <!--Bag JS-->
         <script src="{% static 'bag/js/bag.js' %}"></script>
+        <script type="text/javascript">
+            // Update quantity of a product when update clicked
+            $('.update-link').click(function(e) {
+                var form = $(this).prev('.update-form');
+                form.submit();
+            })
+
+            // Remove product when remove button clicked
+            $('.remove-item').click(function(e) {
+                var csrfToken = "{{ csrf_token }}";
+                var itemId = $(this).attr('id').split('remove_')[1];
+                var size = $(this).data('size');
+                var url = `/bag/remove/${itemId}`;
+                var data = {'csrfmiddlewaretoken': csrfToken, 'size': size};
+
+                $.post(url, data)
+                    .done(function() {
+                        location.reload();
+                });
+            })
+        </script>
     {% endblock %}
 {% endblock %}

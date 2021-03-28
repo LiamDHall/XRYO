@@ -5,3 +5,12 @@
 .bag-img {
     width: 150px;
 }
+
+.form-qty-update select{
+    width: 78px;
+    padding: 5px 0px 5px 10px;
+}
+
+.remove-item {
+    cursor: pointer;
+}
