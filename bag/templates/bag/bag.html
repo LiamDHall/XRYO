@@ -70,12 +70,12 @@
                                             <input type="hidden" name="product_size" value="{{ item.size }}">
                                         {% endif %}
                                     </form>
-                                    <div class="row">
-                                        <div class="col-6">
+                                    <div class="row px-0">
+                                        <div class="col-6 px-0">
                                             <p>£{{ item.product.price }}</p>
                                         </div>
-                                        <div class="col-6">
-                                            <a class="remove-item text-danger float-right" id="remove_{{ item.product_id }}" data-size="{{ item.size }}"><small><i class="fas fa-times"></i> Remove</small></a>
+                                        <div class="col-6 px-0 text-right">
+                                            <a class="remove-item text-danger" id="remove_{{ item.product_id }}" data-product_size="{{ item.size }}"><small><i class="fas fa-times"></i> Remove</small></a>
                                         </div>
                                     </div> 
                                 </td>
@@ -150,10 +150,10 @@
             // Remove product when remove button clicked
             $('.remove-item').click(function(e) {
                 var csrfToken = "{{ csrf_token }}";
-                var itemId = $(this).attr('id').split('remove_')[1];
-                var size = $(this).data('size');
-                var url = `/bag/remove/${itemId}`;
-                var data = {'csrfmiddlewaretoken': csrfToken, 'size': size};
+                var productId = $(this).attr('id').split('remove_')[1];
+                var size = $(this).data('product_size');
+                var url = `/bag/remove/${productId}/`;
+                var data = {'csrfmiddlewaretoken': csrfToken, 'product_size': size};
 
                 $.post(url, data)
                     .done(function() {
