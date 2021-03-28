@@ -25,6 +25,8 @@
 
 {% block content %}
     {% if bag_content %}
+    <p>{{ bag_content }}</p>
+    <p>{{ request.session.bag }}</p>
         <!--Bag-->
         <div class="bag-container row">
             <!--Bag Items-->
@@ -56,15 +58,15 @@
                                     <p class="small text-muted">SKU: {{ item.product.sku|upper }}</p>
                                     <p><strong>Size: </strong>{% if item.product.sizes %}{{ item.size|upper }}{% else %}One Size Fits Most{% endif %}</p>
                                     <p class="font-weight-bold mb-2">Quantity</p>
-                                    <form class="form-qty-update" method="POST" action="#">
+                                    <form class="form-qty-update" method="POST" action="{% url 'update_bag' item.product.id %}">
                                         {% csrf_token %}
                                         <select name="quantity" id="qty_{{ item.product_id }}">
                                             <option value="defaultOption" disabled="" hidden=""></option>
                                             {% for i in '0123456789'|make_list %}
-                                                <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                                <option value="{{ forloop.counter }}" {% if item.quantity == forloop.counter %} selected {% endif %}>{{ forloop.counter }}</option>
                                             {% endfor %}
                                         </select>
-                                        {% if item.product.has_sizes %}
+                                        {% if item.product.sizes %}
                                             <input type="hidden" name="product_size" value="{{ item.size }}">
                                         {% endif %}
                                     </form>
@@ -138,11 +140,11 @@
 
     {% block add_postload_js %}
         <!--Bag JS-->
-        <script src="{% static 'bag/js/bag.js' %}"></script>
         <script type="text/javascript">
             // Update quantity of a product when update clicked
             $('.update-link').click(function(e) {
-                var form = $(this).prev('.update-form');
+                console.log('i ran')
+                var form = $(this).prev('.form-qty-update');
                 form.submit();
             })
 
