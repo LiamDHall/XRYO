@@ -16,12 +16,25 @@ def product_to_bag(request, product_id):
 
     quantity = 1
     current_page = request.POST.get('current_page')
+    size = None
+    if 'product_size' in request.POST:
+        size = request.POST['product_size']
+
     bag = request.session.get('bag', {})
 
-    if product_id in list(bag.keys()):
-        bag[product_id] += quantity
+    if size:
+        if product_id in list(bag.keys()):
+            if size in bag[product_id]['product_by_size'].keys():
+                bag[product_id]['product_by_size'][size] += quantity
+            else:
+                bag[product_id]['product_by_size'][size] = quantity
+        else:
+            bag[product_id] = {'product_by_size': {size: quantity}}
     else:
-        bag[product_id] = quantity
+        if product_id in list(bag.keys()):
+            bag[product_id] += quantity
+        else:
+            bag[product_id] = quantity
 
     request.session['bag'] = bag
     return redirect(current_page)

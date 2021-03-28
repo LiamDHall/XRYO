@@ -50,10 +50,11 @@
                                         {% endfor %}
                                     {% endif %}
                                 </td>
+                                <!--Item Details-->
                                 <td colspan="2" class="p-3">
                                     <a href="{% url 'product_detail' item.product.id %}" class="my-0"><strong>{{ item.product.name|title }}</strong></a>
                                     <p class="small text-muted">SKU: {{ item.product.sku|upper }}</p>
-                                    <p><strong>Size: </strong>{% if item.product.has_sizes %}{{ item.size|upper }}{% else %}One Size Fits Most{% endif %}</p>
+                                    <p><strong>Size: </strong>{% if item.product.sizes %}{{ item.size|upper }}{% else %}One Size Fits Most{% endif %}</p>
                                     <p class="font-weight-bold my-0">Quantity</p>
                                     <p>{{ item.quantity }}</p>
                                     <p>£{{ item.product.price }}</p>
