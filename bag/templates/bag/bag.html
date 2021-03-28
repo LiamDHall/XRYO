@@ -60,7 +60,7 @@
                                     <p class="font-weight-bold mb-2">Quantity</p>
                                     <form class="form-qty-update" method="POST" action="{% url 'update_bag' item.product.id %}">
                                         {% csrf_token %}
-                                        <select name="quantity" id="qty_{{ item.product_id }}">
+                                        <select class="qty-selector" name="quantity" id="qty_{{ item.product_id }}">
                                             <option value="defaultOption" disabled="" hidden=""></option>
                                             {% for i in '0123456789'|make_list %}
                                                 <option value="{{ forloop.counter }}" {% if item.quantity == forloop.counter %} selected {% endif %}>{{ forloop.counter }}</option>
@@ -70,7 +70,6 @@
                                             <input type="hidden" name="product_size" value="{{ item.size }}">
                                         {% endif %}
                                     </form>
-                                    <a class="update-link text-info"><small>Update</small></a>
                                     <div class="row">
                                         <div class="col-6">
                                             <p>£{{ item.product.price }}</p>
@@ -141,10 +140,10 @@
     {% block add_postload_js %}
         <!--Bag JS-->
         <script type="text/javascript">
-            // Update quantity of a product when update clicked
-            $('.update-link').click(function(e) {
+            // Update quantity of a product when quantity selector is changed
+            $('.qty-selector').on('change', function(e) {
                 console.log('i ran')
-                var form = $(this).prev('.form-qty-update');
+                var form = $(this).closest('.form-qty-update');
                 form.submit();
             })
 
