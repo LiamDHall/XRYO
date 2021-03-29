@@ -43,19 +43,38 @@
                         {% for item in bag_content %}
                             <tr class="border-bottom">
                                 <td class="bag-img py-3">
-                                    {% if item.product.album %}
-                                        {% for image in item.product.album.images.all %}
-                                            {% if image.default == True %}
-                                            <a href="{% url 'product_detail' item.product.id %}">
-                                                <img class="img-fluid" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
-                                            </a>
-                                            {% endif %}
-                                        {% endfor %}
+                                    {% if item.variant %}
+                                        {% if item.variant.album %}
+                                            {% for image in item.variant.album.images.all %}
+                                                {% if image.default == True %}
+                                                    <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% elif product.album %}
+                                            {% for image in product.album.images.all %}
+                                                {% if image.default == True %}
+                                                    <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if item.product.album %}
+                                            {% for image in item.product.album.images.all %}
+                                                {% if image.default == True %}
+                                                <a href="{% url 'product_detail' item.product.id %}">
+                                                    <img class="img-fluid" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
+                                                </a>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
                                 </td>
                                 <!--Item Details-->
                                 <td colspan="2" class="p-3">
                                     <a href="{% url 'product_detail' item.product.id %}" class="my-0"><strong>{{ item.product.name|title }}</strong></a>
+                                    {% if item.variant %}
+                                    <p class="mb-0">{{ item.variant.name|title }}</p>
+                                    {% endif %}
                                     <p class="small text-muted">SKU: {{ item.product.sku|upper }}</p>
                                     <p><strong>Size: <br class="d-md-none"></strong>{% if item.product.sizes %}{{ item.size|upper }}{% else %}One Size Fits Most{% endif %}</p>
                                     <p class="font-weight-bold mb-2">Quantity</p>
@@ -67,21 +86,24 @@
                                                 <option value="{{ forloop.counter }}" {% if item.quantity == forloop.counter %} selected {% endif %}>{{ forloop.counter }}</option>
                                             {% endfor %}
                                         </select>
-                                        {% if item.product.sizes %}
+                                        {% if item.variant %}
+                                            <input type="hidden" name="product_variant" value="{{ item.variant_id }}">
+                                        {% elif item.product.sizes %}
                                             <input type="hidden" name="product_size" value="{{ item.size }}">
                                         {% endif %}
                                     </form>
+                                    <p>variant === {{ item.variant }}</p>
                                     <div class="row px-0">
                                         <div class="col-6 px-0 mt-3">
                                             <p>£{{ item.product.price }}</p>
                                         </div>
                                         <div class="col-6 px-0 text-right">
-                                            <a class="remove-item text-danger" id="remove_{{ item.product_id }}" data-product_size="{{ item.size }}"><small><i class="fas fa-times"></i> Remove</small></a>
+                                            <a class="remove-item text-danger" id="remove_{{ item.product_id }}" data-product_variant="{{ item.variant_id }}" data-product_size="{{ item.size }}"><small><i class="fas fa-times"></i> Remove</small></a>
                                         </div>
                                     </div> 
                                 </td>
                                 <td class="py-3 text-right align-middle">
-                                    <p>${{ item.product.price | subtotal_price_calc:item.quantity }}</p>
+                                    <p>£{{ item.product.price | subtotal_price_calc:item.quantity }}</p>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -152,9 +174,10 @@
             $('.remove-item').click(function(e) {
                 var csrfToken = "{{ csrf_token }}";
                 var productId = $(this).attr('id').split('remove_')[1];
+                var variant_id = $(this).data('product_variant');
                 var size = $(this).data('product_size');
                 var url = `/bag/remove/${productId}/`;
-                var data = {'csrfmiddlewaretoken': csrfToken, 'product_size': size};
+                var data = {'csrfmiddlewaretoken': csrfToken, 'product_size': size, 'product_variant': variant_id};
 
                 $.post(url, data)
                     .done(function() {

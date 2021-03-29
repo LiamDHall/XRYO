@@ -24,15 +24,29 @@ def bag_contents(request):
 
         else:
             product = get_object_or_404(Product, pk=product_id)
-            for size, quantity in product_data['product_by_size'].items():
-                bag_total += quantity * product.price
-                bag_item_count += quantity
-                bag_content.append({
-                    'product_id': product_id,
-                    'quantity': quantity,
-                    'product': product,
-                    'size': size,
-                })
+            if 'product_by_variant' in product_data:
+                for variant_id, quantity in product_data['product_by_variant'].items():
+                    variant = get_object_or_404(Variant, pk=variant_id)
+                    bag_total += quantity * product.price
+                    bag_item_count += quantity
+                    bag_content.append({
+                        'product_id': product_id,
+                        'variant': variant,
+                        'quantity': quantity,
+                        'product': product,
+                        'variant_id': variant_id,
+                    })
+
+            elif 'product_by_size' in product_data:
+                for size, quantity in product_data['product_by_size'].items():
+                    bag_total += quantity * product.price
+                    bag_item_count += quantity
+                    bag_content.append({
+                        'product_id': product_id,
+                        'quantity': quantity,
+                        'product': product,
+                        'size': size,
+                    })
 
     if bag_total < settings.FREE_DELIVERY_MIN:
         delivery_charge = Decimal(settings.DELIVERY_CHARGE)

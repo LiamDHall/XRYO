@@ -71,8 +71,8 @@
                             <small class="float-right">No Rating</small>
                         {% endif %}
                     </div>
-                    <p class="mt-2 mb-0 clearfix"><strong>{{ product.name }}</strong></p>
-                    <p class="mt-2 mb-0">{{ variant.name }}</p>
+                    <p class="mt-2 mb-0 clearfix"><strong>{{ product.name|title  }}</strong></p>
+                    <p class="mt-2 mb-0">{{ variant.name|title }}</p>
                     <p class="lead mt-3 mb-3 font-weight-bold">
                         {% if product.price %}
                             £{{ product.price }}
@@ -103,13 +103,14 @@
                 {% endif %}
 
                 <!--Add To Bag-->
-                <form class="form" action="#" method="POST">
+                <form class="form" action="{% url 'product_to_bag' product.id %}" method="POST">
                     {% csrf_token %}
                     <div class="form-row">
                         <div class="col-12">
                             <button class="cta cta--prim w-100 mt-3 mb-3"><span class="pr-1"><i class="fas fa-shopping-bag"></i></span> ADD TO BAG</button>
                         </div>
-                        <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                        <input type="hidden" name="product_variant" value="{{ variant.id }}">
+                        <input type="hidden" name="current_page" value="{{ request.path }}">
                     </div>
                 </form>
                 <hr class="m-0">

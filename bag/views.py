@@ -17,12 +17,26 @@ def product_to_bag(request, product_id):
     quantity = 1
     current_page = request.POST.get('current_page')
     size = None
+    variant_id = None
+
+    if 'product_variant' in request.POST:
+        variant_id = request.POST['product_variant']
+
     if 'product_size' in request.POST:
         size = request.POST['product_size']
 
     bag = request.session.get('bag', {})
 
-    if size:
+    if variant_id:
+        if product_id in list(bag.keys()):
+            if variant_id in bag[product_id]['product_by_variant'].keys():
+                bag[product_id]['product_by_variant'][variant_id] += quantity
+            else:
+                bag[product_id]['product_by_variant'][variant_id] = quantity
+        else:
+            bag[product_id] = {'product_by_variant': {variant_id: quantity}}
+
+    elif size:
         if product_id in list(bag.keys()):
             if size in bag[product_id]['product_by_size'].keys():
                 bag[product_id]['product_by_size'][size] += quantity
@@ -45,13 +59,21 @@ def update_bag(request, product_id):
     """
 
     quantity = int(request.POST.get('quantity'))
+    variant_id = None
     size = None
-    if 'product_size' in request.POST:
+
+    if 'product_variant' in request.POST:
+        variant_id = request.POST['product_variant']
+        print(variant_id)
+
+    elif 'product_size' in request.POST:
         size = request.POST['product_size']
 
     bag = request.session.get('bag', {})
 
-    if size:
+    if variant_id:
+        bag[product_id]['product_by_variant'][variant_id] = quantity
+    elif size:
         bag[product_id]['product_by_size'][size] = quantity
     else:
         bag[product_id] = quantity
@@ -65,12 +87,22 @@ def remove_product(request, product_id):
     """
 
     try:
+        variant_id = None
         size = None
-        if 'product_size' in request.POST:
+        if 'product_variant' in request.POST:
+            variant_id = request.POST['product_variant']
+
+        elif 'product_size' in request.POST:
             size = request.POST['product_size']
+
         bag = request.session.get('bag', {})
 
-        if size:
+        if variant_id:
+            del bag[product_id]['product_by_variant'][variant_id]
+            if not bag[product_id]['product_by_variant']:
+                bag.pop(product_id)
+
+        elif size:
             del bag[product_id]['product_by_size'][size]
             if not bag[product_id]['product_by_size']:
                 bag.pop(product_id)
