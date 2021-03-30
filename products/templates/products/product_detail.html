@@ -66,54 +66,34 @@
                     </p>
                 </div>
 
-                <!--Variant Selector-->
-                {% if product.variant_set.all|length > 1 %}
-                    <small class="font-weight-bold">Colour</small>
-                        <ul class="variant-list d-flex list-unstyled list-group-horizontal">
-                            {% for variant in product.variant_set.all %}
-                                <li>
-                                    <a href="{% url 'product_variant' product.id variant.id %}" class="d-inline-block">
-                                        {% if variant.album %}
-                                            {% for image in variant.album.images.all %}                                        
-                                                {% if image.default == True %}
-                                                    <img class="card-img rounded-0 test" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                {% endif %}
-
                 <!--Add To Bag-->
                 <form class="form" action="{% url 'product_to_bag' product.id %}" method="POST">
                     {% csrf_token %}
                     <div class="form-row">
                         {% if product.sizes %}
-                        <div class="size col-12">
-                            <p class="font-weight-bold">Size</p>
-                            <div class="size-btn d-inline-block checked">
-                                <input type="radio" id="s" name="product_size" value="s" checked>
-                                <label class="size__btn" for="s">S</label>
+                            <div class="size col-12">
+                                <p class="font-weight-bold">Size</p>
+                                <div class="size-btn d-inline-block checked">
+                                    <input type="radio" id="s" name="product_size" value="s" checked>
+                                    <label class="size__btn" for="s">S</label>
+                                </div>
+                                <div class="size-btn d-inline-block">
+                                    <input type="radio" id="m" name="product_size" value="m">
+                                    <label for="m">M</label>
+                                </div>
+                                <div class="size-btn d-inline-block">
+                                    <input type="radio" id="l" name="product_size" value="l">
+                                    <label for="l">L</label>
+                                </div>
+                                <div class="size-btn d-inline-block">
+                                    <input type="radio" id="xl" name="product_size" value="xl">
+                                    <label for="xl">XL</label>
+                                </div>    
+                                <div class="size-btn d-inline-block">
+                                    <input type="radio" id="xxl" name="product_size" value="xxl">
+                                    <label for="male">XXL</label>
+                                </div>
                             </div>
-                            <div class="size-btn d-inline-block">
-                                <input type="radio" id="m" name="product_size" value="m">
-                                <label for="m">M</label>
-                            </div>
-                            <div class="size-btn d-inline-block">
-                                <input type="radio" id="l" name="product_size" value="l">
-                                <label for="l">L</label>
-                            </div>
-                            <div class="size-btn d-inline-block">
-                                <input type="radio" id="xl" name="product_size" value="xl">
-                                <label for="xl">XL</label>
-                            </div>    
-                            <div class="size-btn d-inline-block">
-                                <input type="radio" id="xxl" name="product_size" value="xxl">
-                                <label for="male">XXL</label>
-                            </div>
-                        </div>
                         {% endif %}
                         <div class="col-12">
                             <button class="cta cta--prim w-100 mt-3 mb-3"><span class="pr-1"><i class="fas fa-shopping-bag"></i></span> ADD TO BAG</button>
