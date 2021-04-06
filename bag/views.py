@@ -64,7 +64,6 @@ def update_bag(request, product_id):
 
     if 'product_variant' in request.POST:
         variant_id = request.POST['product_variant']
-        print(variant_id)
 
     elif 'product_size' in request.POST:
         size = request.POST['product_size']

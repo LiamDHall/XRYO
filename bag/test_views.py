@@ -1,3 +1,5 @@
+import random
+
 from django.test import TestCase
 from django.shortcuts import reverse
 from products.models import Product, Variant
@@ -58,3 +60,77 @@ class TestBagViews(TestCase):
         self.assertRedirects(response, current_page)
         session = self.client.session
         self.assertEqual(session['bag'], product_bag_dict)
+
+    def test_update_bag_product_quantity(self):
+        """ Test to see if the quantity of an product (without size or
+        vairant) is increase when updated from the bag and redirects
+        back to bag page
+        """
+        product = Product.objects.create(name='Test Product', price='10', rating='0', rating_total='0', no_of_ratings='0')
+
+        # Add product to bag
+        url = reverse('product_to_bag', kwargs={'product_id': product.id})
+        current_page = f'/products/{product.id}'
+        post_data = {'current_page': current_page}
+        self.client.post(url, data=post_data)
+
+        # Test quantity change
+        quantity = random.randint(1, 10)
+        post_data = {'quantity': quantity}
+        url = reverse('update_bag', kwargs={'product_id': product.id})
+        response = self.client.post(url, data=post_data)
+        session = self.client.session
+        self.assertEqual(session['bag'], {f'{product.id}': quantity})
+
+        # Test Redirect
+        self.assertRedirects(response, '/bag/')
+
+    def test_update_bag_product_with_variants_quantity(self):
+        """ Test to see if the quantity of an product with variant
+        (no size) is increase when updated from the bag and redirects
+        back to bag page
+        """
+        product = Product.objects.create(name='Test Product', price='10', rating='0', rating_total='0', no_of_ratings='0')
+        variant = Variant.objects.create(name='Test Variant', product=product)
+
+        # Add product and its variant to bag
+        url = reverse('product_to_bag', kwargs={'product_id': product.id})
+        current_page = f'/products/{product.id}/{variant.id}'
+        post_data = {'current_page': current_page, 'product_variant': variant.id}
+        self.client.post(url, data=post_data)
+
+        # Test quantity change
+        quantity = random.randint(1, 10)
+        post_data = {'quantity': quantity, 'product_variant': variant.id}
+        url = reverse('update_bag', kwargs={'product_id': product.id})
+        response = self.client.post(url, data=post_data)
+        product_bag_dict = {f'{product.id}': {'product_by_variant': {f'{variant.id}': quantity}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+        # Test Redirect
+        self.assertRedirects(response, '/bag/')
+
+    def test_update_bag_product_with_size_quantity(self):
+        """ Test to see if the quantity of an product (without size or
+        vairant) is increase when updated from the bag and redirects
+        back to bag page
+        """
+        product = Product.objects.create(name='Test Product', sizes=True, price='10', rating='0', rating_total='0', no_of_ratings='0')
+        url = reverse('product_to_bag', kwargs={'product_id': product.id})
+        current_page = f'/products/{product.id}'
+        size = 'test_size'
+        post_data = {'current_page': current_page, 'product_size': size}
+        response = self.client.post(url, data=post_data)
+
+        # Test quantity change
+        quantity = random.randint(1, 10)
+        post_data = {'quantity': quantity, 'product_size': size}
+        url = reverse('update_bag', kwargs={'product_id': product.id})
+        response = self.client.post(url, data=post_data)
+        product_bag_dict = {f'{product.id}': {'product_by_size': {f'{size}': quantity}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+        # Test Redirect
+        self.assertRedirects(response, '/bag/')
