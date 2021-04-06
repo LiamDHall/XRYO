@@ -92,7 +92,7 @@ def remove_product(request, product_id):
         if 'product_variant' in request.POST:
             variant_id = request.POST['product_variant']
 
-        elif 'product_size' in request.POST:
+        if 'product_size' in request.POST:
             size = request.POST['product_size']
 
         bag = request.session.get('bag', {})
