@@ -36,6 +36,13 @@ class TestBagViews(TestCase):
         session = self.client.session
         self.assertEqual(session['bag'], {f'{product.id}': 1})
 
+        # Add product again
+        self.client.post(url, data=post_data)
+
+        # Check if 2 of the product are in the bag
+        session = self.client.session
+        self.assertEqual(session['bag'], {f'{product.id}': 2})
+
         # Test Redirect
         self.assertRedirects(response, current_page)
 
@@ -47,16 +54,37 @@ class TestBagViews(TestCase):
 
         # Create Product & Vairant
         product = Product.objects.create(name='Test Product', price='10', rating='0', rating_total='0', no_of_ratings='0')
-        variant = Variant.objects.create(name='Test Variant', product=product)
+        variant_one = Variant.objects.create(name='Test Variant One', product=product)
+        variant_two = Variant.objects.create(name='Test Variant Two', product=product)
 
-        # Add them to bag
+        # Add variant_one to bag
         url = reverse('product_to_bag', kwargs={'product_id': product.id})
-        current_page = f'/products/{product.id}/{variant.id}'
-        post_data = {'current_page': current_page, 'product_variant': variant.id}
+        current_page = f'/products/{product.id}/{variant_one.id}'
+        post_data = {'current_page': current_page, 'product_variant': variant_one.id}
+        self.client.post(url, data=post_data)
+
+        # Check if variant_one they are in the bag and correctly formated
+        product_bag_dict = {f'{product.id}': {'product_by_variant': {f'{variant_one.id}': 1}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+        # Add another variant_one so there should be 2
+        self.client.post(url, data=post_data)
+
+        # Check if there is 2 variant_one in bag
+        product_bag_dict = {f'{product.id}': {'product_by_variant': {f'{variant_one.id}': 2}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+
+        # Add variant_two to bag
+        url = reverse('product_to_bag', kwargs={'product_id': product.id})
+        current_page = f'/products/{product.id}/{variant_two.id}'
+        post_data = {'current_page': current_page, 'product_variant': variant_two.id}
         response = self.client.post(url, data=post_data)
 
-        # Check if they are in the bag and correctly formated
-        product_bag_dict = {f'{product.id}': {'product_by_variant': {f'{variant.id}': 1}}}
+        # Check if variant_two is add correctly to the same product
+        product_bag_dict = {f'{product.id}': {'product_by_variant': {f'{variant_one.id}': 2, f'{variant_two.id}': 1}}}
         session = self.client.session
         self.assertEqual(session['bag'], product_bag_dict)
 
@@ -75,12 +103,32 @@ class TestBagViews(TestCase):
         # Add product to bag
         url = reverse('product_to_bag', kwargs={'product_id': product.id})
         current_page = f'/products/{product.id}'
-        size = 'test_size'
-        post_data = {'current_page': current_page, 'product_size': size}
+        size_one = 'test_size_1'
+        size_two = 'test_size_2'
+        post_data = {'current_page': current_page, 'product_size': size_one}
         response = self.client.post(url, data=post_data)
 
         # Check if product with size in the bag and correctly formated
-        product_bag_dict = {f'{product.id}': {'product_by_size': {f'{size}': 1}}}
+        product_bag_dict = {f'{product.id}': {'product_by_size': {f'{size_one}': 1}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+        # Add product with size_one again
+        self.client.post(url, data=post_data)
+
+        # Check if product with size_one quantity is 2
+        product_bag_dict = {f'{product.id}': {'product_by_size': {f'{size_one}': 2}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+        # Add product with size_two
+        url = reverse('product_to_bag', kwargs={'product_id': product.id})
+        current_page = f'/products/{product.id}' 
+        post_data = {'current_page': current_page, 'product_size': size_two}
+        self.client.post(url, data=post_data)
+
+        # Check if product with size_one quantity is 2
+        product_bag_dict = {f'{product.id}': {'product_by_size': {f'{size_one}': 2, f'{size_two}': 1}}}
         session = self.client.session
         self.assertEqual(session['bag'], product_bag_dict)
 
