@@ -1,4 +1,7 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse
+from django.shortcuts import render, redirect, reverse, HttpResponse, get_object_or_404
+from django.contrib import messages
+
+from products.models import Product, Variant
 
 # Create your views here.
 
@@ -18,6 +21,8 @@ def product_to_bag(request, product_id):
     current_page = request.POST.get('current_page')
     size = None
     variant_id = None
+
+    product = get_object_or_404(Product, pk=product_id)
 
     if 'product_variant' in request.POST:
         variant_id = request.POST['product_variant']
@@ -49,6 +54,7 @@ def product_to_bag(request, product_id):
             bag[product_id] += quantity
         else:
             bag[product_id] = quantity
+            messages.success(request, f'Added {product.name} to your bag')
 
     request.session['bag'] = bag
     return redirect(current_page)

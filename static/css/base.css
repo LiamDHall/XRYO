@@ -157,6 +157,11 @@ button:focus {
     margin-top: 10px;
 }
 
+.cta--icon {
+    padding: 0;
+    background: none;
+}
+
 /*---Colour Varibales--*/
 :root {
     --primary-cta: rgb(0, 140, 255);
@@ -266,6 +271,18 @@ button:focus {
     left: 50%;
     font-size: 0.75rem;
     transform: translateX(-50%);
+}
+
+/*--Messages--*/
+.message-container {
+    position: fixed;
+    top: 100px;
+    right: 30px;
+    z-index: 99999;
+}
+
+.toast--bag {
+    overflow: visible;
 }
 
 /*------------------------------------------------------Site Header Mobile & Responsive--*/

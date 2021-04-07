@@ -132,8 +132,21 @@
     </header>
 
     {% if messages %}
-        <!--Site Message-->
-        <div class="message-container"></div>
+        <div class="message-container">
+            {% for message in messages %}
+                {% with message.level as level %}
+                    {% if level == 40 %}
+                        {% include 'includes/messages/error_message.html' %}
+                    {% elif level == 30 %}
+                        {% include 'includes/messages/warning_message.html' %}
+                    {% elif level == 25 %}
+                        {% include 'includes/messages/success_message.html' %}
+                    {% else %}
+                        {% include 'includes/messages/info_message.html' %}
+                    {% endif %}
+                {% endwith %}
+            {% endfor %}
+        </div>
     {% endif %}
 
     <!--Main Page Content-->
@@ -208,28 +221,32 @@
         </div>
     </footer>
 
-    {% block add_postload_js %}
-        <!--Post Load JS-->
-        <script>
-            // Toggle between desktop and mobile logo
-            $(window).resize(function() {
-                toggleLogo()
-            });
+    <!--Post Load JS-->
+    <script>
+        // Toggle between desktop and mobile logo
+        $(window).resize(function() {
+            toggleLogo()
+        });
 
-            function toggleLogo() {
-                var windowWidth = window.innerWidth;
-                
-                if(window.innerWidth < 475) {
-                    var mediaPath = '{{ MEDIA_URL }}logos/logo_small.png'
-                }
-
-                else {
-                    var mediaPath = '{{ MEDIA_URL }}logos/logo_full.png'
-                }
-
-                $('#logo-img').prop('src', mediaPath)
+        function toggleLogo() {
+            var windowWidth = window.innerWidth;
+            
+            if(window.innerWidth < 475) {
+                var mediaPath = '{{ MEDIA_URL }}logos/logo_small.png'
             }
-        </script>
+
+            else {
+                var mediaPath = '{{ MEDIA_URL }}logos/logo_full.png'
+            }
+
+            $('#logo-img').prop('src', mediaPath)
+        }
+
+        // Show Toast Messages
+        $('.toast').toast('show');
+    </script>
+
+    {% block add_postload_js %}
     {% endblock %}
   </body>
 </html>
