@@ -95,7 +95,6 @@ def remove_product(request, product_id):
             size = request.POST['product_size']
 
         bag = request.session.get('bag', {})
-
         if variant_id:
             del bag[product_id]['product_by_variant'][variant_id]
             if not bag[product_id]['product_by_variant']:

@@ -146,6 +146,8 @@ class TestBagViews(TestCase):
         back to bag page
         """
         product = Product.objects.create(name='Test Product', sizes=True, price='10', rating='0', rating_total='0', no_of_ratings='0')
+
+        # Add product with size to bag
         url = reverse('product_to_bag', kwargs={'product_id': product.id})
         current_page = f'/products/{product.id}'
         size = 'test_size'
@@ -163,3 +165,101 @@ class TestBagViews(TestCase):
 
         # Test Redirect
         self.assertRedirects(response, '/bag/')
+
+    # Remove Product Only from Bag
+    def test_remove_product_from_bag(self):
+        """ Test the removal of a product from bag
+        """
+
+        # Create Product
+        product = Product.objects.create(name='Test Product', price='10', rating='0', rating_total='0', no_of_ratings='0')
+
+        # Add product to bag
+        url = reverse('product_to_bag', kwargs={'product_id': product.id})
+        current_page = f'/products/{product.id}'
+        post_data = {'current_page': current_page}
+        self.client.post(url, data=post_data)
+
+        # Check if product in the bag to be removed
+        session = self.client.session
+        self.assertEqual(session['bag'], {f'{product.id}': 1})
+
+        # Remove Product
+        url = reverse('remove_product', kwargs={'product_id': product.id})
+        response = self.client.post(url)
+
+        # Test product is removed
+        session = self.client.session
+        self.assertEqual(session['bag'], {})
+
+        # Test Response of Removal
+        self.assertEqual(response.status_code, 200)
+
+    # Remove Product Variant from Bag
+    def test_remove_product_with_variant_from_bag(self):
+        """ Test the removal of a product with variant from bag
+        """
+
+        # Create Product & Vairant
+        product = Product.objects.create(name='Test Product', price='10', rating='0', rating_total='0', no_of_ratings='0')
+        variant = Variant.objects.create(name='Test Variant', product=product)
+
+        # Add them to bag
+        url = reverse('product_to_bag', kwargs={'product_id': product.id})
+        current_page = f'/products/{product.id}/{variant.id}'
+        post_data = {'current_page': current_page, 'product_variant': variant.id}
+        self.client.post(url, data=post_data)
+
+        # Check if they are in the bag to be removed
+        product_bag_dict = {f'{product.id}': {'product_by_variant': {f'{variant.id}': 1}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+        # Check if product and variant in the bag to be removed
+        product_bag_dict = {f'{product.id}': {'product_by_variant': {f'{variant.id}': 1}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+        # Remove Product
+        post_data = {'product_variant': variant.id}
+        url = reverse('remove_product', kwargs={'product_id': product.id})
+        response = self.client.post(url, data=post_data)
+
+        # Test product is removed
+        session = self.client.session
+        self.assertEqual(session['bag'], {})
+
+        # Test Response of Removal
+        self.assertEqual(response.status_code, 200)
+
+    # Remove Product with Size from Bag
+    def test_remove_product_with_size_from_bag(self):
+        """ Test the removal of a product with size from bag
+        """
+
+        # Create Product with Size
+        product = Product.objects.create(name='Test Product', sizes=True, price='10', rating='0', rating_total='0', no_of_ratings='0')
+
+        # Add product to bag
+        url = reverse('product_to_bag', kwargs={'product_id': product.id})
+        current_page = f'/products/{product.id}'
+        size = 'test_size'
+        post_data = {'current_page': current_page, 'product_size': size}
+        response = self.client.post(url, data=post_data)
+
+        # Check if product with size in the bag to be removed
+        product_bag_dict = {f'{product.id}': {'product_by_size': {f'{size}': 1}}}
+        session = self.client.session
+        self.assertEqual(session['bag'], product_bag_dict)
+
+        # Remove Product
+        post_data = {'product_size': size}
+        url = reverse('remove_product', kwargs={'product_id': product.id})
+        response = self.client.post(url, data=post_data)
+
+        # Test product is removed
+        session = self.client.session
+        self.assertEqual(session['bag'], {})
+
+        # Test Response of Removal
+        self.assertEqual(response.status_code, 200)
