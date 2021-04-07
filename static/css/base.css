@@ -71,6 +71,10 @@ small {
     font-size: 0.875rem;
 }
 
+.text-black {
+    color: black;
+}
+
 /*--Flex Box--*/
 .flex-container {
     display: flex;
@@ -160,6 +164,11 @@ button:focus {
 .cta--icon {
     padding: 0;
     background: none;
+}
+
+.cta--icon:hover,
+.cta--icon:focus  {
+    background-color: none;
 }
 
 /*---Colour Varibales--*/
@@ -274,11 +283,23 @@ button:focus {
 }
 
 /*--Messages--*/
-.message-container {
+.toast--bag {
+    max-width: 400px;
     position: fixed;
-    top: 100px;
+    top: 97px;
     right: 30px;
     z-index: 99999;
+    border: none;
+}
+
+.site-message {
+    position: fixed;
+    top: 97px;
+    left: 0;
+    right: 0;
+    z-index: 99998;
+    max-width: none;
+    border: none;
 }
 
 .toast--bag {

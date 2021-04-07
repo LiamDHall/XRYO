@@ -129,9 +129,9 @@
                 <button class="search-btn" type="button" data-toggle="collapse" data-target="#mobile-search-container" aria-expanded="true" aria-label="close search"><i class="fas fa-times"></i></button>
             </form>
         </div>
-    </header>
-
-    {% if messages %}
+        
+        {% if messages %}
+        <!--Messages-->
         <div class="message-container">
             {% for message in messages %}
                 {% with message.level as level %}
@@ -148,6 +148,7 @@
             {% endfor %}
         </div>
     {% endif %}
+    </header>
 
     <!--Main Page Content-->
     <main>
