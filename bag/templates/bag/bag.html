@@ -47,13 +47,17 @@
                                         {% if item.variant.album %}
                                             {% for image in item.variant.album.images.all %}
                                                 {% if image.default == True %}
+                                                <a href="{% url 'product_variant' item.product.id item.variant.id %}">
                                                     <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
+                                                </a>
                                                 {% endif %}
                                             {% endfor %}
                                         {% elif product.album %}
                                             {% for image in product.album.images.all %}
                                                 {% if image.default == True %}
+                                                <a href="{% url 'product_variant' item.product.id item.variant.id %}">
                                                     <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
+                                                </a>
                                                 {% endif %}
                                             {% endfor %}
                                         {% endif %}
@@ -71,7 +75,9 @@
                                 </td>
                                 <!--Item Details-->
                                 <td colspan="2" class="p-3">
-                                    <a href="{% url 'product_detail' item.product.id %}" class="my-0"><strong>{{ item.product.name|title }}</strong></a>
+                                    <a href="{% if item.variant %} {% url 'product_variant' item.product.id item.variant.id %} {% else %} {% url 'product_detail' item.product.id %} {% endif %}" class="my-0">
+                                        <strong>{{ item.product.name|title }}</strong>
+                                    </a>
                                     {% if item.variant %}
                                     <p class="mb-0">{{ item.variant.name|title }}</p>
                                     {% endif %}
