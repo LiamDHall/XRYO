@@ -6,7 +6,8 @@ from PIL import Image
 
 ImageTool = Image
 media_url = settings.MEDIA_URL.lstrip("/")
- 
+
+
 def get_upload_path(instance, filename):
     """Creates the upload path for the image,
     with Pillow installed the file directory will be created
@@ -16,17 +17,26 @@ def get_upload_path(instance, filename):
     return f'product_images/{ablum_name}/{filename}'
 
 
-def create_image_album(sender, instance, created, **kwargs):
-    """Create ImageAlbum for every new Product or Variant
-        Joining Table
+def create_or_upadate_image_album(sender, instance, created, **kwargs):
+    """Create ImageAlbum for every new Product or Variant.
+    ImageAlbum is a Joining Table. If the name of the Product or
+    Variant change this function will update the album name to match
+    it.
     """
 
     name = instance.name
     if created:
-        ImageAlbum.objects.create(name=name)
+        if not ImageAlbum.objects.filter(name=name).exists():
+            ImageAlbum.objects.create(name=name)
         album = ImageAlbum.objects.get(name=name)
         instance.album = album
         instance.save()
+
+    elif instance.album and instance.name != instance.album.name:
+        album_id = instance.album.id
+        album = ImageAlbum.objects.get(pk=album_id)
+        album.name = name
+        album.save()
 
 
 class ImageAlbum(models.Model):
@@ -66,8 +76,17 @@ class Image(models.Model):
         return self.name
 
 
-signals.post_save.connect(resize_image, sender=Image, weak=False,
-                          dispatch_uid='models.create_image')
+""" Signal to trigger the resizing of Images.
+
+MUST BE BELOW IMAGE CLASS AND FUNCTION IT CALLS
+"""
+
+signals.post_save.connect(
+    resize_image,
+    sender=Image,
+    weak=False,
+    dispatch_uid='models.create_image'
+)
 
 
 class Category(models.Model):
@@ -111,12 +130,18 @@ class Product(models.Model):
         return self.name
 
 
-""" Signal to trigger the auto creation of the ImageAlbum,
-must be below Product class
+""" Signal to trigger the auto creation of the ImageAlbum, or update
+name of album to match product name.
+
+MUST BE BELOW PRODUCT CLASS AND FUNCTION IT CALLS
 """
 
-signals.post_save.connect(create_image_album, sender=Product, weak=False,
-                          dispatch_uid='models.create_image_album')
+signals.post_save.connect(
+    create_or_upadate_image_album,
+    sender=Product,
+    weak=False,
+    dispatch_uid='models.create_image_album'
+)
 
 
 class Variant(models.Model):
@@ -137,9 +162,15 @@ class Variant(models.Model):
         return self.name
 
 
-""" Signal to trigger the auto creation of the ImageAlbum,
-must be below Variant class
+""" Signal to trigger the auto creation of the ImageAlbum, or update
+name of album to match product name.
+
+MUST BE BELOW VARIANT CLASS AND FUNCTION IT CALLS
 """
 
-signals.post_save.connect(create_image_album, sender=Variant, weak=False,
-                          dispatch_uid='models.create_image_album')
+signals.post_save.connect(
+    create_or_upadate_image_album,
+    sender=Variant,
+    weak=False,
+    dispatch_uid='models.create_image_album'
+)
