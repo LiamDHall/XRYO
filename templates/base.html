@@ -224,10 +224,15 @@
 
     <!--Post Load JS-->
     <script>
+        // Toggle initial logo
+        $(document).ready(function() {
+            toggleLogo()
+        })
+
         // Toggle between desktop and mobile logo
         $(window).resize(function() {
             toggleLogo()
-        });
+        })
 
         function toggleLogo() {
             var windowWidth = window.innerWidth;
