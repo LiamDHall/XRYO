@@ -6,6 +6,88 @@
         </button>
     </div>
     <div class="toast-body bg-white text-black">
-        {{ message }}        
+        {{ message }}    
     </div>
+    {% if product and variant %}
+        {% for item in bag_content %}
+            {% if item.product == product and item.variant == variant %}
+                <div class="row bg-white text-black">
+                    <div class="col-3 my-1">
+                        {% if variant and item.variant == variant %}
+                            {% if item.variant.album %}
+                                {% for image in item.variant.album.images.all %}                                        
+                                    {% if image.default == True %}
+                                        <img class="w-100" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% elif product.album %}
+                            {% for image in item.product.album.images.all %}
+                                {% if image.default == True %}
+                                    <img class="w-100" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}    
+                    </div>
+                    <div class="col-9">
+                        <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                        <p class="my-1">{{ item.variant.name }}</p>
+                        <p class="my-2">{% if product.has_sizes %}{{ item.size|upper }}{% else %}One Size{% endif %}</p>
+                        <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% elif product.sizes == True %}
+        {% for item in bag_content %}
+            {% if item.product == product and item.size == request.session.lastSize %}
+                <div class="row bg-white text-black">
+                    <div class="col-3 my-1">
+                        {% if product.album %}
+                            {% for image in item.product.album.images.all %}
+                                {% if image.default == True %}
+                                    <img class="w-100" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}    
+                    </div>
+                    <div class="col-9">
+                        <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                        <p class="my-2">{{ request.session.lastSize|upper }}</p>
+                        <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% elif product and variant %}
+        {% for item in bag_content %}
+            {% if item.product == product and item.variant == variant %}
+                <div class="row bg-white text-black">
+                    <div class="col-3 my-1">
+                        {% if variant and item.variant == variant %}
+                            {% if item.variant.album %}
+                                {% for image in item.variant.album.images.all %}                                        
+                                    {% if image.default == True %}
+                                        <img class="w-100" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% elif product.album %}
+                            {% for image in item.product.album.images.all %}
+                                {% if image.default == True %}
+                                    <img class="w-100" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}    
+                    </div>
+                    <div class="col-9">
+                        <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                        <p class="my-1">{{ item.variant.name }}</p>
+                        <p class="my-2">{% if product.has_sizes %}{{ item.size|upper }}{% else %}One Size{% endif %}</p>
+                        <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 </div>

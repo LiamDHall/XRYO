@@ -49,6 +49,7 @@ def product_to_bag(request, product_id):
             messages.success(request, f'Added: {product_name} - {variant_name} to your bag')
 
     elif size:
+        request.session['lastSize'] = size
         if product_id in list(bag.keys()):
             if size in bag[product_id]['product_by_size'].keys():
                 bag[product_id]['product_by_size'][size] += quantity
