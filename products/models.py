@@ -1,14 +1,19 @@
 from django.db import models
 from django.db.models import signals
+from django.conf import settings
 
+from PIL import Image
 
+ImageTool = Image
+media_url = settings.MEDIA_URL.lstrip("/")
+ 
 def get_upload_path(instance, filename):
     """Creates the upload path for the image,
     with Pillow installed the file directory will be created
     (if not already) in the media folder and the file will be uploaded.
     """
-
-    return f'product_images/{filename}'
+    ablum_name = instance.album.name.lower()
+    return f'product_images/{ablum_name}/{filename}'
 
 
 def create_image_album(sender, instance, created, **kwargs):
@@ -34,6 +39,17 @@ class ImageAlbum(models.Model):
         return self.images.filter(default=True).first()
 
 
+def resize_image(sender, instance, created, **kwargs):
+    """Resize images so if sligtly different they will
+    all be uniform
+    """
+
+    if created:
+        image = ImageTool.open(f'{media_url}{instance.image}')
+        image = image.resize((1600, 2000))
+        image.save(f'{media_url}{instance.image}')
+
+
 class Image(models.Model):
     name = models.CharField(max_length=255)
     default = models.BooleanField(default=False)
@@ -48,6 +64,10 @@ class Image(models.Model):
 
     def __str__(self):
         return self.name
+
+
+signals.post_save.connect(resize_image, sender=Image, weak=False,
+                          dispatch_uid='models.create_image')
 
 
 class Category(models.Model):
