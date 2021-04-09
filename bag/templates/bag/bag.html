@@ -44,34 +44,14 @@
                             <tr class="border-bottom">
                                 <td class="bag-img py-3">
                                     {% if item.variant %}
-                                        {% if item.variant.album %}
-                                            {% for image in item.variant.album.images.all %}
-                                                {% if image.default == True %}
-                                                <a href="{% url 'product_variant' item.product.id item.variant.id %}">
-                                                    <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
-                                                </a>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% elif product.album %}
-                                            {% for image in product.album.images.all %}
-                                                {% if image.default == True %}
-                                                <a href="{% url 'product_variant' item.product.id item.variant.id %}">
-                                                    <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
-                                                </a>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
+                                        <a href="{% url 'product_variant' item.product.id item.variant.id %}">
                                     {% else %}
-                                        {% if item.product.album %}
-                                            {% for image in item.product.album.images.all %}
-                                                {% if image.default == True %}
-                                                <a href="{% url 'product_detail' item.product.id %}">
-                                                    <img class="img-fluid" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
-                                                </a>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
+                                        <a href="{% url 'product_detail' item.product.id %}">
                                     {% endif %}
+                                        {% with variant=item.variant product=item.product %}
+                                            <img class="display-image card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
+                                        {% endwith %}
+                                        </a>
                                 </td>
                                 <!--Item Details-->
                                 <td colspan="2" class="p-3">

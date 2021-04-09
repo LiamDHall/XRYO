@@ -1,0 +1,9 @@
+{% load product_image_tools %}
+
+{% if variant.album and variant.album.images.all|length > 0 %}                                        
+    src="{{ MEDIA_URL }}{{ variant.album.id | get_thumbnail }}" alt="{{ product.name }} - {{ variant.name }}"
+{% elif product.album and product.album.images.all|length > 0 %}
+    src="{{ MEDIA_URL }}{{ product.album.id | get_thumbnail }}" alt="{{ product.name }}"
+{% else %}
+    src="{{ MEDIA_URL }}/product_images/no_image.png" alt="{{ product.name }}"
+{% endif %}

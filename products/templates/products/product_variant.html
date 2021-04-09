@@ -10,23 +10,9 @@
 {% block content %}
     <div class="container-fuild">
         <div class="row">
-            
             <!--Product Image-->
             <div class="col-12 col-md-7 col-lg-4 offset-lg-2 pl-md-4 pr-md-4">
-                {% if variant.album %}
-                    {% for image in variant.album.images.all %}
-                        {% if image.default == True %}
-                            <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
-                        {% endif %}
-                    {% endfor %}
-                {% elif product.album %}
-                    {% for image in product.album.images.all %}
-                        {% if image.default == True %}
-                            <img class="display-image card-img rounded-0" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ variant }} {{ product }}">
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-
+                <img class="display-image card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
                 <!--Image Carousel-->
                 {% if variant.album or product.album %}
                     <div class="swiper-outer">
@@ -89,13 +75,7 @@
                             {% for variant in product.variant_set.all %}
                                 <li>
                                     <a href="{% url 'product_variant' product.id variant.id %}" class="d-inline-block">
-                                        {% if variant.album %}
-                                            {% for image in variant.album.images.all %}                                        
-                                                {% if image.default == True %}
-                                                    <img class="card-img rounded-0 test" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
+                                        <img class="card-img rounded-0 test" {% include 'includes/products_images/thumbnail_selector.html' %}>
                                     </a>
                                 </li>
                             {% endfor %}

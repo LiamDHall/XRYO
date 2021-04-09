@@ -54,13 +54,7 @@
                                 Product == {{ product.id }}
                                 Variant == {{ variant.id }}
                                 <a href="{% url 'product_variant' product.id variant.id %}">
-                                    {% if variant.album %}
-                                        {% for image in variant.album.images.all %}                                        
-                                            {% if image.default == True %}
-                                                <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endif %}
+                                    <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
                                 </a>
                                 <a href="{% url 'product_variant' product.id variant.id %}">
                                     <div class="card-body p-1">
