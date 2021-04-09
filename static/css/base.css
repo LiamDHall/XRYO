@@ -71,10 +71,6 @@ small {
     font-size: 0.875rem;
 }
 
-.text-black {
-    color: black;
-}
-
 /*--Flex Box--*/
 .flex-container {
     display: flex;
@@ -283,10 +279,6 @@ button:focus {
 }
 
 /*--Messages--*/
-.toast {
-    background-color: white;
-}
-
 .toast--bag {
     max-width: 400px;
     position: fixed;
@@ -295,6 +287,8 @@ button:focus {
     z-index: 99999;
     border: none;
     overflow: visible;
+    background-color: white;
+    color: black;
 }
 
 /*--Messages Mobile & Responsive--*/
