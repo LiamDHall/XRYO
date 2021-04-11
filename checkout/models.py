@@ -34,8 +34,8 @@ class Order(models.Model):
         """
 
         self.order_total = self.items.aggregate(Sum('item_total'))['item_total__sum']
-        if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
-            self.delivery_charge = self.order_total * settings.STANDARD_DELIVERY_PERCENTAGE / 100
+        if self.order_total < settings.FREE_DELIVERY_MIN:
+            self.delivery_charge = settings.DELIVERY_CHARGE
         else:
             self.delivery_charge = 0
         self.grand_total = self.order_total + self.delivery_charge
