@@ -8,7 +8,7 @@
 
 {% block page_header %}
     <!--Page Header-->
-    <div class="page-header bag-container mb-3">
+    <div class="page-header container mb-3">
         <h1>
             Your Bag {% if not bag_content %}Is Empty{% endif %}
         </h1>
@@ -29,7 +29,7 @@
     <p>{{ bag_content }}</p>
     <p>{{ request.session.bag }}</p>
         <!--Bag-->
-        <div class="bag-container row">
+        <div class="container row">
             <!--Bag Items-->
             <div class="col-12 col-md-7">
                 <div class="table-responsive rounded">

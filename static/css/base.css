@@ -71,6 +71,16 @@ small {
     font-size: 0.875rem;
 }
 
+.container {
+    max-width: 1100px;
+}
+
+@media screen and (max-width: 1025px) {
+    .container {
+        max-width: none;
+    }
+}
+
 /*--Flex Box--*/
 .flex-container {
     display: flex;
