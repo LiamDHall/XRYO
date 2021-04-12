@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load bag_tools %}
 
 {% block add_css %}
     <link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
@@ -17,56 +18,147 @@
 {% endblock %}
 
 {% block content %}
-        <!--Bag-->
-        <div class="container row">
-            <!--Bag Items-->
+    <!--Bag-->
+    <form action="{% url 'checkout' %}" method="POST" id="checkout-form" class="container">
+        {% csrf_token %}
+        <div class="row mb-4">
+            <!--User Details and Delivery-->
             <div class="col-12 col-md-7">
-                <div class="table-responsive rounded">
-                    <p><strong>Please fill out your details below.</strong></p>
+                <!--Form Heading-->
+                <p class="mb-0"><strong>Please fill the details below.</strong></p>
+                <small class="text-danger">All feilds with a * are required</small>
+                <div id="delivery" class="my-4">
+                    <!--Contact Details-->
+                    <fieldset class="rounded mb-4">
+                        <legend class="fieldset-label font-size-1 font-weight-bold px-2 w-auto">Your Details</legend>
+                        {{ order_form.full_name | as_crispy_field }}
+                        {{ order_form.email | as_crispy_field }}
+                        {{ order_form.phone_number | as_crispy_field }}
+                    </fieldset>
+
+                    <!--Delivery Address-->
+                    <fieldset class="rounded">
+                        <legend class="fieldset-label font-size-1 font-weight-bold p-2 w-auto">Delivery Address</legend>
+                        {{ order_form.street_address1 | as_crispy_field }}
+                        {{ order_form.street_address2 | as_crispy_field }}
+                        {{ order_form.town_or_city | as_crispy_field }}
+                        {{ order_form.county | as_crispy_field }}
+                        {{ order_form.country | as_crispy_field }}
+                        {{ order_form.postcode | as_crispy_field }}
+
+                        <!--Save Address-->
+                        <div class="form-check form-check-inline float-right mr-0">
+                            {% if user.is_authenticated %}
+                                <label class="form-check-label" for="save-info">Save this delivery information to my profile</label>
+                                <input class="form-check-input ml-2 mr-0" type="checkbox" id="save-info" name="save-info" checked>
+                            {% else %}
+                                <label class="form-check-label" for="id-save-info">
+                                    <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
+                                    <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
+                                </label>
+                            {% endif %}
+                        </div>
+                    </fieldset>
                 </div>
+
+                <!--Payment Details-->
+                <div id="payment">
+                    <fieldset class="px-2">
+                        <legend class="fieldset-label font-size-1 font-weight-bold w-auto">Card Payment Details</legend>
+                        <!-- Stripe Card Element -->
+                        <div class="mb-3" id="card-element"></div>
+
+                        <!-- Form Errors (if any) -->
+                        <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                    </fieldset>
+                </div>  
             </div>
 
             <!--Order Summary-->
-            <div id="order-summary" class="col-12 col-md-5">
+            <div id="order-summary" class="col-12 col-md-5 px-0">
                 <div class="row">
-                <div class="col-12">
-                    <h3 class="mb-3">Summary</h3>
-                </div>
-                <div class="col-8">
-                    <p>Bag Total:</p>
-                </div>
-                <div class="col-4 text-right">
-                    <p>£{{ bag_total|floatformat:2 }}</p>
-                </div>
-                <div class="col-8">
-                    <p>Delivery:</p>
-                </div>
-                <div class="col-4 text-right">
-                    <p>
-                        {% if free_delivery_delta > 0 %}
-                            £{{ delivery_charge|floatformat:2 }}
-                        {% else %}
-                            FREE
-                        {% endif %}
-                    </p>
-                </div>
-                <div class="col-6">
-                    <h4>Total:</h4>
-                </div>
-                <div class="col-6 text-right">
-                    <h4>£{{ bag_grand_total|floatformat:2 }}</h4>
-                </div>
-                {% if free_delivery_delta > 0 %}
-                    <div class="col-12 text-right">
-                        <p class="mb-1">
-                        Free delivery if you spend <strong>£{{ free_delivery_delta }}</strong> more!
-                    </p>
+                    <!--Order Price Summary-->
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 px-0">
+                                <h3 class="mb-3 d-none d-md-block">Summary</h3>
+                            </div>
+                            <div class="col-8 pl-0">
+                                <p>Bag Total:</p>
+                            </div>
+                            <div class="col-4 text-right px-0">
+                                <p>£{{ bag_total|floatformat:2 }}</p>
+                            </div>
+                            <div class="col-5 col-md-8 pl-0">
+                                <p>Delivery:</p>
+                            </div>
+                            <div class="col-7 col-md-4 text-right px-0">
+                                <p>
+                                    {% if free_delivery_delta > 0 %}
+                                        £{{ delivery_charge|floatformat:2 }}
+                                    {% else %}
+                                        FREE
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-4 col-md-6 px-0">
+                                <h4 class="my-0">Total:</h4>
+                            </div>
+                            <div class="col-8 col-md-6 text-right px-0">
+                                <h4 class="my-0">£{{ bag_grand_total|floatformat:2 }}</h4>
+                            </div>
+                            {% if free_delivery_delta > 0 %}
+                                <div class="col-12 text-right px-0">
+                                    <p class="mb-1">
+                                        Free delivery if you spend <strong>£{{ free_delivery_delta }}</strong> more!
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!--Order Call To Actions-->
+                        <div class="text-center">
+                            <p class="my-3">Need to adjust something?</p>
+                            <a href="{% url 'view_bag' %}" class="cta cta--third w-100">
+                                <span class="text-uppercase">Back To Bag</span>
+                            </a>
+                            <button class="cta cta--prim text-uppercase w-100 my-3" value="payment">Place Order</button>
+                            <p class="submit-warning small text-danger clear-both p-2">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Your card will be charged <strong>£{{ bag_grand_total|floatformat:2 }}</strong></span>
+                            </p>
+                        </div>
+                        <hr class="w-100 d-none d-md-block">
                     </div>
-                {% endif %}
-                </div>
-                <div class="text-center">
-                    <a href="" class="cta cta--prim mt-3 w-100">Continue<span class="pl-2"><i class="fas fa-credit-card"></i></span></a>
+
+                    <!--Order Item Summary-->
+                    <div class="col-12 checkout-summary">
+                        <h3 class="mb-3 d-block d-md-none">Oder Summary</h3>
+                        <hr class="w-100 d-block d-md-none">
+                        {% for item in bag_content %}
+                            <div class="row mb-3">
+                                <div class="col-4 pl-0 mb-1">
+                                    <a href="{% url 'product_detail' item.product.id %}">
+                                        {% with variant=item.variant product=item.product %}
+                                            <img class="display-image card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
+                                        {% endwith %}
+                                    </a>
+                                </div>
+                                <div class="col-8 px-0 d-flex flex-column justify-content-between">
+                                    <p class="my-0"><strong>{{ item.product.name|title}}</strong></p>
+                                    {% if item.variant %}
+                                        <p class="small my-0"> {{ item.variant.name|title }}</p>
+                                    {% endif %}
+                                    <p class="small my-0">Size: {% if item.product.sizes %}{{ item.size|upper }}{% else %}One Size{% endif %}</p>
+                                    <p class="small my-0">Qty: {{ item.quantity }}</p>
+                                    <p class="small my-0">£{{ item.product.price | subtotal_price_calc:item.quantity }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <hr class="w-100 d-block d-md-none">
+                    </div>
                 </div>
             </div>
         </div>
+    </form>
 {% endblock %}

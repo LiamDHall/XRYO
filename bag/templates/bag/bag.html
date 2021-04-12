@@ -136,11 +136,10 @@
                 {% endif %}
                 </div>
                 <div class="text-center">
-                    <a href="" class="cta cta--prim mt-3 w-100">CHECKOUT <span class="pl-2"><i class="fas fa-credit-card"></i></span></a>
-                    <p class="my-3">Not Finished Shopping?</p>
-                    <a href="{% url 'products' %}" class="cta cta--third w-100">
+                    <a href="{% url 'products' %}" class="cta cta--third w-100 mt-3">
                         <span class="text-uppercase">Keep Shopping</span>
                     </a>
+                    <a href="{% url 'checkout' %}" class="cta cta--prim mt-3 w-100">CHECKOUT <span class="pl-2"><i class="fas fa-credit-card"></i></span></a>
                 </div>
             </div>
         </div>
