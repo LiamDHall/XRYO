@@ -30,7 +30,7 @@
                 <div id="delivery" class="my-4">
                     <!--Contact Details-->
                     <fieldset class="rounded mb-4">
-                        <legend class="fieldset-label font-size-1 font-weight-bold px-2 w-auto">Your Details</legend>
+                        <legend class="fieldset-label font-size-1 font-weight-bold p-2 w-auto">Your Details</legend>
                         {{ order_form.full_name | as_crispy_field }}
                         {{ order_form.email | as_crispy_field }}
                         {{ order_form.phone_number | as_crispy_field }}
@@ -63,10 +63,10 @@
 
                 <!--Payment Details-->
                 <div id="payment">
-                    <fieldset class="px-2">
-                        <legend class="fieldset-label font-size-1 font-weight-bold w-auto">Card Payment Details</legend>
+                    <fieldset>
+                        <legend class="fieldset-label font-size-1 font-weight-bold p-2 w-auto">Card Payment Details</legend>
                         <!-- Stripe Card Element -->
-                        <div class="mb-3" id="card-element"></div>
+                        <div class="mb-5" id="card-element"></div>
 
                         <!-- Form Errors (if any) -->
                         <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
@@ -161,4 +161,11 @@
             </div>
         </div>
     </form>
+
+    {% block add_postload_js %}
+        {{ block.super }}
+        {{ stripe_public_key|json_script:"id_stripe_public_key" }}
+        {{ client_secret|json_script:"id_stripe_client_secret" }}
+        <script src="{% static 'checkout/js/stripe_elements.js' %}"></script>
+    {% endblock %}
 {% endblock %}

@@ -9,3 +9,45 @@
         order: -1;
     }
 }
+
+/*--------------------------------------Stripe--
+Source: https://stripe.com/docs/
+NOT ALL MY OWN CODE
+Adpated to my needs so the stipe element matches the
+form it is placed in.
+*/
+
+.StripeElement,
+.stripe-customise {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
+  background-color: white;
+}
+
+.StripeElement--focus,
+.stripe-customise:focus,
+.stripe-customise:active {
+  box-shadow: 0 1px 3px 0 white;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: white !important;
+}
+
+.stripe-customise::placeholder,
+.form-control::placeholder {
+    color: silver;
+}
+
+.fieldset-label {
+    position: relative;
+    right: .5rem;
+}
+
+#checkout-form .form-control,
+#card-element {
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
