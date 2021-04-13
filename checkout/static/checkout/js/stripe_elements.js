@@ -52,14 +52,13 @@ card.on('change', function (event) {
 var form = document.getElementById('checkout-form');
 
 form.addEventListener('submit', function(ev) {
-
+    
     // Stops the form submitting
     ev.preventDefault();
 
     // Prevent multiple submissions
     card.update({'disabled': true});
     $('#submit-button').attr('disabled', true);
-
 
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {

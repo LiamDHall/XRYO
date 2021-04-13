@@ -33,7 +33,7 @@ class Order(models.Model):
         account delivery charge.
         """
 
-        self.order_total = self.items.aggregate(Sum('item_total'))['item_total__sum']
+        self.order_total = self.items.aggregate(Sum('item_total'))['item_total__sum'] or 0
         if self.order_total < settings.FREE_DELIVERY_MIN:
             self.delivery_charge = settings.DELIVERY_CHARGE
         else:
@@ -57,7 +57,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, null=False, blank=False, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, null=False, blank=False, on_delete=models.CASCADE)
-    variant = models.ForeignKey(Variant, null=False, blank=False, on_delete=models.CASCADE)
+    variant = models.ForeignKey(Variant, null=True, blank=True, on_delete=models.CASCADE)
     product_size = models.CharField(max_length=2, null=True, blank=True)
     quantity = models.IntegerField(null=False, blank=False, default=0)
     item_total = models.DecimalField(max_digits=6, decimal_places=2, null=False, blank=False, editable=False)
