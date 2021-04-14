@@ -39,8 +39,6 @@ class Order(models.Model):
         else:
             self.delivery_charge = 0
 
-        print(f'ORDER TOTAL === { self.order_total}')
-        print(f'Delvery Charge === { self.delivery_charge}')
         self.grand_total = self.order_total + self.delivery_charge
         self.save()
 
