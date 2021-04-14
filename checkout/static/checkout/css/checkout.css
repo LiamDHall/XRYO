@@ -52,3 +52,25 @@ form it is placed in.
   border-radius: 10px;
 }
 /*--(END NOT ALL MY OWN CODE)--*/
+
+/*--Payment Overlay--*/
+#payment-overlay {
+  display: none;
+  background: rgba(255, 251, 0, 0.787);
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.loading-icon {
+  font-size: 2.5rem;
+  margin: 0;
+  height: 100%;
+  text-align: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
