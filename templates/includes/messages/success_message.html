@@ -103,13 +103,9 @@
                 <!--Product Bag Message-->
                 <div class="row mb-1">
                     <div class="col-3 col-sm-4 my-1 pr-0">
-                        {% if product.album %}
-                            {% for image in item.product.album.images.all %}
-                                {% if image.default == True %}
-                                    <img class="w-100" src="{{MEDIA_URL}}{{image.image}}" alt="{{ product.name }}">
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}    
+                        {% with variant=item.variant product=item.product %}
+                            <img class="w-100" {% include 'includes/products_images/thumbnail_selector.html' %}>
+                        {% endwith %}  
                     </div>
                     <div class="col-9 col-sm-8 my-1 px-0">
                         <div class="row">
