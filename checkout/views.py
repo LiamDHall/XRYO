@@ -57,7 +57,6 @@ def checkout(request):
                         )
                         order_item.save()
                     else:
-                        product = Product.objects.get(id=product_id)
                         if 'product_by_variant' in product_data:
                             for variant_id, quantity in product_data['product_by_variant'].items():
                                 variant = Variant.objects.get(id=variant_id)

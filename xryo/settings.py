@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
-import dj_database_url
+from decimal import Decimal
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -172,7 +172,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 FREE_DELIVERY_MIN = 100
-DELIVERY_CHARGE = 3.99
+DELIVERY_CHARGE = Decimal(str(3.99))
 
 # Stripe Payement
 STRIPE_CURRENCY = 'gbp'
