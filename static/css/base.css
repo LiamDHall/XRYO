@@ -311,6 +311,12 @@ button:focus {
     color: black;
 }
 
+.site-message {
+    width: 100%;
+    max-width: none;
+    border: none;
+}
+
 /*--Messages Mobile & Responsive--*/
 @media screen and (max-width: 1025px) {
     .cta--icon {
