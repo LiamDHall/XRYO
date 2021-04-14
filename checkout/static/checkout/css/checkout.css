@@ -1,13 +1,13 @@
 .checkout-summary {
-    -ms-flex-order: 2;
-    order: 2;
+  -ms-flex-order: 2;
+  order: 2;
 }
 
 @media screen and (max-width: 768px) {
-    .checkout-summary {
-        -ms-flex-order: -1;
-        order: -1;
-    }
+  .checkout-summary {
+    -ms-flex-order: -1;
+    order: -1;
+  }
 }
 
 /*--------------------------------------Stripe--
@@ -37,17 +37,18 @@ form it is placed in.
 
 .stripe-customise::placeholder,
 .form-control::placeholder {
-    color: silver;
+  color: silver;
 }
 
 .fieldset-label {
-    position: relative;
-    right: .5rem;
+  position: relative;
+  right: .5rem;
 }
 
 #checkout-form .form-control,
 #card-element {
-    color: #000;
-    border: 1px solid #000;
-    border-radius: 10px;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 10px;
 }
+/*--(END NOT ALL MY OWN CODE)--*/
