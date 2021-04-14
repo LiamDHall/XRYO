@@ -57,7 +57,7 @@ form.addEventListener('submit', function(ev) {
     ev.preventDefault();
 
     // Prevent multiple submissions
-    card.update({'disabled': true});
+    card.update({ 'disabled': true});
     $('#submit-button').attr('disabled', true);
 
     stripe.confirmCardPayment(clientSecret, {
@@ -71,7 +71,7 @@ form.addEventListener('submit', function(ev) {
                 <span role="alert"><i class="fas fa-times"></i></span>
                 <span>${result.error.message}</span>`;
             $(errorContainer).html(errorMessaage);
-            card.update({'disabled': false});
+            card.update({ 'disabled': false});
             $('#submit-button').attr('disabled', false);
         } else {
             if (result.paymentIntent.status === 'succeeded') {
