@@ -144,31 +144,31 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
 
-    {% block add_postload_js %}
-        <!--Bag JS-->
-        <script type="text/javascript">
-            // Update quantity of a product when quantity selector is changed
-            $('.qty-selector').on('change', function(e) {
-                console.log('i ran')
-                var form = $(this).closest('.form-qty-update');
-                form.submit();
-            })
+{% block add_postload_js %}
+    <!--Bag JS-->
+    <script type="text/javascript">
+        // Update quantity of a product when quantity selector is changed
+        $('.qty-selector').on('change', function(e) {
+            console.log('i ran')
+            var form = $(this).closest('.form-qty-update');
+            form.submit();
+        })
 
-            // Remove product when remove button clicked
-            $('.remove-item').click(function(e) {
-                var csrfToken = "{{ csrf_token }}";
-                var productId = $(this).attr('id').split('remove_')[1];
-                var variant_id = $(this).data('product_variant');
-                var size = $(this).data('product_size');
-                var url = `/bag/remove/${productId}/`;
-                var data = {'csrfmiddlewaretoken': csrfToken, 'product_size': size, 'product_variant': variant_id};
+        // Remove product when remove button clicked
+        $('.remove-item').click(function(e) {
+            var csrfToken = "{{ csrf_token }}";
+            var productId = $(this).attr('id').split('remove_')[1];
+            var variant_id = $(this).data('product_variant');
+            var size = $(this).data('product_size');
+            var url = `/bag/remove/${productId}/`;
+            var data = {'csrfmiddlewaretoken': csrfToken, 'product_size': size, 'product_variant': variant_id};
 
-                $.post(url, data)
-                    .done(function() {
-                        location.reload();
-                });
-            })
-        </script>
-    {% endblock %}
+            $.post(url, data)
+                .done(function() {
+                    location.reload();
+            });
+        })
+    </script>
 {% endblock %}
