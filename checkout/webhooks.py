@@ -1,6 +1,7 @@
 """
 Code for webhook handlering comes from Stripe docomentation
-I have apdated it slightly for my needs.
+I have apdated for my needs to specify which handler handles
+which webhook.
 """
 
 from django.conf import settings
@@ -41,5 +42,22 @@ def webhook(request):
     except Exception as e:
         return HttpResponse(content=e, status=400)
 
-    print('received the webhook!')
-    return HttpResponse(status=200)
+    # Webhook Handler Set Up
+    handler = StripeWH_Handler(request)
+
+    # Map webhook events to relevant handler functions
+    event_map = {
+        'payment_intent.succeeded': handler.handle_payment_intent_succeeded,
+        'payment_intent.payment_failed': handler.handle_payment_intent_payment_failed,
+    }
+
+    # Retrieve webhook type from Stripe
+    event_type = event['type']
+
+    # Set generic handler function as default
+    # If the event has a handler get it from the event map
+    event_handler = event_map.get(event_type, handler.handle_event)
+
+    # Calls the event handler with the event
+    response = event_handler(event)
+    return response
