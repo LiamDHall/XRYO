@@ -10,6 +10,20 @@
   }
 }
 
+/*--------------------------------------Checkout Form--*/
+#checkout-form select,
+#checkout-form select option {
+  color: black;
+  padding-top: 0;
+  padding-bottom: 0;
+
+}
+
+#checkout-form select:invalid,
+#checkout-form select option[value=""] {
+  color: silver
+}
+
 /*--------------------------------------Stripe--
 Source: https://stripe.com/docs/
 NOT ALL MY OWN CODE
