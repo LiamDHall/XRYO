@@ -45,7 +45,14 @@ def checkout(request):
 
         # Check if the order form is valid and save it if it is
         if order_form.is_valid():
-            order = order_form.save()
+
+            # Commit False stops multiple save events on database.
+            order = order_form.save(commit=False)
+
+            payment_id = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = payment_id
+            order.original_bag = json.dumps(bag)
+            order.save()
 
             # Cycle through bag items and create an Order Item for each
             for product_id, product_data in bag.items():
