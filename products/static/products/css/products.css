@@ -8,6 +8,10 @@
     margin-right: 0px;
 }
 
+.variant-selected {
+    border: 4px solid var(--primary-cta);
+}
+
 /*--Swiper Carousel--*/
 .swiper-outer {
     position: relative;

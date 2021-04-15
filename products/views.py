@@ -93,6 +93,7 @@ def product_variant(request, product_id, variant_id):
     context = {
         'variant': variant,
         'product': product,
+        'variant_id': variant.id
     }
 
     return render(request, 'products/product_variant.html', context)

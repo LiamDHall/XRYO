@@ -73,7 +73,7 @@
                     <small class="font-weight-bold">Colour</small>
                         <ul class="variant-list d-flex list-unstyled list-group-horizontal">
                             {% for variant in product.variant_set.all %}
-                                <li>
+                                <li {% if variant_id == variant.id %}class="variant-selected"{% endif %}>
                                     <a href="{% url 'product_variant' product.id variant.id %}" class="d-inline-block">
                                         <img class="card-img rounded-0 test" {% include 'includes/products_images/thumbnail_selector.html' %}>
                                     </a>
