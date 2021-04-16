@@ -2,6 +2,7 @@ from django.http import HttpResponse
 
 from .models import Order, OrderItem
 from products.models import Product, Variant
+from profiles.models import Profile
 
 import json
 import time
@@ -45,6 +46,22 @@ class StripeWH_Handler:
             if value == "":
                 shipping_details.address[field] = None
 
+        # Update profile data if save info was checked by user
+        # Profile = None allow no logged in users to checkout
+        profile = None
+        username = intent.metadata.username
+        if username != 'AnonymousUser':
+            profile = Profile.objects.get(user__username=username)
+            if save_info:
+                profile.default_phone_number = shipping_details.phone
+                profile.default_street_address1 = shipping_details.address.line1
+                profile.default_street_address2 = shipping_details.address.line2
+                profile.default_county = shipping_details.address.state
+                profile.default_town_or_city = shipping_details.address.city
+                profile.default_postcode = shipping_details.address.postal_code
+                profile.default_country = shipping_details.address.country
+                profile.save()
+
         # Check if order is in database
         # Try five times as their might be a delay
         # If after fifth attempts of getting the order fails, create the order
@@ -79,7 +96,8 @@ class StripeWH_Handler:
 
         if order_exists:
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Order in database already',
+                content=f'Webhook received: {event["type"]} \
+                    | SUCCESS: Order in database already',
                 status=200
             )
 
@@ -88,6 +106,7 @@ class StripeWH_Handler:
             order = None
             try:
                 order = Order.objects.create(
+                    user_profile=profile,
                     full_name=shipping_details.name,
                     email=billing_details.email,
                     phone_number=shipping_details.phone,
@@ -145,7 +164,8 @@ class StripeWH_Handler:
                 )
 
         return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Order created by webhook',
+            content=f'Webhook received: {event["type"]} \
+                | SUCCESS: Order created by webhook',
             status=200
         )
 
