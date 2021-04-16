@@ -43,7 +43,7 @@ class Profile(models.Model):
         blank=True
     )
     default_country = CountryField(
-        blank_label='Country *',
+        blank_label='Country',
         null=True,
         blank=True
     )
@@ -59,5 +59,5 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     """
     if created:
         Profile.objects.create(user=instance)
-    # Existing users: just save the profile
+    # If user exists just save the profile
     instance.profile.save()
