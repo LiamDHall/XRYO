@@ -1,0 +1,25 @@
+Thank You {{ order.full_name }}!
+
+This is confirmation of your XRYO order #{{ order.order_number }} 
+
+Your order information is below:
+
+Order Number: {{ order.order_number }}
+Order Date: {{ order.date }}
+
+Order Total: ${{ order.order_total }}
+Delivery: ${{ order.delivery_cost }}
+Grand Total: ${{ order.grand_total }}
+
+Delivery Address 
+{{ order.street_address1 }},
+{{ order.town_or_city }},
+{{ order.country }}.
+
+Contact Number: {{ order.phone_number }}
+
+Feel free to contact us at {{ contact_email }} if you have any questions.
+
+Thanks for your order!
+
+XRYO

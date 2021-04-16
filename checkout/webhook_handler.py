@@ -1,4 +1,7 @@
 from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 
 from .models import Order, OrderItem
 from products.models import Product, Variant
@@ -22,6 +25,31 @@ class StripeWH_Handler:
         return HttpResponse(
             content=f'Unhandled Webhook received: {event["type"]}',
             status=200
+        )
+
+    def _send_email_confirmation(self, order):
+        """ Sends the user an email confirmation to
+        the email they entered in the checkout form.
+        """
+
+        customer_email = order.email
+
+        # Reader email text
+        subject = render_to_string(
+            'checkout/email_confirmation/email_confirmation_subject.txt',
+            {'order': order}
+        )
+        body = render_to_string(
+            'checkout/email_confirmation/email_confirmation_body.txt',
+            {'order': order, 'contact_email': settings.DEFAULT_SENDER_EMAIL}
+        )
+
+        # Send email
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_SENDER_EMAIL,
+            [customer_email]
         )
 
     def handle_payment_intent_succeeded(self, event):
@@ -95,9 +123,10 @@ class StripeWH_Handler:
                 time.sleep(1)
 
         if order_exists:
+            # Send email confirmation
+            self._send_email_confirmation(order)
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} \
-                    | SUCCESS: Order in database already',
+                content=f'Webhook received: {event["type"]} | SUCCESS: Order in database already',
                 status=200
             )
 
@@ -163,9 +192,10 @@ class StripeWH_Handler:
                     status=500
                 )
 
+        # Send email confirmation
+        self._send_email_confirmation(order)
         return HttpResponse(
-            content=f'Webhook received: {event["type"]} \
-                | SUCCESS: Order created by webhook',
+            content=f'Webhook received: {event["type"]} | SUCCESS: Order created by webhook',
             status=200
         )
 
