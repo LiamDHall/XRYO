@@ -7,9 +7,17 @@ from django.conf import settings
 from django_countries.fields import CountryField
 
 from products.models import Product, Variant
+from profiles.models import Profile
 
 
 class Order(models.Model):
+    user_profile = models.ForeignKey(
+        Profile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='orders'
+    )
     order_number = models.CharField(
         max_length=32,
         null=False,
