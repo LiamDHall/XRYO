@@ -471,6 +471,7 @@ button:focus {
 .allauth-form-inner-content input {
     border-color: #000;
     border-radius: 0;
+    border-radius: 10px;
 }
 
 .allauth-form-inner-content label:not([for='id_remember']) {
