@@ -164,7 +164,7 @@ button:focus {
 }
 
 .cta--third {
-    color: white;
+    color: white !important;
     background-color: black;
 }
 
@@ -460,6 +460,53 @@ button:focus {
     padding: 0 30px;
     margin: 0 auto;
 }
+
+/*------------------------------------------------------Allauth*/
+
+.allauth-form-inner-content p {
+    margin-top: 1.5rem; /* mt-4 */
+    color: #6c757d; /* text-secondary */
+}
+
+.allauth-form-inner-content input {
+    border-color: #000;
+    border-radius: 0;
+}
+
+.allauth-form-inner-content label:not([for='id_remember']) {
+    display: none;
+}
+
+.allauth-form-inner-content input::placeholder {
+    color: silver;
+}
+
+/*--Allauth Button--*/
+.allauth-form-inner-content button,
+.allauth-form-inner-content input[type='submit'] {
+	display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 9px 20px;
+    border-width: 0px;
+    border-radius: 30px;
+    text-align: center;
+    color: white;
+    background-color: var(--primary-cta);
+
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.allauth-form-inner-content button:hover,
+.allauth-form-inner-content input[type='submit']:hover {	
+	color: white;
+    background-color: slategray;
+}
+
+.allauth-form-inner-content a {
+	color: var(--primary-cta);
+}
+
 
 /*------------------------------------------------------Footer--*/
 .footer {
