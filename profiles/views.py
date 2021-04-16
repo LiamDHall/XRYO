@@ -4,6 +4,8 @@ from django.contrib import messages
 from .models import Profile
 from .forms import ProfileForm
 
+from checkout.models import Order
+
 
 def profile(request):
     """ View to display a users profile.
@@ -31,3 +33,23 @@ def profile(request):
     }
 
     return render(request, 'profiles/profiles.html', context)
+
+
+def view_order_details(request, order_number):
+    """ Takes user to checkout success page or the selected order they
+    click in the their order history.
+    """
+
+    order = get_object_or_404(Order, order_number=order_number)
+
+    messages.info(request, (
+        f'Past confirmation for your order {order_number}. '
+        'A confirmation email was sent on the order date.'
+    ))
+
+    context = {
+        'order': order,
+        'from_profile': True,
+    }
+
+    return render(request, 'checkout/checkout_success.html', context)

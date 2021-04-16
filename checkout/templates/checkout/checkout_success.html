@@ -22,9 +22,17 @@
                 <p class>Your order number is: <span class="small"><strong>{{ order.order_number }}</strong></span></p>
                 <p>Total Amount: <strong>£{{ order.grand_total }}</strong></p> 
                 <p>A confirmation email will be sent to <strong>{{ order.email }}</strong></p>
-                <a href="{% url 'products' %}" class="cta cta--prim my-2">
-                    Find More Great XRYO Gear<span class="pl-2"><i class="fas fa-chevron-right"></i></span>
-                </a>
+                {% if from_profile %}
+                    <h4>This is NOT a new Order. This Order is in your Order History</h4>
+                    <p>A confirmation email was sent on the order date.</p>
+                    <a href="{% url 'profile' %}" class="cta cta--prim my-2">
+                        <span class="pr-2"><i class="fas fa-angle-left"></i></span> Back to Profile
+                    </a>
+                {% else %}
+                    <a href="{% url 'products' %}" class="cta cta--prim my-2">
+                        Find More Great XRYO Gear<span class="pl-2"><i class="fas fa-chevron-right"></i></span>
+                    </a>
+                {% endif %}
             </div>
         </div>
         <hr class="w-100">

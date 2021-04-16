@@ -1,3 +1,4 @@
+/*------------------------------------Delivery Form--*/
 .profile-form-input {
     border: 1px solid black;
     border-radius: 10px;
@@ -14,4 +15,22 @@
 
 #id_default_country option:first-child {
     color: silver;
+}
+
+/*------------------------------------Order History--*/
+.order {
+    background: black;
+    color: white;
+    border-radius: 10px;
+    padding: 5px 0;
+}
+
+.order:hover {
+    background-color: var(--primary-cta);
+}
+
+@media screen and (max-width: 567px) {
+    .order-headers {
+        display: none;
+    }
 }
