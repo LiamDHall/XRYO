@@ -14,9 +14,26 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-12">
-
+    <div class="row px-3 mb-5">
+        <!--Profile Delivery Form-->
+        <div class="col-12 col-lg-4">
+            <h3>Delivery Address</h3>
+            <hr>
+            <small>This will be set by default at checkout</small>
+            <form id="profile-address-form" class="mt-3" action="{% url 'profile' %}" method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="cta cta--prim float-right">Update</button>
+            </form>
+        </div>
+        <div class="col-12 col-lg-8 pl-lg-0 my-5 my-lg-0">
+            <h3>Order History</h3>
+            <hr>
+            {{ orders }}
         </div>
     </div>
+{% endblock %}
+
+{% block add_postload_js %}
+    <script type="text/javascript" src="{% static 'profiles/js/country_input.js' %}"></script>
 {% endblock %}
