@@ -110,7 +110,7 @@ def add_product(request):
             messages.success(request, 'Product Added Successfully')
             return redirect(reverse('add_product'))
         else:
-            messages.error(request, 'Failed to add product. Please ensure the form is valid.')
+            messages.error(request, 'Adding product failed. Please check your form inputs.')
     else:
         form = ProductForm()
 
@@ -119,3 +119,35 @@ def add_product(request):
     }
 
     return render(request, 'products/add_product.html', context)
+
+
+def edit_product(request, product_id):
+    """ Edit a product
+    """
+
+    # Get Product
+    product = get_object_or_404(Product, pk=product_id)
+
+    # Handles Form submission
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+
+        # Save Product if form is valid and redurect back to product management
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Product Updated')
+            return redirect(reverse('profile'))
+
+        # Send error maessage if form invalid
+        else:
+            messages.error(request, 'Updating product failed. Please check your form inputs.')
+    else:
+        form = ProductForm(instance=product)
+        messages.info(request, f'Warning you are editing {product.name}')
+
+    context = {
+        'form': form,
+        'product': product,
+    }
+
+    return render(request, 'products/edit_product.html', context)
