@@ -3,6 +3,7 @@ from django.contrib import messages
 
 from .models import Profile
 from .forms import ProfileForm
+from products.models import Category, Product
 
 from checkout.models import Order
 
@@ -27,9 +28,14 @@ def profile(request):
     # Get all users orders
     orders = profile.orders.all()
 
+    categories = Category.objects.all()
+    products = Product.objects.all()
+
     context = {
         'form': form,
         'orders': orders,
+        'categories': categories,
+        'products': products,
     }
 
     return render(request, 'profiles/profiles.html', context)
