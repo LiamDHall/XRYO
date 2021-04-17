@@ -6,14 +6,15 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
+        exclude = ('album',)
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
-        """Set friendly names to be displayed in form
+        """Set display names to be displayed in form
         """
 
         super().__init__(*args, **kwargs)
         categories = Category.objects.all()
-        friendly_names = [(c.id, c.get_friendly_name()) for c in categories]
+        display_names = [(c.id, c.get_display_name()) for c in categories]
 
-        self.fields['category'].choices = friendly_names
+        self.fields['category'].choices = display_names

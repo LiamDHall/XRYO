@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block add_css %}
+    <link rel="stylesheet" href="{% static 'profiles/css/profiles.css' %}">
+{% endblock %}
+
+{% block page_header %}
+    <!--Page Header-->
+    <div class="page-header container mb-3">
+        <h1>Add Products</h1>
+        <hr class="w-100">
+        <p>Feilds with * are required</p>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row container">
+        <div class="col-12">
+            <form method="POST" action="{% url 'add_product' %}" class="form mb-2" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <div class="text-right">
+                    <a class="cta cta--thrid" href="{% url 'products' %}">Cancel</a>
+                    <button class="cta cta--prim" type="submit">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

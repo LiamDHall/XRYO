@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.db.models.functions import Lower
 
 from .models import Category, Product, Variant
-# Create your views here.
+from .forms import ProductForm
 
 
 def all_products(request):
@@ -84,7 +84,7 @@ def product_detail(request, product_id):
 
 
 def product_variant(request, product_id, variant_id):
-    """ A view to details of a single variant
+    """ View the details of a single variant
     """
 
     product = get_object_or_404(Product, pk=product_id)
@@ -97,3 +97,28 @@ def product_variant(request, product_id, variant_id):
     }
 
     return render(request, 'products/product_variant.html', context)
+
+
+def add_product(request):
+    """ Add new product to site
+    """
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Product Added Successfully')
+            return redirect(reverse('add_product'))
+        else:
+            messages.error(
+                request,
+                'Product failed to be added. Please ensure the form is valid.'
+            )
+    else:
+        form = ProductForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'products/add_product.html', context)
