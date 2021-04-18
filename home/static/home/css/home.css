@@ -8,7 +8,8 @@
 }
 
 .hero__image-main {
-    background: url(/media/images/main-hero-image.JPG) no-repeat;
+    margin-top: -24px;
+    background: url(/media/site_images/landing_hero.JPG) no-repeat;
     background-position: 60% 70%;
     background-size: cover;
     position: relative;
@@ -16,7 +17,7 @@
 }
 
 .hero__image-second {
-    background: url(/media/images/goggletwo.jpg) no-repeat;
+    background: url(/media/site_images/goggle_hero.jpg) no-repeat;
     background-position: 100% 50%;
     background-size: cover;
     position: relative;
@@ -45,11 +46,37 @@
 .hero__title {
     font-weight: 700 !important;
     font-size: 2.5rem;
-    color: black;
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
 }
 
 .hero__tagline {
     font-size: 2rem;
+    color: yellow;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+/*------------------------------------------------------Hero Responsive & Mobile--*/
+@media screen and (max-width: 475px) {
+    .hero__inner--left {
+        left: 0;
+    }
+
+    .hero__inner--right {
+        right: 0;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .hero__title {
+        font-size: 2rem;
+    }
+
+    .hero__inner--right {
+        right: 0;
+    }
 }
 
 /*------------------------------------------------------Newsletter--*/
@@ -59,6 +86,12 @@
     padding: 20px 0;
     text-align: center;
     align-items: center;
+}
+
+@media screen and (max-width: 475px) {
+    .newsletter h3 {
+        font-size: 1.5rem;
+    }
 }
 
 /*------------------------------------------------------Social--*/
@@ -79,4 +112,16 @@
     display: inline;
     font-size: 3rem;
     padding: 0 20px;
+}
+
+@media screen and (max-width: 475px) {
+    .social li {
+        font-size: 2.5rem;
+        padding: 5px;
+    }
+
+    .social h3 {
+        font-size: 1.5rem;
+        margin: 10px 0;
+    }
 }
