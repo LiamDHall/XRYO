@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 from django.db.models import Q
 from django.db.models.functions import Lower
 
@@ -99,6 +101,7 @@ def product_variant(request, product_id, variant_id):
     return render(request, 'products/product_variant.html', context)
 
 
+@login_required
 def product_management(request):
     """ Renders product management page where site admin can
     edit add and delete products.
@@ -115,9 +118,16 @@ def product_management(request):
     return render(request, 'products/product_management.html', context)
 
 
+@login_required
 def add_product(request):
-    """ Add new product to site
+    """ (SUPER USERS ONLY)
+    Add new product to site.
     """
+
+    # Only allows superusers (Site Admins) to view this page.
+    if not request.user.is_superuser:
+        messages.error(request, 'Access Denied. Site Admins Only')
+        return redirect(reverse('home'))
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -137,9 +147,16 @@ def add_product(request):
     return render(request, 'products/add_product.html', context)
 
 
+@login_required
 def edit_product(request, product_id):
-    """ Edit a product
+    """ (SUPER USERS ONLY)
+    Edit a product
     """
+
+    # Only allows superusers (Site Admins) to view this page.
+    if not request.user.is_superuser:
+        messages.error(request, 'Access Denied. Site Admins Only')
+        return redirect(reverse('home'))
 
     # Get Product
     product = get_object_or_404(Product, pk=product_id)
@@ -169,9 +186,16 @@ def edit_product(request, product_id):
     return render(request, 'products/edit_product.html', context)
 
 
+@login_required
 def delete_product(request, product_id):
-    """ Delete a product from the site
+    """ (SUPER USERS ONLY)
+    Delete a product from the site
     """
+
+    # Only allows superusers (Site Admins) to view this page.
+    if not request.user.is_superuser:
+        messages.error(request, 'Access Denied. Site Admins Only')
+        return redirect(reverse('home'))
 
     # Get object
     product = get_object_or_404(Product, pk=product_id)

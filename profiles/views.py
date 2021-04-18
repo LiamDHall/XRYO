@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 from .models import Profile
 from .forms import ProfileForm
-from products.models import Category, Product
 
 from checkout.models import Order
 
 
+@login_required
 def profile(request):
     """ View to display a users profile.
     """
@@ -42,6 +43,7 @@ def profile(request):
     return render(request, 'profiles/profiles.html', context)
 
 
+@login_required
 def view_order_details(request, order_number):
     """ Takes user to checkout success page or the selected order they
     click in the their order history.
