@@ -14,10 +14,10 @@
             <h4 class="text-center">Views</h4>
             <div class="row my-4">
                 <div class="col-12 col-md-6 text-center pb-3 pb-md-0">
-                    <button class="cta cta--prim profile-view-btn" value="order-histoy">Your Orders And Details</button>
+                    <a href="{% url 'profile' %}" class="cta cta--prim">Your Orders And Details</a>
                 </div>
                 <div class="col-12 col-md-6 text-center pb-3 pb-md-0">
-                    <button class="cta cta--prim profile-view-btn" value="product-management">Product Management</button>
+                    <a href="{% url 'product_management' %}" class="cta cta--prim">Product Management</a>
                 </div>
             </div>
             <hr>
@@ -117,153 +117,8 @@
             {% endif %}
         </div>
     </div>
-
-    {% if request.user.is_superuser %}
-        <!--Product Management-->
-        <div id="product-management" class="profile-view row d-none">
-
-            <!--PM Category Selector-->
-            <div class="col-12 col-md-3 text-center">
-                <h3>Categories</h3>
-                <hr>
-                <ul class="list-unstyled">
-                    <li class="mb-2">
-                        <button class="cta cta--second pm-cat-btn pm-cat-btn-selected" value="all-products">All Products</button>
-                    </li>
-                    {% for category in categories %}
-                        <li class="mb-2">
-                            <button class="cta cta--second pm-cat-btn" value="{{ category.name|lower }}">{{ category.name|title }}</button>
-                        </li>
-                    {% endfor %}
-                    <li class="mb-2">
-                        <button class="cta cta--second pm-cat-btn" value="no-cat">No Category</button>
-                    </li>
-                </ul>
-            </div>
-
-            <!--PM Product Selector-->
-            <div class="col-12 col-md-9">
-            <h3>Products</h3>
-            <hr>
-            {% if products|length > 0 %}
-                <p>Click a Product to edit</p>
-                {% for category in categories %}
-                    <div id="{{ category.name|lower }}" class="pm-cat">
-                        <h5>{{ category.name|title }}</h5>
-                        <hr>
-                        {% if category.product_set.all|length > 0 %}
-                            {% for product in category.product_set.all %}
-                                <!--PM Product-->
-                                <a class="pm-link" href="">
-                                    <div class="row pm-item my-4 align-items-center">
-                                        <!--Product Image-->
-                                        <div class="col-1 px-0 text-center align-items-center">
-                                            {% if product.variant_set.all|length > 0 %}
-                                                {% with product.variant_set.all|first as variant %}
-                                                    <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                                                {% endwith %}
-                                            {% else %}
-                                                <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                                            {% endif %}
-                                        </div>
-
-                                        <!--Product Name-->
-                                        <div class="col-3 pm-small-text pm-item-border text-center px-0">
-                                            {{ product.name }}
-                                        </div>
-
-                                        <!--Product Variants-->
-                                        <div class="col-3 pm-small-text pm-item-border text-center px-0">
-                                            {% if product.variant_set.all|length > 0 %}
-                                                {{ product.variant_set.all|length }} Variants
-                                            {% else %}
-                                                No Variants
-                                            {% endif %}
-                                        </div>
-
-                                        <!--Product Sizes-->
-                                        <div class="col-3 pm-item-border pm-small-text text-center px-0">
-                                            {% if product.sizes == True %}
-                                                Has Sizes
-                                            {% else %}
-                                                No Sizes
-                                            {% endif %}
-                                        </div>
-
-                                        <!--Price-->
-                                        <div class="col-2 pm-small-text text-center px-0">
-                                            £{{ product.price }}
-                                        </div>
-                                    </div>
-                                </a>
-                            {% endfor %}
-                        {% else %}
-                            <p class="text-center">No products in this category</p>
-                        {% endif %}
-                    </div>
-                {% endfor %}
-                <!--No Products Category-->
-                <div id="no-cat" class="pm-cat">
-                    <h5>No Category Items</h5>
-                    <hr>
-                    {% for product in products %}
-                        {% if not product.category %}
-                            <!--PM Product-->
-                            <a class="pm-link" href="">
-                                <div class="row pm-item my-4 align-items-center">
-                                    <!--Product Image-->
-                                    <div class="col-1 px-0 text-center align-items-center">
-                                        {% if product.variant_set.all|length > 0 %}
-                                            {% with product.variant_set.all|first as variant %}
-                                                <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                                            {% endwith %}
-                                        {% else %}
-                                            <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                                        {% endif %}
-                                    </div>
-
-                                    <!--Product Name-->
-                                    <div class="col-3 pm-small-text pm-item-border text-center px-0">
-                                        {{ product.name }}
-                                    </div>
-
-                                    <!--Product Variants-->
-                                    <div class="col-3 pm-small-text pm-item-border text-center px-0">
-                                        {% if product.variant_set.all|length > 0 %}
-                                            {{ product.variant_set.all|length }} Variants
-                                        {% else %}
-                                            No Variants
-                                        {% endif %}
-                                    </div>
-
-                                    <!--Product Sizes-->
-                                    <div class="col-3 pm-item-border pm-small-text text-center px-0">
-                                        {% if product.sizes == True %}
-                                            Has Sizes
-                                        {% else %}
-                                            No Sizes
-                                        {% endif %}
-                                    </div>
-
-                                    <!--Price-->
-                                    <div class="col-2 pm-small-text text-center px-0">
-                                        £{{ product.price }}
-                                    </div>
-                                </div>
-                            </a>
-                        {% endif %}
-                    {% endfor %}
-                <div>
-            {% else %}
-                <p class="text-center">No products have been created.</p>
-            {% endif %}
-            </div>
-        </div>
-    {% endif %}
-
 {% endblock %}
 
 {% block add_postload_js %}
     <script type="text/javascript" src="{% static 'profiles/js/country_input.js' %}"></script>
-    <script type="text/javascript" src="{% static 'profiles/js/profile_toggle.js' %}"></script>
 {% endblock %}

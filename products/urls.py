@@ -9,6 +9,11 @@ urlpatterns = [
         views.product_variant,
         name='product_variant'
     ),
+    path(
+        'product_management',
+        views.product_management,
+        name='product_management'
+    ),
     path('add/', views.add_product, name='add_product'),
     path(
         'edit/<int:product_id>/',

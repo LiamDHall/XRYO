@@ -99,6 +99,22 @@ def product_variant(request, product_id, variant_id):
     return render(request, 'products/product_variant.html', context)
 
 
+def product_management(request):
+    """ Renders product management page where site admin can
+    edit add and delete products.
+    """
+
+    categories = Category.objects.all()
+    products = Product.objects.all()
+
+    context = {
+        'categories': categories,
+        'products': products,
+    }
+
+    return render(request, 'products/product_management.html', context)
+
+
 def add_product(request):
     """ Add new product to site
     """
@@ -108,7 +124,7 @@ def add_product(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Product Added Successfully')
-            return redirect(reverse('add_product'))
+            return redirect(reverse('product_management'))
         else:
             messages.error(request, 'Adding product failed. Please check your form inputs.')
     else:
@@ -136,7 +152,7 @@ def edit_product(request, product_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Product Updated')
-            return redirect(reverse('profile'))
+            return redirect(reverse('product_management'))
 
         # Send error maessage if form invalid
         else:
