@@ -200,6 +200,11 @@
                         <li>
                             <a href="{% url 'profile' %}">Orders</a>
                         </li>
+                        {% if request.user.is_superuser %}
+                            <li>
+                                <a href="{% url 'product_management' %}">Product Management</a>
+                            </li>
+                        {% endif %}
                         <li>
                             <a href="{% url 'account_logout' %}">Logout</a>
                         </li>
