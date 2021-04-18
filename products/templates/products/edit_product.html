@@ -9,6 +9,7 @@
     <!--Page Header-->
     <div class="page-header container mb-3">
         <h1>Edit Product</h1>
+        <a class="cta cta--delete" href="{% url 'delete_product' product_id=product.id %}">Delete Product</a>
         <hr class="w-100">
         <p>Feilds with * are required</p>
     </div>

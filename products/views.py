@@ -167,3 +167,18 @@ def edit_product(request, product_id):
     }
 
     return render(request, 'products/edit_product.html', context)
+
+
+def delete_product(request, product_id):
+    """ Delete a product from the site
+    """
+
+    # Get object
+    product = get_object_or_404(Product, pk=product_id)
+
+    # Delete object
+    product.delete()
+
+    # Give user feedback and redirect
+    messages.success(request, 'Product deleted')
+    return redirect(reverse('product_management'))
