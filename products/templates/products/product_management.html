@@ -27,7 +27,7 @@
 
 {% block content %}
     <!--Product Management-->
-    <div id="product-management" class="profile-view row">
+    <div id="product-management container" class="profile-view row">
 
         <!--PM Category Selector-->
         <div class="col-12 col-md-3 text-center">
@@ -50,10 +50,13 @@
 
         <!--PM Product Selector-->
         <div class="col-12 col-md-9">
-            <h3>Products</h3>
+            <div class="clearfix">
+                <h3 class="float-left">Products</h3>
+                <a href="{% url 'add_product' %}" class="cta cta--add float-right"><i class="fas fa-plus"></i> Add <span class="d-none d-sm-inline">Product</span></a>
+            </div>
             <hr>
             {% if products|length > 0 %}
-                <p>Click a Product to edit</p>
+                <p class="info-highlight">Click a Product to edit</p>
                 {% for category in categories %}
                     <div id="{{ category.name|lower }}" class="pm-cat">
                         <h5>{{ category.name|title }}</h5>
@@ -61,7 +64,7 @@
                         {% if category.product_set.all|length > 0 %}
                             {% for product in category.product_set.all %}
                                 <!--PM Product-->
-                                <a class="pm-link" href="">
+                                <a class="pm-link" href="{% url 'edit_product' product_id=product.id %}">
                                     <div class="row pm-item my-4 align-items-center">
                                         <!--Product Image-->
                                         <div class="col-1 px-0 text-center align-items-center">
