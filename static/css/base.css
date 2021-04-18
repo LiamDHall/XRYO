@@ -73,8 +73,14 @@ ul {
     }
 }
 
+/*--Highlight--*/
 .highlight {
     color: red;
+}
+
+.info-highlight {
+    color: var(--primary-cta);
+    font-weight: 700;
 }
 
 /*--Text--*/
@@ -170,6 +176,16 @@ button:focus {
 .cta--third {
     color: white !important;
     background-color: black;
+}
+
+.cta--add {
+    background-color: limegreen;
+    color: white;
+}
+
+.cta--delete {
+    background: red;
+    color: white;
 }
 
 .cta:hover {
