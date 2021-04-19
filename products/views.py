@@ -135,7 +135,6 @@ def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         product_name = form['name'].value()
-        product_images = request.FILES.getlist('product-images')
         if form.is_valid():
             try:
                 Product.objects.get(name=product_name)
@@ -149,6 +148,7 @@ def add_product(request):
                 new_product = form.save()
 
                 # Check images are png or jpg / can be opened
+                product_images = request.FILES.getlist('product-images')
                 for image in product_images:
                     try:
                         # If image can be opened save image

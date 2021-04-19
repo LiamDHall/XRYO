@@ -20,12 +20,22 @@
             <form method="POST" action="{% url 'add_product' %}" class="form mb-2" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form | crispy }}
+                <label for="product-images" class="mt-2 d-block">Product Images</label>
                 <input type="file" id="product-images" name="product-images" multiple>
-                <div class="text-right">
+                <h2 class="mt-5">Variants</h2>
+                <hr>
+                <button id="add-variant" class="cta cta--add d-block mt-3" type="button"><i class="fas fa-plus"></i> Add Variant</button>
+                <div class="text-right mt-4">
                     <a class="cta cta--thrid" href="{% url 'products' %}">Cancel</a>
                     <button class="cta cta--prim" type="submit">Add Product</button>
                 </div>
+                <input type="hidden" id="variant-count" name="variant-count" value="0">
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block add_postload_js %}
+    <!--Product Management JS-->
+    <script src="{% static 'products/js/pm_variant_inputs.js' %}"></script>
 {% endblock %}
