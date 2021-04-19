@@ -13,8 +13,8 @@ def get_upload_path(instance, filename):
     with Pillow installed the file directory will be created
     (if not already) in the media folder and the file will be uploaded.
     """
-    ablum_name = instance.album.name.lower()
-    return f'product_images/{ablum_name}/{filename}'
+    album_name = instance.album.name.lower()
+    return f'product_images/{album_name}/{filename}'
 
 
 def create_or_upadate_image_album(sender, instance, created, **kwargs):
@@ -24,18 +24,20 @@ def create_or_upadate_image_album(sender, instance, created, **kwargs):
     it.
     """
 
-    name = instance.name
+    sender_name = instance.name.lower().replace(" ", "_")
+    sender_id = instance.id
+    album_name = f'{sender_name}_id_{sender_id}'
     if created:
-        if not ImageAlbum.objects.filter(name=name).exists():
-            ImageAlbum.objects.create(name=name)
-        album = ImageAlbum.objects.get(name=name)
+        if not ImageAlbum.objects.filter(name=album_name).exists():
+            ImageAlbum.objects.create(name=album_name)
+        album = ImageAlbum.objects.get(name=album_name)
         instance.album = album
         instance.save()
 
     elif instance.album and instance.name != instance.album.name:
         album_id = instance.album.id
         album = ImageAlbum.objects.get(pk=album_id)
-        album.name = name
+        album.name = album_name
         album.save()
 
 
@@ -104,6 +106,13 @@ class Category(models.Model):
         return self.display_name
 
 
+def delete_image_album(sender, instance, **kwargs):
+    """Delete the image album of the product
+    """
+    if instance.album:
+        instance.album.delete()
+
+
 class Product(models.Model):
     category = models.ForeignKey(
         'Category', null=True, blank=True, on_delete=models.SET_NULL
@@ -138,6 +147,19 @@ MUST BE BELOW PRODUCT CLASS AND FUNCTION IT CALLS
 
 signals.post_save.connect(
     create_or_upadate_image_album,
+    sender=Product,
+    weak=False,
+    dispatch_uid='models.create_image_album'
+)
+
+""" Signal to trigger delete ImageAlbum with
+name that matches product name.
+
+MUST BE BELOW PRODUCT CLASS AND FUNCTION IT CALLS
+"""
+
+signals.pre_delete.connect(
+    delete_image_album,
     sender=Product,
     weak=False,
     dispatch_uid='models.create_image_album'

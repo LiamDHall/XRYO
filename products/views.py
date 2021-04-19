@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+from django.db import models
 from django.db.models import Q
-from django.db.models.functions import Lower
 
-from .models import Category, Product, Variant
+from PIL import Image
+ImageTool = Image
+
+from .models import Category, Product, Variant, Image
 from .forms import ProductForm
 
 
@@ -131,12 +134,54 @@ def add_product(request):
 
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
+        product_name = form['name'].value()
+        product_images = request.FILES.getlist('product-images')
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Product Added Successfully')
-            return redirect(reverse('product_management'))
+            try:
+                Product.objects.get(name=product_name)
+                messages.error(
+                    request,
+                    f'Product with the name ({product_name}) already exists'
+                )
+
+            except Product.DoesNotExist:
+                # Save new product
+                new_product = form.save()
+
+                # Check images are png or jpg / can be opened
+                for image in product_images:
+                    try:
+                        # If image can be opened save image
+                        open_image = ImageTool.open(image)
+                        print(open_image.filename)
+
+                        if open_image.format in {'PNG', 'JPG', 'JPEG'}:
+                            Image.objects.create(
+                                name=image,
+                                album=new_product.album,
+                                default=False,
+                                image=image
+                            )
+                        else:
+                            messages.error(
+                                request,
+                                f'Image ({image}) format is not supported'
+                            )
+
+                    except IOError:
+                        messages.error(
+                            request,
+                            f'({image}) not upload properly. \
+                            Check file is an image.'
+                        )
+
+                messages.success(request, 'Product Added Successfully')
+                return redirect(reverse('product_management'))
         else:
-            messages.error(request, 'Adding product failed. Please check your form inputs.')
+            messages.error(
+                request,
+                'Adding product failed. Please check your form inputs.'
+            )
     else:
         form = ProductForm()
 

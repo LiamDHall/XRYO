@@ -20,6 +20,7 @@
             <form method="POST" action="{% url 'add_product' %}" class="form mb-2" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form | crispy }}
+                <input type="file" id="product-images" name="product-images" multiple>
                 <div class="text-right">
                     <a class="cta cta--thrid" href="{% url 'products' %}">Cancel</a>
                     <button class="cta cta--prim" type="submit">Add Product</button>
