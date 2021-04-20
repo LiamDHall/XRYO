@@ -172,7 +172,12 @@ class Variant(models.Model):
     )
     class_name = 'variant'
     sku = models.CharField(max_length=100, null=True, blank=True)
-    name = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+        default=f'{product.name} variant',
+    )
     album = models.OneToOneField(
         ImageAlbum,
         related_name='variant_model',

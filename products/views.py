@@ -135,6 +135,7 @@ def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         product_name = form['name'].value()
+        print(product_name)
         if form.is_valid():
             try:
                 Product.objects.get(name=product_name)
@@ -147,6 +148,7 @@ def add_product(request):
                 # Save new product
                 new_product = form.save()
 
+                # Add Product images
                 # Check images are png or jpg / can be opened
                 product_images = request.FILES.getlist('product-images')
                 for image in product_images:
@@ -174,6 +176,49 @@ def add_product(request):
                             f'({image}) not upload properly. \
                             Check file is an image.'
                         )
+
+                # Add Variant to database
+                variant_count = int(request.POST.get('variant-count'))
+                print(variant_count)
+
+                for x in range(0, variant_count):
+                    i = x + 1
+                    name = request.POST.get(f'variant-name-{i}')
+                    sku = request.POST.get(f'variant-sku-{i}')
+                    var_images = request.FILES.getlist(f'variant-images-{i}')
+
+                    new_variant = Variant.objects.create(
+                        product=new_product,
+                        name=name,
+                        sku=sku,
+                    )
+
+                    # Add Variant Images to database
+                    for image in var_images:
+                        try:
+                            # If image can be opened save image
+                            open_image = ImageTool.open(image)
+                            print(open_image.filename)
+
+                            if open_image.format in {'PNG', 'JPG', 'JPEG'}:
+                                Image.objects.create(
+                                    name=image,
+                                    album=new_variant.album,
+                                    default=False,
+                                    image=image
+                                )
+                            else:
+                                messages.error(
+                                    request,
+                                    f'Image ({image}) format is not supported'
+                                )
+
+                        except IOError:
+                            messages.error(
+                                request,
+                                f'({image}) not upload properly. \
+                                Check file is an image.'
+                            )
 
                 messages.success(request, 'Product Added Successfully')
                 return redirect(reverse('product_management'))
