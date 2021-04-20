@@ -51,8 +51,6 @@
                     {% for variant in product.variant_set.all %}
                         <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
                             <div class="card border-0">
-                                Product == {{ product.id }}
-                                Variant == {{ variant.id }}
                                 <a href="{% url 'product_variant' product.id variant.id %}">
                                     <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
                                 </a>
@@ -73,13 +71,7 @@
                     <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
                         <div class="card border-0">
                             <a href="{% url 'product_detail' product.id %}" class="">
-                                {% if product.album %}
-                                    {% for image in product.album.images.all %}
-                                        {% if image.default == True %}
-                                            <img class="card-img rounded-0" src="{{MEDIA_URL}}{{image.image}}" alt="Card image cap">
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
+                                <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
                             </a>
                             <a href="{% url 'product_detail' product.id %}">
                                 <div class="card-body p-1">

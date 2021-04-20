@@ -13,10 +13,7 @@ $('#add-variant').on('click', function(){
             <input type="text" id="variant-sku-${variantAmount + 1}" name="variant-sku-${variantAmount + 1}"  class="w-100 d-block" maxlength="100">
             <label for="variant-images-${variantAmount + 1}" class="mt-2 d-block">Variant Images</label>
             <input type="file" id="variant-images-${variantAmount + 1}" name="variant-images-${variantAmount + 1}" multiple>
-            <br>
-            <input type="checkbox" id="variant-mark-delete-${variantAmount + 1}" name="variant-mark-delete-${variantAmount + 1}" value="delete">
-            <label for="variant-mark-delete-${variantAmount + 1}" class="highlight mt-2">Mark For Deletion</label>
-            <button type="button" class="variant-delete cta cta--delete d-block" value="#variant-${variantAmount + 1}">Delete</button>
+            <button type="button" class="variant-delete cta cta--delete d-block mt-4" value="#variant-${variantAmount + 1}">Delete</button>
         </fieldset>
     `;
     $('#add-variant').before(variantInputs);
@@ -30,25 +27,43 @@ $(document).on('click', '.variant-delete', function(){
     variant = $(this).val();
     variantNum = variant.split('-')[1]
     markVariant = `#variant-mark-delete-${variantNum}`
-    $(markVariant).prop( "checked", true)
-    message = `
-        <div id="variant-delete-message-${variantNum}">
-            <h4 class="highlight">variant ${variantNum} Is marked for deletion</h4>
-            <button type="button" class="variant-undo cta cta--delete d-block" value="#variant-${variantNum}">Undo</button>
-            <hr>
-        </div>
-    `;
-    $(variant).before(message);
-    $(variant).addClass('d-none')
-})
+    $(variant).remove()
+    variantCount = variantAmount - 1;
+    $('#variant-count').val(variantCount);
 
-// Undo marking for deletion
-$(document).on('click', '.variant-undo', function(){
-    variant = $(this).val();
-    variantNum = variant.split('-')[1]
-    markVariant = `#variant-mark-delete-${variantNum}`
-    deleteMessage = `#variant-delete-message-${variantNum}`
-    $(markVariant).prop( "checked", false)
-    $(variant).removeClass('d-none')
-    $(deleteMessage).remove()
+    //  Re orders variant ids
+    var variants = document.getElementsByClassName('variant');
+
+    for (i = 0; i < variants.length; ++i) {
+        variant = variants[i]
+
+        variant.setAttribute('id', `variant-${i + 1}`);
+
+        // Legend
+        legend = variant.getElementsByTagName('legend');
+        console.log(legend)
+        legend[0].innerHTML = `Variant ${i + 1}`;
+
+        input = variant.getElementsByTagName('input');
+        label = variant.getElementsByTagName('label');
+        button = variant.getElementsByTagName('button');
+
+        // Name
+        label[0].setAttribute('for', `variant-name-${i + 1}`);
+        input[0].setAttribute('id', `variant-name-${i + 1}`);
+        input[0].setAttribute('name', `variant-name-${i + 1}`);
+        
+        // SKU
+        label[1].setAttribute('for', `variant-sku-${i + 1}`);
+        input[1].setAttribute('id', `variant-sku-${i + 1}`);
+        input[1].setAttribute('name', `variant-sku-${i + 1}`);
+        
+        // Images
+        label[2].setAttribute('for', `variant-images-${i + 1}`);
+        input[2].setAttribute('id', `variant-images-${i + 1}`);
+        input[2].setAttribute('name', `variant-images-${i + 1}`);
+
+        // Button
+        button[0].setAttribute('value', `#variant-${i + 1}`);
+    }
 })
