@@ -220,8 +220,19 @@ def update_product_rating(sender, instance, **kwargs):
 
 
 class IntegerRangeField(models.IntegerField):
+    """THIS CLASS IS NOT MY OWN CODE
+    SOURCE:
+    https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
+    """
 
-    def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):
+    def __init__(
+        self,
+        verbose_name=None,
+        name=None,
+        min_value=None,
+        max_value=None,
+        **kwargs
+    ):
         self.min_value, self.max_value = min_value, max_value
         models.IntegerField.__init__(self, verbose_name, name, **kwargs)
 
@@ -237,7 +248,12 @@ class Review(models.Model):
         on_delete=models.CASCADE,
     )
     date = models.DateTimeField(auto_now_add=True)
-    user_name = models.CharField(max_length=40, null=False, blank=False, default='Anonymous')
+    user_name = models.CharField(
+        max_length=40,
+        null=False,
+        blank=False,
+        default='Anonymous'
+    )
     rating = IntegerRangeField(min_value=1, max_value=5)
     comment = models.CharField(max_length=400, null=True, blank=True)
 
