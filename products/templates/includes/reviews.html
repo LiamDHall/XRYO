@@ -1,0 +1,50 @@
+<!--Review Form-->
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Reviews</h3>
+        <hr>
+        {% if variant %}
+            <form method="POST" action="{% url 'product_variant' product.id variant_id %}" class="form mb-2">
+        {% else %}
+            <form method="POST" action="{% url 'product_detail' product.id %}" class="form mb-2">
+        {% endif %}
+            {% csrf_token %}
+            {{ form | crispy }}
+            <div class="text-right">
+                <button class="cta cta--third" type="submit">Submit Review</button>
+            </div>
+        </form>
+        <hr>
+    </div>
+    <!--Product Reviews-->
+    <div class="col-12">
+        {% if product.review_set.all|length > 0 %}
+            {% for review in product.review_set.all %}
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <p class="font-weight-bold mb-0">{{ review.user_name }}</p>
+                        <small class="text-muted">Date: {{ review.date }}</small>
+                        <p>Score: <span class="font-weight-bold">{{ review.rating }}</span></p>
+                        {% if review.comment %}
+                            {{ review.comment }}
+                        {% endif %}
+                        {% if request.user.is_superuser %}
+                            <form method="POST" action="{% url 'delete_review' review.id %}" class="form mb-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="current_page" value="{{ request.path }}">
+                                <button class="cta cta--delete">Delete</button>
+                            </form>
+                        {% endif %}
+                        <hr> 
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="font-weight-bold">No Reviews</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
