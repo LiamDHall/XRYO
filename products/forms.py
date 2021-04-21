@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Variant, Category
+from .models import Product, Category, Review
 
 
 class ProductForm(forms.ModelForm):
@@ -18,3 +18,11 @@ class ProductForm(forms.ModelForm):
         display_names = [(c.id, c.get_display_name()) for c in categories]
 
         self.fields['category'].choices = display_names
+
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+        model = Review
+        exclude = ('date', 'product',)
+        fields = '__all__'

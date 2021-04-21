@@ -8,8 +8,8 @@ from django.db.models import Q
 from PIL import Image
 ImageTool = Image
 
-from .models import Category, Product, Variant, Image
-from .forms import ProductForm
+from .models import Category, Product, Variant, Image, Review
+from .forms import ProductForm, ReviewForm
 
 
 def all_products(request):
@@ -81,7 +81,31 @@ def product_detail(request, product_id):
 
     product = get_object_or_404(Product, pk=product_id)
 
+    # Handles Reivew submission
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, request.FILES)
+
+        # Save Review if form is valid
+        if form.is_valid():
+            Review.objects.create(
+                product=product,
+                user_name=form.cleaned_data.get('user_name'),
+                rating=form.cleaned_data.get('rating'),
+                comment=form.cleaned_data.get('comment')
+            )
+            messages.success(request, 'Review Posted')
+
+        # Send error maessage if form invalid
+        else:
+            messages.error(
+                request,
+                'Review failed to post. Please check your form inputs.'
+            )
+    else:
+        form = ReviewForm()
+
     context = {
+        'form': form,
         'product': product,
     }
 
@@ -95,13 +119,61 @@ def product_variant(request, product_id, variant_id):
     product = get_object_or_404(Product, pk=product_id)
     variant = get_object_or_404(Variant, pk=variant_id)
 
+    # Handles Review submission
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, request.FILES)
+
+        # Save Review if form is valid
+        if form.is_valid():
+            Review.objects.create(
+                product=product,
+                user_name=form.cleaned_data.get('user_name'),
+                rating=form.cleaned_data.get('rating'),
+                comment=form.cleaned_data.get('comment')
+            )
+            messages.success(request, 'Review Posted')
+
+        # Send error maessage if form invalid
+        else:
+            messages.error(
+                request,
+                'Review failed to post. Please check your form inputs.'
+            )
+    else:
+        form = ReviewForm()
+
     context = {
         'variant': variant,
         'product': product,
-        'variant_id': variant.id
+        'variant_id': variant.id,
+        'form': form
     }
 
     return render(request, 'products/product_variant.html', context)
+
+
+@login_required
+def delete_review(request, review_id):
+    """ (SUPER USERS ONLY)
+    Edit a product
+    """
+    current_page = request.POST.get('current_page')
+
+    # Only allows superusers (Site Admins) to view this page.
+    if not request.user.is_superuser:
+        messages.error(request, 'Access Denied. Site Admins Only')
+        return redirect(reverse('home'))
+
+    # Get object
+    review = get_object_or_404(Review, pk=review_id)
+    review_product = review.product.id
+
+    # Delete object
+    review.delete()
+
+    # Give user feedback and redirect
+    messages.success(request, 'Review deleted')
+    return redirect('product_detail', product_id=review_product)
 
 
 @login_required

@@ -2,6 +2,8 @@ from django.db import models
 from django.db.models import signals
 from django.conf import settings
 
+from decimal import Decimal
+
 from PIL import Image
 
 ImageTool = Image
@@ -87,7 +89,7 @@ signals.post_save.connect(
     resize_image,
     sender=Image,
     weak=False,
-    dispatch_uid='models.create_image'
+    dispatch_uid='models.resize_image'
 )
 
 
@@ -125,9 +127,9 @@ class Product(models.Model):
     sizes = models.BooleanField(default=False, null=True, blank=True)
     sku = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(blank=True)
-    rating = models.DecimalField(max_digits=6, decimal_places=1, default=0.00)
-    rating_total = models.IntegerField(default=0)
-    no_of_ratings = models.IntegerField(default=0)
+    rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0)
+    rating_total = models.PositiveIntegerField(default=0)
+    no_of_ratings = models.PositiveIntegerField(default=0)
     album = models.OneToOneField(
         ImageAlbum,
         related_name='model',
@@ -149,7 +151,7 @@ signals.post_save.connect(
     create_or_upadate_image_album,
     sender=Product,
     weak=False,
-    dispatch_uid='models.create_image_album'
+    dispatch_uid='models.create_or_upadate_image_album'
 )
 
 """ Signal to trigger delete ImageAlbum with
@@ -162,7 +164,7 @@ signals.pre_delete.connect(
     delete_image_album,
     sender=Product,
     weak=False,
-    dispatch_uid='models.create_image_album'
+    dispatch_uid='models.delete_image_album'
 )
 
 
@@ -199,5 +201,59 @@ signals.post_save.connect(
     create_or_upadate_image_album,
     sender=Variant,
     weak=False,
-    dispatch_uid='models.create_image_album'
+    dispatch_uid='models.create_or_upadate_image_album'
+)
+
+
+def update_product_rating(sender, instance, **kwargs):
+    instance.product.no_of_ratings += 1
+    instance.product.rating_total += instance.rating
+
+    no_of_ratings = instance.product.no_of_ratings
+    rating_total = instance.product.rating_total
+
+    new_rating = rating_total / no_of_ratings
+
+    instance.product.rating = Decimal(round(new_rating, 1))
+
+    instance.product.save()
+
+
+class IntegerRangeField(models.IntegerField):
+
+    def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):
+        self.min_value, self.max_value = min_value, max_value
+        models.IntegerField.__init__(self, verbose_name, name, **kwargs)
+
+    def formfield(self, **kwargs):
+        defaults = {'min_value': self.min_value, 'max_value': self.max_value}
+        defaults.update(kwargs)
+        return super(IntegerRangeField, self).formfield(**defaults)
+
+
+class Review(models.Model):
+    product = models.ForeignKey(
+        'Product',
+        on_delete=models.CASCADE,
+    )
+    date = models.DateTimeField(auto_now_add=True)
+    user_name = models.CharField(max_length=40, null=False, blank=False, default='Anonymous')
+    rating = IntegerRangeField(min_value=1, max_value=5)
+    comment = models.CharField(max_length=400, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.user_name} {self.product.name} Review'
+
+
+""" Signal to trigger the update
+of product rating.
+
+MUST BE BELOW REVIEW CLASS AND FUNCTION IT CALLS
+"""
+
+signals.post_save.connect(
+    update_product_rating,
+    sender=Review,
+    weak=False,
+    dispatch_uid='models.update_product_rating'
 )
