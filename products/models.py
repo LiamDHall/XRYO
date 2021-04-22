@@ -1,8 +1,9 @@
 from django.db import models
-from django.db.models import signals
 from django.conf import settings
 
 from decimal import Decimal
+
+from .feilds import IntegerRangeField
 
 from PIL import Image
 
@@ -15,53 +16,22 @@ def get_upload_path(instance, filename):
     with Pillow installed the file directory will be created
     (if not already) in the media folder and the file will be uploaded.
     """
-    album_name = instance.album.name.lower()
-    return f'product_images/{album_name}/{filename}'
-
-
-def create_or_upadate_image_album(sender, instance, created, **kwargs):
-    """Create ImageAlbum for every new Product or Variant.
-    ImageAlbum is a Joining Table. If the name of the Product or
-    Variant change this function will update the album name to match
-    it.
-    """
-
-    sender_name = instance.name.lower().replace(" ", "_")
-    sender_id = instance.id
-    album_name = f'{sender_name}_id_{sender_id}'
-    if created:
-        if not ImageAlbum.objects.filter(name=album_name).exists():
-            ImageAlbum.objects.create(name=album_name)
-        album = ImageAlbum.objects.get(name=album_name)
-        instance.album = album
-        instance.save()
-
-    elif instance.album and instance.name != instance.album.name:
-        album_id = instance.album.id
-        album = ImageAlbum.objects.get(pk=album_id)
-        album.name = album_name
-        album.save()
+    if instance.album.name.lower():
+        album_name = instance.album.name.lower()
+        return f'product_images/{album_name}/{filename}'
+    else:
+        return f'product_images/{filename}'
 
 
 class ImageAlbum(models.Model):
+    """ Joining Table
+    Allow many to many relationship between Variant or Product and
+    images.
+    """
     name = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-    def default(self):
-        return self.images.filter(default=True).first()
-
-
-def resize_image(sender, instance, created, **kwargs):
-    """Resize images so if sligtly different they will
-    all be uniform
-    """
-
-    if created:
-        image = ImageTool.open(f'{media_url}{instance.image}')
-        image = image.resize((1600, 2000))
-        image.save(f'{media_url}{instance.image}')
 
 
 class Image(models.Model):
@@ -71,26 +41,23 @@ class Image(models.Model):
         ImageAlbum,
         related_name='images',
         null=True, blank=True,
-        on_delete=models.SET_NULL
+        on_delete=models.CASCADE,
     )
 
     image = models.ImageField(upload_to=get_upload_path)
 
+    def resize_image(self, created):
+        """Resize images so if sligtly different they will
+        all be uniform
+        """
+
+        if created:
+            image = ImageTool.open(f'{media_url}{self.image}')
+            image = image.resize((1600, 2000))
+            image.save(f'{media_url}{self.image}')
+
     def __str__(self):
         return self.name
-
-
-""" Signal to trigger the resizing of Images.
-
-MUST BE BELOW IMAGE CLASS AND FUNCTION IT CALLS
-"""
-
-signals.post_save.connect(
-    resize_image,
-    sender=Image,
-    weak=False,
-    dispatch_uid='models.resize_image'
-)
 
 
 class Category(models.Model):
@@ -101,18 +68,11 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     display_name = models.CharField(max_length=100, null=True, blank=True)
 
-    def __str__(self):
-        return self.name
-
     def get_display_name(self):
         return self.display_name
 
-
-def delete_image_album(sender, instance, **kwargs):
-    """Delete the image album of the product
-    """
-    if instance.album:
-        instance.album.delete()
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -122,7 +82,8 @@ class Product(models.Model):
     class_name = 'product'
     name = models.CharField(max_length=100)
     price = models.DecimalField(
-        max_digits=6, decimal_places=2, default=900
+        max_digits=6,
+        decimal_places=2,
     )
     sizes = models.BooleanField(default=False, null=True, blank=True)
     sku = models.CharField(max_length=100, null=True, blank=True)
@@ -137,35 +98,37 @@ class Product(models.Model):
         on_delete=models.SET_NULL
     )
 
+    def create_or_upadate_image_album(self, created):
+        """Create ImageAlbum for every new Product or Variant.
+        ImageAlbum is a Joining Table. If the name of the Product or
+        Variant change this function will update the album name to match
+        it.
+        """
+
+        sender_name = self.name.lower().replace(" ", "_")
+        sender_id = self.id
+        album_name = f'{sender_name}_id_{sender_id}'
+        if created:
+            if not ImageAlbum.objects.filter(name=album_name).exists():
+                ImageAlbum.objects.create(name=album_name)
+            album = ImageAlbum.objects.get(name=album_name)
+            self.album = album
+            self.save()
+
+        elif self.album and self.name != self.album.name:
+            album_id = self.album.id
+            album = ImageAlbum.objects.get(pk=album_id)
+            album.name = album_name
+            album.save()
+
+    def delete_image_album(self):
+        """Delete the image album of the product
+        """
+        if self.album:
+            self.album.delete()
+
     def __str__(self):
         return self.name
-
-
-""" Signal to trigger the auto creation of the ImageAlbum, or update
-name of album to match product name.
-
-MUST BE BELOW PRODUCT CLASS AND FUNCTION IT CALLS
-"""
-
-signals.post_save.connect(
-    create_or_upadate_image_album,
-    sender=Product,
-    weak=False,
-    dispatch_uid='models.create_or_upadate_image_album'
-)
-
-""" Signal to trigger delete ImageAlbum with
-name that matches product name.
-
-MUST BE BELOW PRODUCT CLASS AND FUNCTION IT CALLS
-"""
-
-signals.pre_delete.connect(
-    delete_image_album,
-    sender=Product,
-    weak=False,
-    dispatch_uid='models.delete_image_album'
-)
 
 
 class Variant(models.Model):
@@ -178,7 +141,6 @@ class Variant(models.Model):
         max_length=100,
         null=False,
         blank=False,
-        default=f'{product.name} variant',
     )
     album = models.OneToOneField(
         ImageAlbum,
@@ -187,59 +149,37 @@ class Variant(models.Model):
         on_delete=models.SET_NULL
     )
 
+    def create_or_upadate_image_album(self, created):
+        """Create ImageAlbum for every new Product or Variant.
+        ImageAlbum is a Joining Table. If the name of the Product or
+        Variant change this function will update the album name to match
+        it.
+        """
+
+        sender_name = self.name.lower().replace(" ", "_")
+        sender_id = self.id
+        album_name = f'{sender_name}_id_{sender_id}'
+        if created:
+            if not ImageAlbum.objects.filter(name=album_name).exists():
+                ImageAlbum.objects.create(name=album_name)
+            album = ImageAlbum.objects.get(name=album_name)
+            self.album = album
+            self.save()
+
+        elif self.album and self.name != self.album.name:
+            album_id = self.album.id
+            album = ImageAlbum.objects.get(pk=album_id)
+            album.name = album_name
+            album.save()
+
+    def delete_image_album(self):
+        """Delete the image album of the product
+        """
+        if self.album:
+            self.album.delete()
+
     def __str__(self):
         return self.name
-
-
-""" Signal to trigger the auto creation of the ImageAlbum, or update
-name of album to match product name.
-
-MUST BE BELOW VARIANT CLASS AND FUNCTION IT CALLS
-"""
-
-signals.post_save.connect(
-    create_or_upadate_image_album,
-    sender=Variant,
-    weak=False,
-    dispatch_uid='models.create_or_upadate_image_album'
-)
-
-
-def update_product_rating(sender, instance, **kwargs):
-    instance.product.no_of_ratings += 1
-    instance.product.rating_total += instance.rating
-
-    no_of_ratings = instance.product.no_of_ratings
-    rating_total = instance.product.rating_total
-
-    new_rating = rating_total / no_of_ratings
-
-    instance.product.rating = Decimal(round(new_rating, 1))
-
-    instance.product.save()
-
-
-class IntegerRangeField(models.IntegerField):
-    """THIS CLASS IS NOT MY OWN CODE
-    SOURCE:
-    https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
-    """
-
-    def __init__(
-        self,
-        verbose_name=None,
-        name=None,
-        min_value=None,
-        max_value=None,
-        **kwargs
-    ):
-        self.min_value, self.max_value = min_value, max_value
-        models.IntegerField.__init__(self, verbose_name, name, **kwargs)
-
-    def formfield(self, **kwargs):
-        defaults = {'min_value': self.min_value, 'max_value': self.max_value}
-        defaults.update(kwargs)
-        return super(IntegerRangeField, self).formfield(**defaults)
 
 
 class Review(models.Model):
@@ -257,19 +197,18 @@ class Review(models.Model):
     rating = IntegerRangeField(min_value=1, max_value=5)
     comment = models.CharField(max_length=400, null=True, blank=True)
 
+    def update_product_rating(self):
+        self.product.no_of_ratings += 1
+        self.product.rating_total += self.rating
+
+        no_of_ratings = self.product.no_of_ratings
+        rating_total = self.product.rating_total
+
+        new_rating = rating_total / no_of_ratings
+
+        self.product.rating = Decimal(round(new_rating, 1))
+
+        self.product.save()
+
     def __str__(self):
         return f'{self.user_name} {self.product.name} Review'
-
-
-""" Signal to trigger the update
-of product rating.
-
-MUST BE BELOW REVIEW CLASS AND FUNCTION IT CALLS
-"""
-
-signals.post_save.connect(
-    update_product_rating,
-    sender=Review,
-    weak=False,
-    dispatch_uid='models.update_product_rating'
-)
