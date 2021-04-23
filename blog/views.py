@@ -30,7 +30,7 @@ def view_blog(request):
     else:
         form = PostForm()
 
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-date')
 
     context = {
         'form': form,
