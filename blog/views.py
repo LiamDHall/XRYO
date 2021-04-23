@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -38,3 +38,26 @@ def view_blog(request):
     }
 
     return render(request, 'blog/blog.html', context)
+
+@login_required
+def delete_post(request, post_id):
+    """ (SUPER USERS ONLY)
+    Delete a Blog from the site
+    """
+
+    # Only allows superusers (Site Admins) to view this page.
+    if not request.user.is_superuser:
+        messages.error(request, 'Access Denied. Site Admins Only')
+        return redirect(reverse('home'))
+
+    # Get object
+    post = get_object_or_404(Post, pk=post_id)
+
+    # Delete object
+    post.delete()
+
+    current_page = request.POST.get('current_page')
+
+    # Give user feedback and redirect
+    messages.success(request, 'Post deleted')
+    return redirect(current_page)

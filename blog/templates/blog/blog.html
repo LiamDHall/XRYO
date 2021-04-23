@@ -25,6 +25,13 @@
                     <p class="small text-muted">{{ post.date }}</p>
                     <hr>
                     <p class="mb-0">{{ post.article }}</p>
+                    {% if request.user.is_superuser %}
+                            <form method="POST" action="{% url 'delete_post' post.id %}" class="form text-right mt-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="current_page" value="{{ request.path }}">
+                                <button class="cta cta--delete">Delete</button>
+                            </form>
+                        {% endif %}
                 </div>
                 <!--Post Image-->
                 <div class="post-image col-12 col-lg-4 px-0" style="background-image: url('{{ MEDIA_URL }}{{ post.image }}');"></div>
