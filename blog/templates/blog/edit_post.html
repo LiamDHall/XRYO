@@ -23,7 +23,7 @@
                 <form method="POST" action="{% url 'edit_post' post_id=post.id %}" class="form" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form | crispy }}
-                    <input id="post-date" name="post-date" type="text" class="w-100" value="{{ post.date|date:'Y-m-d H:i:s.u' }}">
+                    <input id="post-date" name="post-date" type="hidden" class="w-100" value="{{ post.date|date:'Y-m-d H:i:s.u' }}">
                     <div class="text-right">
                         <a href="{% url 'blog' %}" class="cta cta--third">Cancel</a>
                         <button class="cta cta--prim" type="submit">Post</button>
