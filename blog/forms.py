@@ -11,6 +11,6 @@ class PostForm(forms.ModelForm):
 
     article = forms.CharField(
         widget=forms.Textarea(
-            attrs={"rows": 5, "cols": 20}
+            attrs={'rows': 5, 'cols': 20}
         )
     )
