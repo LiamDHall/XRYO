@@ -7,9 +7,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ('date',)
-        fields = ('title', 'image',)
+        fields = ('title', 'image', 'article')
 
-    artictle = forms.CharField(
+    article = forms.CharField(
         widget=forms.Textarea(
             attrs={"rows": 5, "cols": 20}
         )
