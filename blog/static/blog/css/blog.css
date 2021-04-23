@@ -1,0 +1,73 @@
+main {
+    background-color: rgb(39, 39, 39);
+    padding: 30px;
+}
+
+.page-header {
+    background-color: white;
+    margin-top: -24px;
+    padding-top: 24px;
+}
+
+.container {
+    width: 75%;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+}
+
+.post-form-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 450;
+    color: black;
+}
+
+.unfix {
+    position: static;
+    width: 100%;
+}
+
+.blog-post {
+    border-radius: 10px;
+    min-height: 250px;
+
+}
+
+@media screen and (max-width: 992px) {
+    .post-image {
+        height: 300px;
+        margin-bottom: none;
+    }
+}
+
+.post-image {
+    background-size: fit;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+@media screen and (max-width: 567px) {
+    h1 {
+        font-size: 2rem;
+        margin-bottom: none;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .page-header {
+        padding-left: 15px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+}
