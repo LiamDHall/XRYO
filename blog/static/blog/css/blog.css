@@ -13,6 +13,20 @@ main {
     width: 75%;
 }
 
+.blog-btn {
+    margin-right: 30px;
+}
+
+@media screen and (max-width: 425px) {
+    .blog-btn-container {
+        text-align: center !important;
+    }
+
+    .blog-btn {
+        margin-right: 0;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .container {
         width: 100%;
