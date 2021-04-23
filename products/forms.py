@@ -25,4 +25,10 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         exclude = ('date', 'product',)
-        fields = '__all__'
+        fields = ('user_name', 'rating', 'comment')
+
+    comment = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'rows': 3, 'cols': 20}
+        )
+    )
