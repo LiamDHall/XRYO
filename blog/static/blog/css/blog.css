@@ -1,6 +1,6 @@
 main {
     background-color: rgb(39, 39, 39);
-    padding: 30px;
+    padding-bottom: 30px;
 }
 
 .page-header {
@@ -51,6 +51,10 @@ main {
     border-radius: 10px;
     min-height: 250px;
 
+}
+
+.edit-form-container {
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 992px) {

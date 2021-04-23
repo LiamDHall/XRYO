@@ -8,4 +8,9 @@ urlpatterns = [
         views.delete_post,
         name='delete_post'
     ),
+    path(
+        'edit_post/<int:post_id>/',
+        views.edit_post,
+        name='edit_post'
+    ),
 ]

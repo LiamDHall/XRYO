@@ -29,6 +29,9 @@
                             <form method="POST" action="{% url 'delete_post' post.id %}" class="form text-right mt-2">
                                 {% csrf_token %}
                                 <input type="hidden" name="current_page" value="{{ request.path }}">
+                                <a class="cta cta--add" href="{% url 'edit_post' post_id=post.id %}">
+                                    Edit
+                                </a>
                                 <button class="cta cta--delete">Delete</button>
                             </form>
                         {% endif %}

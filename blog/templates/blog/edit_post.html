@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block add_css %}
+    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">
+{% endblock %}
+
+{% block page_header %}
+    <!--Page Header-->
+    <div class="page-header bg-white">
+        <h1>Edit Post {{ post.title }}</h1>
+        <hr class="w-100">
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!--Blog-->
+    <div class="container">
+        <!--Blog Post Form-->
+        <div class="edit-form-container bg-white">
+            <div id="blog-form" class="container py-4">
+                <p class="info-highlight">All feilds with a * are required</p>
+                <form method="POST" action="{% url 'edit_post' post_id=post.id %}" class="form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <input id="post-date" name="post-date" type="text" class="w-100" value="{{ post.date|date:'Y-m-d H:i:s.u' }}">
+                    <div class="text-right">
+                        <a href="{% url 'blog' %}" class="cta cta--third">Cancel</a>
+                        <button class="cta cta--prim" type="submit">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
