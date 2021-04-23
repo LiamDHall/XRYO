@@ -1,5 +1,4 @@
-// Fix Filter to Site Header if Scrolled Pasted
-
+// Reposition Blog Form Post on Scroll
 $(window).scroll(function (event) {
     var scroll = $(window).scrollTop();
     var docHeight = $(document).height();
