@@ -173,7 +173,7 @@ def delete_review(request, review_id):
 
     # Give user feedback and redirect
     messages.success(request, 'Review deleted')
-    return redirect('product_detail', product_id=review_product)
+    return redirect(current_page)
 
 
 @login_required
