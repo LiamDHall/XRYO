@@ -1,5 +1,6 @@
 from django import forms
 from .models import Post
+from .widgets import CustomImageInput
 
 
 class PostForm(forms.ModelForm):
@@ -8,6 +9,8 @@ class PostForm(forms.ModelForm):
         model = Post
         exclude = ('date',)
         fields = ('title', 'image', 'article')
+
+    image = forms.ImageField(label='Post Image', widget=CustomImageInput)
 
     article = forms.CharField(
         widget=forms.Textarea(
