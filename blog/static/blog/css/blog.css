@@ -1,3 +1,4 @@
+/*---------------------------------------Blog--*/
 main {
     background-color: rgb(39, 39, 39);
     padding-bottom: 30px;
@@ -13,6 +14,12 @@ main {
     width: 75%;
 }
 
+@media screen and (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+}
+
 .blog-btn {
     margin-right: 30px;
 }
@@ -24,12 +31,6 @@ main {
 
     .blog-btn {
         margin-right: 0;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .container {
-        width: 100%;
     }
 }
 
@@ -88,4 +89,24 @@ main {
     h1 {
         font-size: 1.5rem;
     }
+}
+
+/*---------------------------------------Image Input--*/
+.file-input {
+    position: relative;
+    overflow: hidden;
+}
+
+.file-input input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#filename {
+    color: var(--primary-cta);
 }

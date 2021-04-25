@@ -26,15 +26,17 @@
                     <hr>
                     <p class="mb-0">{{ post.article }}</p>
                     {% if request.user.is_superuser %}
-                            <form method="POST" action="{% url 'delete_post' post.id %}" class="form text-right mt-2">
+                        <div class="text-right mt-2">
+                            <a class="cta cta--add" href="{% url 'edit_post' post_id=post.id %}">
+                                Edit
+                            </a>
+                            <form method="POST" action="{% url 'delete_post' post.id %}" class="form d-inline text-right">
                                 {% csrf_token %}
                                 <input type="hidden" name="current_page" value="{{ request.path }}">
-                                <a class="cta cta--add" href="{% url 'edit_post' post_id=post.id %}">
-                                    Edit
-                                </a>
                                 <button class="cta cta--delete">Delete</button>
                             </form>
-                        {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
                 <!--Post Image-->
                 <div class="post-image col-12 col-lg-4 px-0" style="background-image: url('{{ MEDIA_URL }}{{ post.image }}');"></div>

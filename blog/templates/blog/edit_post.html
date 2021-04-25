@@ -8,7 +8,7 @@
 {% block page_header %}
     <!--Page Header-->
     <div class="page-header bg-white">
-        <h1>Edit Post {{ post.title }}</h1>
+        <h1>Editing Post - {{ post.title|title }}</h1>
         <hr class="w-100">
     </div>
 {% endblock %}
@@ -26,10 +26,15 @@
                     <input id="post-date" name="post-date" type="hidden" class="w-100" value="{{ post.date|date:'Y-m-d H:i:s.u' }}">
                     <div class="text-right">
                         <a href="{% url 'blog' %}" class="cta cta--third">Cancel</a>
-                        <button class="cta cta--prim" type="submit">Post</button>
+                        <button class="cta cta--prim" type="submit">Save</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block add_postload_js %}
+    <!--Blog JS-->
+    <script src="{% static 'blog/js/show_image_filename.js' %}"></script>
 {% endblock %}
