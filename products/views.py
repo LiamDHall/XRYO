@@ -5,11 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.db.models import Q
 
-from PIL import Image
-ImageTool = Image
-
 from .models import Category, Product, Variant, Image, Review
 from .forms import ProductForm, ReviewForm
+
+from PIL import Image as ImageTool
 
 
 def all_products(request):
@@ -44,7 +43,7 @@ def all_products(request):
 
         if 'search-text' in request.GET:
             query = request.GET['search-text']
-            print(query)
+
             if not query:
                 messages.error(request, "Empty Search")
                 return redirect(reverse('home'))
@@ -166,7 +165,6 @@ def delete_review(request, review_id):
 
     # Get object
     review = get_object_or_404(Review, pk=review_id)
-    review_product = review.product.id
 
     # Delete object
     review.delete()
@@ -207,7 +205,6 @@ def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         product_name = form['name'].value()
-        print(product_name)
         if form.is_valid():
             try:
                 Product.objects.get(name=product_name)
@@ -227,7 +224,6 @@ def add_product(request):
                     try:
                         # If image can be opened save image
                         open_image = ImageTool.open(image)
-                        print(open_image.filename)
 
                         if open_image.format in {'PNG', 'JPG', 'JPEG'}:
                             Image.objects.create(
@@ -251,7 +247,6 @@ def add_product(request):
 
                 # Add Variant to database
                 variant_count = int(request.POST.get('variant-count'))
-                print(variant_count)
 
                 for x in range(0, variant_count):
                     i = x + 1
@@ -270,7 +265,6 @@ def add_product(request):
                         try:
                             # If image can be opened save image
                             open_image = ImageTool.open(image)
-                            print(open_image.filename)
 
                             if open_image.format in {'PNG', 'JPG', 'JPEG'}:
                                 Image.objects.create(
@@ -294,6 +288,7 @@ def add_product(request):
 
                 messages.success(request, 'Product Added Successfully')
                 return redirect(reverse('product_management'))
+
         else:
             messages.error(
                 request,
@@ -327,15 +322,148 @@ def edit_product(request, product_id):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
 
-        # Save Product if form is valid and redurect back to product management
+        # Save Product if form is valid and redirect back to product management
         if form.is_valid():
             form.save()
+
+            # Update Product images
+            if request.POST.get('product-default-image') is not None:
+                default_image_id = int(request.POST.get(
+                    'product-default-image'
+                ))
+                for image in product.album.images.all():
+                    if image.id == default_image_id:
+                        image.default = True
+                        image.save()
+
+            # Add Product images
+            # Check images are png or jpg / can be opened
+            product_images = request.FILES.getlist('product-images')
+            for image in product_images:
+                try:
+                    # If image can be opened save image
+                    open_image = ImageTool.open(image)
+
+                    if open_image.format in {'PNG', 'JPG', 'JPEG'}:
+                        Image.objects.create(
+                            name=image,
+                            album=product.album,
+                            default=False,
+                            image=image
+                        )
+                    else:
+                        messages.error(
+                            request,
+                            f'Image ({image}) format is not supported'
+                        )
+
+                except IOError:
+                    messages.error(
+                        request,
+                        f'({image}) not upload properly. \
+                        Check file is an image.'
+                    )
+
+            # Update Variant images
+            for variant in product.variant_set.all():
+                # Set default image
+                if request.POST.get(
+                    f'variant-default-image-{ variant.id }'
+                ) is not None:
+                    default_image = int(request.POST.get(
+                        f'variant-default-image-{ variant.id }'
+                    ))
+                    for image in variant.album.images.all():
+                        if image.id == default_image:
+                            image.default = True
+                            image.save()
+
+                # Add new Image to Variant
+                new_var_images = request.FILES.getlist(
+                    f'add-variant-images-{variant.id}'
+                )
+
+                print(new_var_images)
+                for image in new_var_images:
+                    print('forloop ran')
+                    try:
+                        # If image can be opened save image
+                        open_image = ImageTool.open(image)
+                        print('image open')
+
+                        if open_image.format in {'PNG', 'JPG', 'JPEG'}:
+                            Image.objects.create(
+                                name=image,
+                                album=variant.album,
+                                default=False,
+                                image=image
+                            )
+                            print(' image created ')
+
+                        else:
+                            print('image error')
+                            messages.error(
+                                request,
+                                f'Image ({image}) format is not supported'
+                            )
+
+                    except IOError:
+                        messages.error(
+                            request,
+                            f'({image}) not upload properly. \
+                            Check file is an image.'
+                        )
+
+            # Add New Variant to database
+            variant_count = int(request.POST.get('variant-count'))
+
+            for x in range(0, variant_count):
+                i = x + 1
+                name = request.POST.get(f'variant-name-{i}')
+                sku = request.POST.get(f'variant-sku-{i}')
+                var_images = request.FILES.getlist(f'variant-images-{i}')
+
+                new_variant = Variant.objects.create(
+                    product=product,
+                    name=name,
+                    sku=sku,
+                )
+
+                # Add New Variant Images to database
+                for image in var_images:
+                    try:
+                        # If image can be opened save image
+                        open_image = ImageTool.open(image)
+
+                        if open_image.format in {'PNG', 'JPG', 'JPEG'}:
+                            Image.objects.create(
+                                name=image,
+                                album=new_variant.album,
+                                default=False,
+                                image=image
+                            )
+                        else:
+                            messages.error(
+                                request,
+                                f'Image ({image}) format is not supported'
+                            )
+
+                    except IOError:
+                        messages.error(
+                            request,
+                            f'({image}) not upload properly. \
+                            Check file is an image.'
+                        )
+
             messages.success(request, 'Product Updated')
             return redirect(reverse('product_management'))
 
         # Send error maessage if form invalid
         else:
-            messages.error(request, 'Updating product failed. Please check your form inputs.')
+            messages.error(
+                request,
+                'Updating product failed. Please check your form inputs.'
+            )
     else:
         form = ProductForm(instance=product)
         messages.info(request, f'Warning you are editing {product.name}')
