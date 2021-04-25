@@ -46,13 +46,13 @@
 
                 <!--Current Variants-->
                 {% for variant in product.variant_set.all %}
-                    <fieldset id="current-variant-{{ forloop.counter }}" class="rounded mt-3">
+                    <fieldset id="current-variant-{{ variant.id }}" class="rounded mt-3">
                         <legend class="fieldset-label font-size-1 font-weight-bold p-2 w-auto">Variant - {{ variant.name|title }}</legend>
-                        <label for="current-variant-name-{{ forloop.counter }}">Variant Name*</label>
-                        <input type="text" id="current-variant-name-{{ forloop.counter }}" name="current-variant-name-{{ forloop.counter }}" class="form-input w-100 d-block" maxlength="100" value="{{ variant.name }}" required>
-                        <label for="current-variant-sku-{{ forloop.counter }}" class="mt-2">Variant SKU</label>
-                        <input type="text" id="current-variant-sku-{{ forloop.counter }}" name="current-variant-sku-{{ forloop.counter }}"  class="form-input w-100 d-block" maxlength="100" value="{{ variant.sku }}">
-                        <label for="current-variant-images-{{ forloop.counter }}" class="mt-2 d-block">Variant Images</label>
+                        <label for="current-variant-name-{{ variant.id }}">Variant Name*</label>
+                        <input type="text" id="current-variant-name-{{ variant.id }}" name="current-variant-name-{{ variant.id }}" class="form-input w-100 d-block" maxlength="100" value="{{ variant.name }}" required>
+                        <label for="current-variant-sku-{{ variant.id }}" class="mt-2">Variant SKU</label>
+                        <input type="text" id="current-variant-sku-{{ variant.id }}" name="current-variant-sku-{{ variant.id }}"  class="form-input w-100 d-block" maxlength="100" {% if variant.sku %}value="{{ variant.sku }}"{% endif %}>
+                        <label for="current-variant-images-{{ variant.id }}" class="mt-2 d-block">Variant Images</label>
                         {% if variant.album.images.all|length > 0 %}
                             <!--Variant Iamges-->
                             <p class="info-highlight">Click to select default</p>
@@ -63,7 +63,7 @@
                                         <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}">
                                     </label>
                                     <input type="checkbox" id="delete-image-{{ image.id }}" name="delete-image-{{image.id}}" value="delete">
-                                    <label for="delete-image-{{image.id}}" class="highlight b-block">Delete</label>
+                                    <label for="delete-image-{{ image.id }}" class="highlight b-block">Delete</label>
                                 </div>
                             {% endfor %}
                         {% else %}
@@ -73,7 +73,10 @@
                         <input type="file" id="add-variant-images-{{ variant.id }}" name="add-variant-images-{{ variant.id }}" class="d-block mt-4" multiple>
                         <p class="info-highlight">Only .png and .jpg files are supported</p>
                         <input type="hidden" id="current-variant-id" name="current-variant-id" value="{{ variant.id }}">
-                        <button type="button" class="variant-delete cta cta--delete d-block mt-4" value="#variant-{{ variant.id }}">Delete</button>
+
+                        <!--Delete Variant-->
+                        <input type="checkbox" id="delete-variant-{{ variant.id }}" name="delete-variant-{{ variant.id }}" value="{{variant.id}}">
+                        <label for="delete-variant-{{ variant.id }}" class="highlight b-block font-weight-bold">Delete Variant On Save</label>
                     </fieldset>
                 {% endfor %}
 

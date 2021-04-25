@@ -6,7 +6,7 @@ $('#add-variant').on('click', function(){
     variantAmount = $('.variant').length;
     variantInputs = `
         <fieldset id="variant-${variantAmount + 1}" class="variant rounded mt-3">
-            <legend class="fieldset-label font-size-1 font-weight-bold p-2 w-auto">Variant ${variantAmount + 1}</legend>
+            <legend class="fieldset-label font-size-1 font-weight-bold p-2 w-auto">New Variant ${variantAmount + 1}</legend>
             <label for="variant-name-${variantAmount + 1}">Variant Name*</label>
             <input type="text" id="variant-name-${variantAmount + 1}" name="variant-name-${variantAmount + 1}" class="w-100 d-block" maxlength="100" required>
             <label for="variant-sku-${variantAmount + 1}" class="mt-2">Variant SKU</label>

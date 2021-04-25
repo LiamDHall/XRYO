@@ -366,6 +366,16 @@ def edit_product(request, product_id):
 
             # Update Variant images
             for variant in product.variant_set.all():
+
+                variant.name = request.POST.get(
+                    f'current-variant-name-{variant.id}'
+                )
+                variant.sku = request.POST.get(
+                    f'current-variant-sku-{variant.id}'
+                )
+
+                variant.save()
+
                 # Set default image
                 if request.POST.get(
                     f'variant-default-image-{ variant.id }'
