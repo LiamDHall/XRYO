@@ -37,6 +37,7 @@ def resize_image_on_image_creation(sender, instance, created, **kwargs):
     """ Resize image when image is created
     """
     instance.resize_image(created)
+    instance.set_default()
 
 
 @receiver(post_save, sender=Review)

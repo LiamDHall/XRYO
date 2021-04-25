@@ -55,6 +55,26 @@ class Image(models.Model):
             image = image.resize((1600, 2000))
             image.save(f'{media_url}{self.image}')
 
+    def set_default(self):
+        """Set default the sender image as default of
+        album and remove default from the current
+        default image
+        """
+
+        album = self.album
+        default_images = Image.objects.all().filter(
+            album=album, default=True
+        )
+        print(default_images)
+
+        if len(default_images) > 1 and self.default is True:
+            for image in default_images:
+                image.default = False
+                image.save()
+
+            self.default = True
+            self.save()
+
     def __str__(self):
         return self.name
 
