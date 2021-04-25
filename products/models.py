@@ -5,9 +5,8 @@ from decimal import Decimal
 
 from .feilds import IntegerRangeField
 
-from PIL import Image
+from PIL import Image as ImageTool
 
-ImageTool = Image
 media_url = settings.MEDIA_URL.lstrip("/")
 
 
