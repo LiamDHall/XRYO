@@ -332,6 +332,7 @@ def edit_product(request, product_id):
                     'product-default-image'
                 ))
                 for image in product.album.images.all():
+                    
                     if image.id == default_image_id:
                         image.default = True
                         image.save()
@@ -364,65 +365,71 @@ def edit_product(request, product_id):
                         Check file is an image.'
                     )
 
-            # Update Variant images
+            # Update Variant
             for variant in product.variant_set.all():
 
-                variant.name = request.POST.get(
-                    f'current-variant-name-{variant.id}'
-                )
-                variant.sku = request.POST.get(
-                    f'current-variant-sku-{variant.id}'
+                # Delete variant if checked for deletion
+                delete_state = request.POST.get(
+                    f'delete-variant-{ variant.id }'
                 )
 
-                variant.save()
+                if delete_state == 'on':
+                    variant.delete()
 
-                # Set default image
-                if request.POST.get(
-                    f'variant-default-image-{ variant.id }'
-                ) is not None:
-                    default_image = int(request.POST.get(
+                # Else update variant
+                else:
+                    variant.name = request.POST.get(
+                        f'current-variant-name-{variant.id}'
+                    )
+                    variant.sku = request.POST.get(
+                        f'current-variant-sku-{variant.id}'
+                    )
+
+                    variant.save()
+
+                    # Set default image
+                    if request.POST.get(
                         f'variant-default-image-{ variant.id }'
-                    ))
-                    for image in variant.album.images.all():
-                        if image.id == default_image:
-                            image.default = True
-                            image.save()
+                    ) is not None:
+                        default_image = int(request.POST.get(
+                            f'variant-default-image-{ variant.id }'
+                        ))
+                        for image in variant.album.images.all():
+                            if image.id == default_image:
+                                image.default = True
+                                image.save()
 
-                # Add new Image to Variant
-                new_var_images = request.FILES.getlist(
-                    f'add-variant-images-{variant.id}'
-                )
+                    # Add new Image to Variant
+                    new_var_images = request.FILES.getlist(
+                        f'add-variant-images-{variant.id}'
+                    )
 
-                print(new_var_images)
-                for image in new_var_images:
-                    print('forloop ran')
-                    try:
-                        # If image can be opened save image
-                        open_image = ImageTool.open(image)
-                        print('image open')
+                    for image in new_var_images:
 
-                        if open_image.format in {'PNG', 'JPG', 'JPEG'}:
-                            Image.objects.create(
-                                name=image,
-                                album=variant.album,
-                                default=False,
-                                image=image
-                            )
-                            print(' image created ')
+                        try:
+                            # If image can be opened save image
+                            open_image = ImageTool.open(image)
 
-                        else:
-                            print('image error')
+                            if open_image.format in {'PNG', 'JPG', 'JPEG'}:
+                                Image.objects.create(
+                                    name=image,
+                                    album=variant.album,
+                                    default=False,
+                                    image=image
+                                )
+
+                            else:
+                                messages.error(
+                                    request,
+                                    f'Image ({image}) format is not supported'
+                                )
+
+                        except IOError:
                             messages.error(
                                 request,
-                                f'Image ({image}) format is not supported'
+                                f'({image}) not upload properly. \
+                                Check file is an image.'
                             )
-
-                    except IOError:
-                        messages.error(
-                            request,
-                            f'({image}) not upload properly. \
-                            Check file is an image.'
-                        )
 
             # Add New Variant to database
             variant_count = int(request.POST.get('variant-count'))

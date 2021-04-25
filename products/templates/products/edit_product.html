@@ -33,7 +33,7 @@
                             <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}">
                             {{image.default}}
                         </label>
-                        <input type="checkbox" id="delete-image-{{image.id}}" name="delete-image-{{image.id}}" value="delete">
+                        <input type="checkbox" id="delete-image-{{image.id}}" name="delete-image-{{image.id}}">
                         <label for="delete-image-{{image.id}}" class="highlight b-block">Delete</label>
                     {% endfor %}
                 {% else %}
@@ -62,7 +62,7 @@
                                     <label for="variant-{{ image.id }}">
                                         <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}">
                                     </label>
-                                    <input type="checkbox" id="delete-image-{{ image.id }}" name="delete-image-{{image.id}}" value="delete">
+                                    <input type="checkbox" id="delete-image-{{ image.id }}" name="delete-image-{{image.id}}">
                                     <label for="delete-image-{{ image.id }}" class="highlight b-block">Delete</label>
                                 </div>
                             {% endfor %}
@@ -75,7 +75,7 @@
                         <input type="hidden" id="current-variant-id" name="current-variant-id" value="{{ variant.id }}">
 
                         <!--Delete Variant-->
-                        <input type="checkbox" id="delete-variant-{{ variant.id }}" name="delete-variant-{{ variant.id }}" value="{{variant.id}}">
+                        <input type="checkbox" id="delete-variant-{{ variant.id }}" name="delete-variant-{{ variant.id }}" class="delete-current-variant">
                         <label for="delete-variant-{{ variant.id }}" class="highlight b-block font-weight-bold">Delete Variant On Save</label>
                     </fieldset>
                 {% endfor %}

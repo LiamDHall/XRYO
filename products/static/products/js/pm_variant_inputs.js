@@ -69,3 +69,15 @@ $(document).on('click', '.variant-delete', function(){
         button[0].setAttribute('value', `#variant-${i + 1}`);
     }
 })
+
+// // Set variant to be deleted by toggling input
+// $('.delete-current-variant').on('change', function(){
+//     value = $(this).val()
+//     if (value != 'delete') {
+//         $(this).val('delete')
+//     }
+
+//     else {
+//         $(this).val('no delete')
+//     }
+// })
