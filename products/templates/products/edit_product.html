@@ -33,8 +33,8 @@
                             <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}">
                             {{image.default}}
                         </label>
-                        <input type="checkbox" id="delete-image-{{image.id}}" name="delete-image-{{image.id}}">
-                        <label for="delete-image-{{image.id}}" class="highlight b-block">Delete</label>
+                        <input type="checkbox" id="delete-product-image-{{image.id}}" name="delete-product-image-{{image.id}}">
+                        <label for="delete-product-image-{{image.id}}" class="highlight b-block">Delete</label>
                     {% endfor %}
                 {% else %}
                     <p><strong>No Images</strong></p>
@@ -62,8 +62,8 @@
                                     <label for="variant-{{ image.id }}">
                                         <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}">
                                     </label>
-                                    <input type="checkbox" id="delete-image-{{ image.id }}" name="delete-image-{{image.id}}">
-                                    <label for="delete-image-{{ image.id }}" class="highlight b-block">Delete</label>
+                                    <input type="checkbox" id="delete-variant-image-{{ image.id }}" name="delete-variant-image-{{ image.id }}">
+                                    <label for="delete-variant-image-{{ image.id }}" class="highlight b-block">Delete</label>
                                 </div>
                             {% endfor %}
                         {% else %}

@@ -327,12 +327,23 @@ def edit_product(request, product_id):
             form.save()
 
             # Update Product images
-            if request.POST.get('product-default-image') is not None:
-                default_image_id = int(request.POST.get(
-                    'product-default-image'
-                ))
-                for image in product.album.images.all():
-                    
+            for image in product.album.images.all():
+
+                # Delete Product Image if marked
+                delete_state = request.POST.get(
+                    f'delete-product-image-{ image.id }'
+                )
+
+                if delete_state == 'on':
+                    image.delete()
+
+                # Set default Image of Product
+                elif request.POST.get('product-default-image') is not None:
+                    default_image_id = int(request.POST.get(
+                        'product-default-image'
+                    ))
+
+                    # Set default Image of Product
                     if image.id == default_image_id:
                         image.default = True
                         image.save()
@@ -388,13 +399,25 @@ def edit_product(request, product_id):
                     variant.save()
 
                     # Set default image
-                    if request.POST.get(
-                        f'variant-default-image-{ variant.id }'
-                    ) is not None:
-                        default_image = int(request.POST.get(
+                    for image in variant.album.images.all():
+
+                        # Delete Varinat Image if marked
+                        delete_state = request.POST.get(
+                            f'delete-variant-image-{ image.id }'
+                        )
+
+                        print(f'delete state ==== {delete_state}')
+
+                        if delete_state == 'on':
+                            image.delete()
+
+                        # Else set default if set
+                        elif request.POST.get(
                             f'variant-default-image-{ variant.id }'
-                        ))
-                        for image in variant.album.images.all():
+                        ) is not None:
+                            default_image = int(request.POST.get(
+                                f'variant-default-image-{ variant.id }'
+                            ))
                             if image.id == default_image:
                                 image.default = True
                                 image.save()
