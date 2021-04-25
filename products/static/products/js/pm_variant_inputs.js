@@ -13,6 +13,8 @@ $('#add-variant').on('click', function(){
             <input type="text" id="variant-sku-${variantAmount + 1}" name="variant-sku-${variantAmount + 1}"  class="w-100 d-block" maxlength="100">
             <label for="variant-images-${variantAmount + 1}" class="mt-2 d-block">Variant Images</label>
             <input type="file" id="variant-images-${variantAmount + 1}" name="variant-images-${variantAmount + 1}" multiple>
+            <p class="info-highlight mt-3">Only .png and .jpg files are supported</p>
+            <p class="info-highlight mt-3">Default image can be set on the edit page after product is saved</p>
             <button type="button" class="variant-delete cta cta--delete d-block mt-4" value="#variant-${variantAmount + 1}">Delete</button>
         </fieldset>
     `;

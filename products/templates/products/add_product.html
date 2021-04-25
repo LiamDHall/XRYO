@@ -10,7 +10,7 @@
     <div class="page-header container mb-3">
         <h1>Add Product</h1>
         <hr class="w-100">
-        <p class="info-highlight">On submission if a lot of photos are uploaded the page will take a little while to process.</p>
+        <p class="info-highlight">On submission the form may take a little while to to process</p>
         <p>Feilds with * are required</p>
     </div>
 {% endblock %}
@@ -23,12 +23,15 @@
                 {{ form | crispy }}
                 <label for="product-images" class="mt-2 d-block">Product Images</label>
                 <input type="file" id="product-images" name="product-images" multiple>
+                <p class="info-highlight mt-3">Only .png and .jpg files are supported</p>
+                <p class="info-highlight mt-3">Default image can be set on the edit page after product is added</p>
                 <h2 class="mt-5">Variants</h2>
                 <hr>
                 <button id="add-variant" class="cta cta--add d-block mt-3" type="button"><i class="fas fa-plus"></i> Add Variant</button>
                 <div class="text-right mt-4">
-                    <a class="cta cta--thrid" href="{% url 'products' %}">Cancel</a>
+                    <a class="cta cta--thrid" href="{% url 'product_management' %}">Cancel</a>
                     <button class="cta cta--prim" type="submit">Add Product</button>
+                    <p class="info-highlight mt-3">After save stay on this page until the site reloads</p>
                 </div>
                 <input type="hidden" id="variant-count" name="variant-count" value="0">
             </form>
