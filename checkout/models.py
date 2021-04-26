@@ -30,7 +30,7 @@ class Order(models.Model):
         blank=False
     )
     email = models.EmailField(
-        max_length=254,
+        max_length=100,
         null=False,
         blank=False
     )

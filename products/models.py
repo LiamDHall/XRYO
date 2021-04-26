@@ -27,14 +27,14 @@ class ImageAlbum(models.Model):
     Allow many to many relationship between Variant or Product and
     images.
     """
-    name = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=250, null=True, blank=True)
 
     def __str__(self):
         return self.name
 
 
 class Image(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=200)
     default = models.BooleanField(default=False)
     album = models.ForeignKey(
         ImageAlbum,
@@ -84,8 +84,8 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
 
-    name = models.CharField(max_length=100)
-    display_name = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=50)
+    display_name = models.CharField(max_length=75, null=True, blank=True)
 
     def get_display_name(self):
         return self.display_name
@@ -99,13 +99,13 @@ class Product(models.Model):
         'Category', null=True, blank=True, on_delete=models.SET_NULL
     )
     class_name = 'product'
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=50)
     price = models.DecimalField(
         max_digits=6,
         decimal_places=2,
     )
     sizes = models.BooleanField(default=False, null=True, blank=True)
-    sku = models.CharField(max_length=100, null=True, blank=True)
+    sku = models.CharField(max_length=25, null=True, blank=True)
     description = models.TextField(blank=True)
     rating = models.DecimalField(max_digits=3, decimal_places=1, default=0.0)
     rating_total = models.PositiveIntegerField(default=0)
@@ -155,9 +155,9 @@ class Variant(models.Model):
         'Product', on_delete=models.CASCADE
     )
     class_name = 'variant'
-    sku = models.CharField(max_length=100, null=True, blank=True)
+    sku = models.CharField(max_length=25, null=True, blank=True)
     name = models.CharField(
-        max_length=100,
+        max_length=50,
         null=False,
         blank=False,
     )
@@ -208,7 +208,7 @@ class Review(models.Model):
     )
     date = models.DateTimeField(auto_now_add=True)
     user_name = models.CharField(
-        max_length=40,
+        max_length=25,
         null=False,
         blank=False,
         default='Anonymous'
