@@ -26,58 +26,77 @@
 
                 <!--Product Images-->
                 {% if product.album.images.all|length > 0 %}
-                    <p class="info-highlight">Click to select default</p>
+                    <p class="info-highlight">Click to select default on save</p>
                     {% for image in product.album.images.all %}
-                    <div class="product-image-container d-inline">
+                    <!--Select Default Product Image-->
+                    <div class="product-image-container d-inline-block">
                         <input type="radio" id="{{ image.id }}" name="product-default-image" value="{{ image.id }}" class="image-selector d-none" {% if image.default is True %} checked {% endif %}>
                         <label for="{{ image.id }}" class="image-label {% if image.default is True %}default{% endif %}">
                             <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ product.name }}">
                         </label>
-                        <input type="checkbox" id="delete-product-image-{{image.id}}" name="delete-product-image-{{image.id}}">
-                        <label for="delete-product-image-{{image.id}}" class="highlight b-block">Delete</label>
+
+                        <!--Delete Product Image-->
+                        <div class="d-block text-center">
+                            <input type="checkbox" id="delete-product-image-{{image.id}}" name="delete-product-image-{{image.id}}">
+                            <label for="delete-product-image-{{image.id}}" class="highlight b-block">Delete</label>
+                        </div>
                     </div>
                     {% endfor %}
                 {% else %}
                     <p><strong>No Images</strong></p>
                 {% endif %}
-                <input type="file" id="product-images" name="product-images" class="d-block mt-4" multiple>
+                <!--Upload Product Images-->
+                <div class="image-upload">
+                    <div class="cta cta--third d-block file-input mt-3">
+                        Select Image(s)<input type="file" id="product-images" name="product-images" class="images-input d-block mt-4" multiple>
+                    </div>
+                    <p class="filename add-highlight mt-3"></p>
+                </div>
                 <p class="info-highlight mt-3">Only .png and .jpg files are supported</p>
                 <h2 class="mt-5">Variants</h2>
                 <hr>
 
                 <!--Current Variants-->
                 {% for variant in product.variant_set.all %}
-                    <fieldset id="current-variant-{{ variant.id }}" class="rounded mt-3">
+                    <fieldset id="current-variant-{{ variant.id }}" class="rounded mt-1">
                         <legend class="fieldset-label font-size-1 font-weight-bold p-2 w-auto">Variant - {{ variant.name|title }}</legend>
                         <label for="current-variant-name-{{ variant.id }}">Variant Name*</label>
                         <input type="text" id="current-variant-name-{{ variant.id }}" name="current-variant-name-{{ variant.id }}" class="form-input w-100 d-block" maxlength="100" value="{{ variant.name }}" required>
-                        <label for="current-variant-sku-{{ variant.id }}" class="mt-2">Variant SKU</label>
+                        <label for="current-variant-sku-{{ variant.id }}" class="mt-4">Variant SKU</label>
                         <input type="text" id="current-variant-sku-{{ variant.id }}" name="current-variant-sku-{{ variant.id }}"  class="form-input w-100 d-block" maxlength="100" {% if variant.sku %}value="{{ variant.sku }}"{% endif %}>
-                        <label for="current-variant-images-{{ variant.id }}" class="mt-2 d-block">Variant Images</label>
+                        <label for="current-variant-images-{{ variant.id }}" class="mt-4 d-block">Variant Images</label>
                         {% if variant.album.images.all|length > 0 %}
                             <!--Variant Iamges-->
-                            <p class="info-highlight">Click to select default</p>
+                            <p class="info-highlight">Click to select default on save</p>
                             {% for image in variant.album.images.all %}
-                                <div class="variant-image-container d-inline">
+                                <div class="variant-image-container d-inline-block">
                                     <input type="radio" id="variant-{{ image.id }}" name="variant-default-image-{{ variant.id }}" class="variant-image-selector d-none" value="{{ image.id }}" {% if image.default is True %} checked {% endif %}>
-                                    <label for="variant-{{ image.id }}" class="image-label {% if image.default is True %} default {% endif %}">
+                                    <label for="variant-{{ image.id }}" class="image-label d-block {% if image.default is True %} default {% endif %}">
                                         <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ product.name }} - {{ variant.name }}">
                                     </label>
-                                    <input type="checkbox" id="delete-variant-image-{{ image.id }}" name="delete-variant-image-{{ image.id }}">
-                                    <label for="delete-variant-image-{{ image.id }}" class="highlight b-block">Delete</label>
+                                    <div class="d-block text-center">
+                                        <input type="checkbox" id="delete-variant-image-{{ image.id }}" name="delete-variant-image-{{ image.id }}">
+                                        <label for="delete-variant-image-{{ image.id }}" class="highlight b-block">Delete</label>
+                                    </div>
                                 </div>
                             {% endfor %}
                         {% else %}
                             <p><strong>No Images</strong></p>
                         {% endif %}
                         <!--Add Variant Image-->
-                        <input type="file" id="add-variant-images-{{ variant.id }}" name="add-variant-images-{{ variant.id }}" class="d-block mt-4" multiple>
-                        <p class="info-highlight">Only .png and .jpg files are supported</p>
+                        <div class="image-upload">
+                            <div class="cta cta--third d-block file-input mt-3">
+                                Select Image(s)<input type="file" id="add-variant-images-{{ variant.id }}" name="add-variant-images-{{ variant.id }}" class="images-input d-block mt-4" multiple>
+                            </div>
+                            <p class="filename add-highlight mt-3"></p>
+                        </div>
+                        <p class="info-highlight mt-4">Only .png and .jpg files are supported</p>
                         <input type="hidden" id="current-variant-id" name="current-variant-id" value="{{ variant.id }}">
 
                         <!--Delete Variant-->
                         <input type="checkbox" id="delete-variant-{{ variant.id }}" name="delete-variant-{{ variant.id }}" class="delete-current-variant">
                         <label for="delete-variant-{{ variant.id }}" class="highlight b-block font-weight-bold">Delete Variant On Save</label>
+                        <hr>
                     </fieldset>
                 {% endfor %}
 

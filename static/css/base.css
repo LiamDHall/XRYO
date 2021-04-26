@@ -83,6 +83,11 @@ ul {
     font-weight: 700;
 }
 
+.add-highlight {
+    color: limegreen;
+    font-weight: 700;
+}
+
 /*--Text--*/
 
 :is(h1, h2, h3, h4, h5, h6) {
@@ -210,6 +215,39 @@ button:focus {
 /*---Colour Varibales--*/
 :root {
     --primary-cta: rgb(0, 140, 255);
+}
+
+/*------------------------------------------------------Form--*/
+.form-input {
+    padding: 7.5px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.form-input:focus {
+    border: 1px solid var(--primary-cta);
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+}
+
+/*--File Input--*/
+.file-input {
+    position: relative;
+    overflow: hidden;
+}
+
+.file-input input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+#filename {
+    color: var(--primary-cta);
 }
 
 /*------------------------------------------------------Site Header--*/

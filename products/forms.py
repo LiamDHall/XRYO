@@ -11,6 +11,7 @@ class ProductForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         """Set display names to be displayed in form
+        and add form styling class
         """
 
         super().__init__(*args, **kwargs)
@@ -18,6 +19,8 @@ class ProductForm(forms.ModelForm):
         display_names = [(c.id, c.get_display_name()) for c in categories]
 
         self.fields['category'].choices = display_names
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-input'
 
 
 class ReviewForm(forms.ModelForm):
@@ -32,3 +35,11 @@ class ReviewForm(forms.ModelForm):
             attrs={'rows': 3, 'cols': 20}
         )
     )
+
+    def __init__(self, *args, **kwargs):
+        """Set form styling class
+        """
+
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-input'

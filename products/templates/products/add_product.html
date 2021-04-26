@@ -16,13 +16,20 @@
 {% endblock %}
 
 {% block content %}
+    <!--Add Product-->
     <div class="row container">
         <div class="col-12">
             <form method="POST" action="{% url 'add_product' %}" class="form mb-2" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form | crispy }}
+                <!--Product Images-->
                 <label for="product-images" class="mt-2 d-block">Product Images</label>
-                <input type="file" id="product-images" name="product-images" multiple>
+                <div class="image-upload">
+                    <div class="cta cta--third d-block file-input mt-3">
+                        Select Image(s)<input type="file" id="product-images" name="product-images" class="images-input" multiple>
+                    </div>
+                    <p class="filename add-highlight mt-3"></p>
+                </div>
                 <p class="info-highlight mt-3">Only .png and .jpg files are supported</p>
                 <p class="info-highlight mt-3">Default image can be set on the edit page after product is added</p>
                 <h2 class="mt-5">Variants</h2>
