@@ -69,3 +69,14 @@ $(document).on('click', '.variant-delete', function(){
         button[0].setAttribute('value', `#variant-${i + 1}`);
     }
 })
+
+// Indicator to show which image will be set to default on edit page
+$('.image-selector').on('change', function() {
+    $('.image-selector').parent().find('label').removeClass('default')
+    $('.image-selector:radio:checked').next('label').addClass('default');
+})
+
+$('.variant-image-selector').on('change', function() {
+    $('.variant-image-selector').parent().find('label').removeClass('default')
+    $('.variant-image-selector:radio:checked').next('label').addClass('default');
+})

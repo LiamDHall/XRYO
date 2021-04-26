@@ -19,7 +19,7 @@
 {% block content %}
     <div class="row container">
         <div class="col-12">
-            <form method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2" enctype="multipart/form-data">
+            <form id="edit-product" method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form | crispy }}
                 <label for="product-images" class="mt-2 d-block">Product Images</label>
@@ -28,13 +28,14 @@
                 {% if product.album.images.all|length > 0 %}
                     <p class="info-highlight">Click to select default</p>
                     {% for image in product.album.images.all %}
-                        <input type="radio" id="{{ image.id }}" name="product-default-image" value="{{ image.id }}" {% if image.default is True %} checked {% endif %}>
-                        <label for="{{ image.id }}">
-                            <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}">
-                            {{image.default}}
+                    <div class="product-image-container d-inline">
+                        <input type="radio" id="{{ image.id }}" name="product-default-image" value="{{ image.id }}" class="image-selector d-none" {% if image.default is True %} checked {% endif %}>
+                        <label for="{{ image.id }}" class="image-label {% if image.default is True %}default{% endif %}">
+                            <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ product.name }}">
                         </label>
                         <input type="checkbox" id="delete-product-image-{{image.id}}" name="delete-product-image-{{image.id}}">
                         <label for="delete-product-image-{{image.id}}" class="highlight b-block">Delete</label>
+                    </div>
                     {% endfor %}
                 {% else %}
                     <p><strong>No Images</strong></p>
@@ -57,10 +58,10 @@
                             <!--Variant Iamges-->
                             <p class="info-highlight">Click to select default</p>
                             {% for image in variant.album.images.all %}
-                                <div class="d-inline">
-                                    <input type="radio" id="variant-{{ image.id }}" name="variant-default-image-{{ variant.id }}" value="{{ image.id }}" {% if image.default is True %} checked {% endif %}>
-                                    <label for="variant-{{ image.id }}">
-                                        <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}">
+                                <div class="variant-image-container d-inline">
+                                    <input type="radio" id="variant-{{ image.id }}" name="variant-default-image-{{ variant.id }}" class="variant-image-selector d-none" value="{{ image.id }}" {% if image.default is True %} checked {% endif %}>
+                                    <label for="variant-{{ image.id }}" class="image-label {% if image.default is True %} default {% endif %}">
+                                        <img width="120" height="150" class="mb-2" src="{{ MEDIA_URL }}{{ image.image }}" alt="{{ product.name }} - {{ variant.name }}">
                                     </label>
                                     <input type="checkbox" id="delete-variant-image-{{ image.id }}" name="delete-variant-image-{{ image.id }}">
                                     <label for="delete-variant-image-{{ image.id }}" class="highlight b-block">Delete</label>

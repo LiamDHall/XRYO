@@ -183,6 +183,10 @@
     color: white
 }
 
+.default {
+    border: 4px solid var(--primary-cta);
+}
+
 @media screen and (max-width: 567px) {
     .pm-small-text {
         font-size: 0.75rem;
