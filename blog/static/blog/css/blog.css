@@ -34,20 +34,6 @@ main {
     }
 }
 
-.post-form-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 450;
-    color: black;
-}
-
-.unfix {
-    position: static;
-    width: 100%;
-}
-
 .blog-post {
     border-radius: 10px;
     min-height: 250px;
