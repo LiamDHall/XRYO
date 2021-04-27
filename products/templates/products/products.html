@@ -21,8 +21,9 @@
         </h1>
         <p class="d-inline-block">[{{ no_of_products }}]</p>
         <hr class="w-100">
+        <!--Sorting & Filtering-->
         <div class="filters">
-            <p class="d-inline-block font-weight-bold mb-0">Filters:</p>
+            <p class="d-inline-block font-weight-bold mb-0">Sorting:</p>
             <button class="btn d-inline-block font-weight-bold text-left ml-3" type="button" data-toggle="collapse" data-target="#sort" aria-expanded="false" aria-label="Toggle Price">
                 SORT <span class="sort-icon"><i class="fas fa-chevron-down"></i></span>
             </button>
@@ -35,10 +36,10 @@
             </div>
         </div>
         {% if selected_categories or selected_sorting != 'None_None' %}
-        <div class="py-3">
-            <p class="d-inline-block font-weight-bold mb-0">Current Sorting:</p>
-            <a href="{% url 'products' %}" class="clear-sort">{{ selected_sorting }} <i class="fas fa-times"></i></a>
-        </div>
+            <div class="py-3">
+                <p class="d-inline-block font-weight-bold mb-0">Current Sorting:</p>
+                <button class="sort__btn" value="reset" type="button">{{ selected_sorting }} <i class="fas fa-times"></i></button>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
