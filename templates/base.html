@@ -117,7 +117,7 @@
                             {% endif %}
                         </span>
                     </div>
-                    <span class="table-cell">
+                    <span class="table-cell mobile-hidden">
                         {% if bag_total %}
                             £{{ bag_total|floatformat:2 }}
                         {% else %}
@@ -224,12 +224,22 @@
                 </ul>
             </div>
 
-            <!--Support-->
+            <!--News Social-->
             <div class="footer__item col-12 col-md-4 mt-5 mt-md-0">
-                <h4 class="footer__title"><strong>SUPPORT</strong></h4>
-                <ul class="footer__list">
+                <h4 class="footer__title"><strong>Keep Up To Date</strong></h4>
+                <a href="{% url 'blog' %}" class="footer_blog">News Blog</a>
+                <ul class="footer__socail mt-3">
                     <li>
-                        <a href="#" target="_blank">Size Chart</a>
+                        <a href="https://www.facebook.com/" target="_blank" aria-label="open our facebook page"><i class="fab fa-facebook-square"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.youtube.com/" target="_blank" aria-label="open our youtube page"><i class="fab fa-youtube"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.twitter.com/" target="_blank" aria-label="open our twitter page"><i class="fab fa-twitter"></i></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/" target="_blank" aria-label="open our instagram page"><i class="fab fa-instagram"></i></a>
                     </li>
                 </ul>
             </div>
