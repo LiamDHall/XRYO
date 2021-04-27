@@ -404,7 +404,7 @@ button:focus {
 
     .navbar-collapse {
         position: absolute;
-        top: 110px;
+        top: 105px;
         left:0;
         width: 100%;
         text-align: center;
@@ -511,6 +511,10 @@ button:focus {
 @media screen and (max-width: 375px) {
     .info-banner__text {
         font-size: 0.8rem;
+    }
+
+    .navbar-collapse {
+        top: 100px;
     }
 }
 
