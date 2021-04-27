@@ -56,7 +56,7 @@ class Image(models.Model):
         if created:
             image = ImageTool.open(f'{media_url}{self.image}')
             image = image.resize((1600, 2000))
-            image.save(f'{media_url}{self.image}')
+            image.save()
 
     def set_default(self):
         """Set default the sender image as default of
