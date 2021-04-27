@@ -90,7 +90,7 @@ ul {
 
 /*--Text--*/
 
-:is(h1, h2, h3, h4, h5, h6) {
+h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
@@ -209,7 +209,7 @@ button:focus {
 
 .cta--icon:hover,
 .cta--icon:focus  {
-    background-color: none;
+    background: none;
 }
 
 /*---Colour Varibales--*/

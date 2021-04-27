@@ -47,12 +47,11 @@ main {
 @media screen and (max-width: 992px) {
     .post-image {
         height: 300px;
-        margin-bottom: none;
+        margin-bottom: 0;
     }
 }
 
 .post-image {
-    background-size: fit;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -61,7 +60,7 @@ main {
 @media screen and (max-width: 567px) {
     h1 {
         font-size: 2rem;
-        margin-bottom: none;
+        margin-bottom: 0;
     }
 }
 
