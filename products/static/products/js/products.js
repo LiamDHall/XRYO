@@ -25,6 +25,25 @@ $('.sort__btn').on('click', function() {
     }
 })
 
+// Filter Toggler
+$('.filter__btn').on('click', function() {
+    var filterBtn = $(this);
+    var currentUrl = new URL(window.location);
+    var filterKey = filterBtn.val();
+    if(filterKey != "reset"){
+        var filter = filterKey;
+
+        currentUrl.searchParams.set("category", filter);
+
+        window.location.replace(currentUrl);
+    }
+    else {
+        currentUrl.searchParams.delete("category");
+
+        window.location.replace(currentUrl);
+    }
+})
+
 // Size Toggler
 $('.size-btn').on('click', function() {
     console.log('i ran')

@@ -69,6 +69,7 @@ def all_products(request):
         'no_of_products': no_of_products,
         'selected_catergory': categories,
         'selected_sorting': selected_sorting,
+        'all_cats': Category.objects.all()
     }
 
     return render(request, 'products/products.html', context)

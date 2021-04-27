@@ -23,11 +23,20 @@
         <hr class="w-100">
         <!--Sorting & Filtering-->
         <div class="filters">
-            <p class="d-inline-block font-weight-bold mb-0">Sorting:</p>
-            <button class="btn d-inline-block font-weight-bold text-left ml-3" type="button" data-toggle="collapse" data-target="#sort" aria-expanded="false" aria-label="Toggle Price">
+            <p class="d-inline-block font-weight-bold mb-0">FILTER:</p>
+            <button class="btn d-inline-block font-weight-bold text-left ml-2 px-1" type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-label="Toggle Filter">
+                TYPE <span class="sort-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <button class="btn d-inline-block font-weight-bold text-left ml-2 px-1" type="button" data-toggle="collapse" data-target="#sort" aria-expanded="false" aria-label="Toggle Sort">
                 SORT <span class="sort-icon"><i class="fas fa-chevron-down"></i></span>
             </button>
-            <div id="sort" class="sort filters__dropdown collapse">
+            <div id="filter" class="filter filters__dropdown collapse">
+                <p class="font-weight-bold mb-0 d-inline-block">FILTER BY:</p>
+                {% for cat in all_cats %}
+                    <button class="filter__btn {% if cat in selected_catergory %} current {% endif %}" value="{{ cat.name|lower }}" type="button">{{ cat.name|title }}</button>
+                {% endfor %}
+            </div>
+            <div id="sort" class="sort filters__dropdown collapse mt-3">
                 <p class="font-weight-bold mb-0 d-inline-block">SORT BY:</p>
                 <button class="sort__btn {%if selected_sorting == 'name_asc' %} current {% endif %}" value="name_asc" type="button">A-Z</button>
                 <button class="sort__btn {%if selected_sorting == 'name_desc' %} current {% endif %}" value="name_desc" type="button">Z-A</button>
@@ -35,7 +44,13 @@
                 <button class="sort__btn {%if selected_sorting == 'price_asc' %} current {% endif %}" value="price_desc" type="button">Price: HIGH-LOW</button>
             </div>
         </div>
-        {% if selected_categories or selected_sorting != 'None_None' %}
+        {% if selected_catergory|length > 0 %}
+            <div class="py-3">
+                <p class="d-inline-block font-weight-bold mb-0">Current Filter:</p>
+                <button class="filter__btn" value="reset" type="button">{{ selected_catergory.first|title }} <i class="fas fa-times"></i></button>
+            </div>
+        {% endif %}
+        {% if selected_sorting != 'None_None' %}
             <div class="py-3">
                 <p class="d-inline-block font-weight-bold mb-0">Current Sorting:</p>
                 <button class="sort__btn" value="reset" type="button">{{ selected_sorting }} <i class="fas fa-times"></i></button>
@@ -47,43 +62,51 @@
 {% block content %}
     <div class="container-fuild">
         <div class="row">
-            {% for product in products %}
-                {% if product.variant_set.all|length > 0 %}
-                    {% for variant in product.variant_set.all %}
+            {% if products|length > 0 %}
+                {% for product in products %}
+                    {% if product.variant_set.all|length > 0 %}
+                        {% for variant in product.variant_set.all %}
+                            <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
+                                <div class="card border-0">
+                                    <a href="{% url 'product_variant' product.id variant.id %}">
+                                        <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
+                                    </a>
+                                    <a href="{% url 'product_variant' product.id variant.id %}">
+                                        <div class="card-body p-1">
+                                            {% if product.variant_set.all|length > 1 %}
+                                                <small class="mb-0">{{ product.variant_set.all|length }} Variants</small>
+                                            {% endif %}
+                                            <p class="mb-0 {% if product.variant_set.all|length <= 1 %}mt-4{% endif %}"><strong>{{ product.name|title }}</strong></p>
+                                            <p class="float-left mb-0">{{ variant.name|title }}</p>
+                                            <p class="float-right mb-0">£{{ product.price }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div> 
+                        {% endfor %}
+                    {% else %}
                         <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
                             <div class="card border-0">
-                                <a href="{% url 'product_variant' product.id variant.id %}">
+                                <a href="{% url 'product_detail' product.id %}" class="">
                                     <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
                                 </a>
-                                <a href="{% url 'product_variant' product.id variant.id %}">
+                                <a href="{% url 'product_detail' product.id %}">
                                     <div class="card-body p-1">
-                                        {% if product.variant_set.all|length > 1 %}
-                                            <small class="mb-0">{{ product.variant_set.all|length }} Variants</small>
-                                        {% endif %}
-                                        <p class="mb-0 {% if product.variant_set.all|length <= 1 %}mt-4{% endif %}"><strong>{{ product.name|title }}</strong></p>
-                                        <p class="float-left mb-0">{{ variant.name|title }}</p>
+                                        <p class="mb-0 mt-4"><strong>{{ product.name|title }}</strong></p>
                                         <p class="float-right mb-0">£{{ product.price }}</p>
                                     </div>
                                 </a>
                             </div>
                         </div> 
-                    {% endfor %}
-                {% else %}
-                    <div class="col-sm-6 col-lg-4 col-xl-3 mb-4">
-                        <div class="card border-0">
-                            <a href="{% url 'product_detail' product.id %}" class="">
-                                <img class="card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                            </a>
-                            <a href="{% url 'product_detail' product.id %}">
-                                <div class="card-body p-1">
-                                    <p class="mb-0 mt-4"><strong>{{ product.name|title }}</strong></p>
-                                    <p class="float-right mb-0">£{{ product.price }}</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div> 
-                {% endif %}
-            {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <h2>No Products Found</h2>
+                    <a class="cta cta--prim" href="{% url 'products' %}">View All Products</a>
+                    <a class="cta cta--third mt-3 mt-md-0" href="{% url 'home' %}">Home</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

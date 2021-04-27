@@ -107,7 +107,7 @@
     border: none;
 }
 
-/*--Filters--*/
+/*--Filter & Sorting--*/
 .filters__dropdown {
     width: 100%;
     background: lightgray;
@@ -116,6 +116,7 @@
     position: relative;
 }
 
+.filter__btn,
 .sort__btn {
     display: inline-block;
     margin-left: 12px;
@@ -150,6 +151,7 @@
         text-align: center;
     }
 
+    .filter__btn,
     .sort__btn {
         margin-top: 5px;
         margin-left: 0;
