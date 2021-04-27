@@ -3,14 +3,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block add_meta %}
         {% endblock %}
 
         <!--Favicon-->
-        <link rel="icon" type="image" href="{{ MEDIA_URL }}logos/waypoint_favicon.png"/>
+        <link rel="icon" href="{{ MEDIA_URL }}logos/waypoint_favicon.png"/>
         <!--Bootstrap CSS-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!--Font Awesome Icons-->
@@ -70,7 +70,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="site-header__navbar navbar-nav">
                         <li class="mobile-only">
-                           <button class="nav-item" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="ture" aria-label="Toggle navigation"><i class="fas fa-times"></i> Close</button>
+                           <button class="nav-item" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-times"></i> Close</button>
                         </li>
                         <li>
                            <a class="nav-item" href="{% url 'products' %}">All Products</a>
@@ -99,7 +99,7 @@
 
             <!--Account-->
             <div class="account flex-item">
-                <a href="{% url 'profile' %}">
+                <a href="{% url 'profile' %}" aria-label="go to profile">
                     <i class="site-header__icon fas fa-user-circle"></i>
                 </a>
             </div>

@@ -65,7 +65,7 @@
                                     <form class="form-qty-update" method="POST" action="{% url 'update_bag' item.product.id %}">
                                         {% csrf_token %}
                                         <select class="qty-selector" name="quantity" id="qty_{{ item.product_id }}">
-                                            <option value="defaultOption" disabled="" hidden=""></option>
+                                            <option value="defaultOption" disabled="" hidden="">Quantity</option>
                                             {% for i in '0123456789'|make_list %}
                                                 <option value="{{ forloop.counter }}" {% if item.quantity == forloop.counter %} selected {% endif %}>{{ forloop.counter }}</option>
                                             {% endfor %}
@@ -80,6 +80,8 @@
                                         <div class="col-6 px-0 mt-3">
                                             <p>£{{ item.product.price }}</p>
                                         </div>
+
+                                        <!--Remove Bag Item-->
                                         <div class="col-6 px-0 text-right">
                                             <a class="remove-item text-danger" id="remove_{{ item.product_id }}" data-product_variant="{{ item.variant_id }}" data-product_size="{{ item.size }}"><small><i class="fas fa-times"></i> Remove</small></a>
                                         </div>
@@ -147,7 +149,7 @@
 
 {% block add_postload_js %}
     <!--Bag JS-->
-    <script type="text/javascript">
+    <script>
         // Update quantity of a product when quantity selector is changed
         $('.qty-selector').on('change', function(e) {
             console.log('i ran')

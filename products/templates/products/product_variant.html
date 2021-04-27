@@ -74,7 +74,7 @@
                     <ul class="variant-list d-flex list-unstyled list-group-horizontal">
                         {% for variant in product.variant_set.all %}
                             <li {% if variant_id == variant.id %}class="variant-selected"{% endif %}>
-                                <a href="{% url 'product_variant' product.id variant.id %}" class="d-inline-block">
+                                <a href="{% url 'product_variant' product.id variant.id %}" class="d-inline-block" aria-label="{{ variant.name }}">
                                     <img class="card-img rounded-0 test" {% include 'includes/products_images/thumbnail_selector.html' %}>
                                 </a>
                             </li>
@@ -94,6 +94,7 @@
                 </form>
                 <hr class="m-0">
                 {% if product.description %}
+                    <!--Product Description-->
                     <button class="btn font-weight-bold text-left py-2 px-0 w-100" type="button" data-toggle="collapse" data-target="#description" aria-expanded="false" aria-label="Toggle Description">
                         DESCRIPTION <span class="text-right">+</span>
                     </button>

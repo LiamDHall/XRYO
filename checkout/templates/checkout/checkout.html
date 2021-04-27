@@ -25,7 +25,7 @@
             <!--User Details and Delivery-->
             <div class="col-12 col-md-7">
                 <!--Form Heading-->
-                <p class="mb-0"><strong>Please fill the details below.</strong></p>
+                <p class="info-highlight mb-0"><strong>Please fill out the details below.</strong></p>
                 <small class="text-danger">All feilds with a * are required</small>
                 <!-- Form Errors (if any) -->
                 <div class="text-danger form-errors" role="alert"></div>
@@ -54,10 +54,10 @@
                                 <label class="form-check-label" for="save-info">Save this delivery information to my profile</label>
                                 <input class="form-check-input ml-2 mr-0" type="checkbox" id="save-info" name="save-info" checked>
                             {% else %}
-                                <label class="form-check-label" for="id-save-info">
-                                    <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or 
-                                    <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
-                                </label>
+                                <div class="form-check-label">
+                                    <a class="info-highlight" href="{% url 'account_signup' %}">Create an account</a> or 
+                                    <a class="info-highlight" href="{% url 'account_login' %}">Login</a> to save this information
+                                </div>
                             {% endif %}
                         </div>
                     </fieldset>

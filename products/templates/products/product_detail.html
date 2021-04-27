@@ -65,6 +65,7 @@
                     {% csrf_token %}
                     <div class="form-row">
                         {% if product.sizes %}
+                            <!--Sizes-->
                             <div class="size col-12">
                                 <p class="font-weight-bold">Size</p>
                                 <div class="size-btn d-inline-block checked">
@@ -85,7 +86,7 @@
                                 </div>    
                                 <div class="size-btn d-inline-block">
                                     <input type="radio" id="xxl" name="product_size" value="xxl">
-                                    <label for="male">XXL</label>
+                                    <label for="xxl">XXL</label>
                                 </div>
                             </div>
                         {% endif %}

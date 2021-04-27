@@ -6,6 +6,6 @@
     {{ widget.input_text }}
 {% endif %}
 <div class="cta cta--third d-block file-input mt-3">
-    Choose Image <input id="image-new" type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+    Choose Image <input id="image-new" type="{{ widget.type }}" name="{{ widget.name }}" {% include "django/forms/widgets/attrs.html" %}>
 </div>
 <strong><p id="filename" class="mt-3"></p></strong>
