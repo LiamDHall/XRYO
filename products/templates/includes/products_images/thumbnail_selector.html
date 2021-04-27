@@ -5,5 +5,5 @@
 {% elif product.album and product.album.images.all|length > 0 %}
     src="{{ MEDIA_URL }}{{ product.album.id | get_thumbnail }}" alt="{{ product.name }}"
 {% else %}
-    src="{{ MEDIA_URL }}/product_images/no_image.png" alt="{{ product.name }}"
+    src="{{ MEDIA_URL }}/product_images/no_image.jpg" alt="{{ product.name }}"
 {% endif %}
