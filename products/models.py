@@ -7,7 +7,9 @@ from .feilds import IntegerRangeField
 
 from PIL import Image as ImageTool
 
+from io import BytesIO
 import os
+import boto3
 
 if 'USE_AWS' not in os.environ:
     media_url = settings.MEDIA_URL.lstrip("/")
@@ -53,10 +55,18 @@ class Image(models.Model):
         all be uniform
         """
 
-        if created:
-            image = ImageTool.open(f'{media_url}{self.image}')
-            image = image.resize((1600, 2000))
-            image.save()
+        s3 = boto3.resource('s3')
+        obj = s3.Object(
+            bucket_name=os.environ["BUCKET"],
+            key=f'{media_url}{self.image}',
+        )
+        obj_body = obj.get()['Body'].read()
+        img = ImageTool.open(BytesIO(obj_body))
+        img = img.resize((1600, 2000))
+        buffer = BytesIO()
+        img.save(buffer)
+        buffer.seek(0)
+        obj.put(Body=buffer)
 
     def set_default(self):
         """Set default the sender image as default of
