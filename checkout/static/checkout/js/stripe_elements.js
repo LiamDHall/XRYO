@@ -29,17 +29,20 @@ card.mount('#card-element');
 // Validation Error Handler when the Card Element Input changes
 card.on('change', function (event) {
     var errorContainer = document.getElementById('card-errors');
+    var displayErrors = document.getElementsByClassName('form-errors');
     if (event.error) {
         var errorMessage = `
             <span class="ml-2" role="alert"><i class="fas fa-times"></i></span>
             <span>${event.error.message}</span>
         `;
         $(errorContainer).html(errorMessage);
+        $(displayErrors).html(errorMessage);
         $('#card-element').removeClass('mb-5');
     }
     
     else {
         errorContainer.textContent = '';
+        $(displayErrors).html('');
         $('#card-element').addClass('mb-5');
     }
 });
@@ -110,11 +113,11 @@ form.addEventListener('submit', function(ev) {
         }).then(function(result) {
             // Insert error message to error div 
             if (result.error) {
-                var errorContainer = document.getElementById('card-errors');
+                var displayErrors = document.getElementsByClassName('form-errors');
                 var errorMessaage = `
                     <span role="alert"><i class="fas fa-times"></i></span>
                     <span>${result.error.message}</span>`;
-                $(errorContainer).html(errorMessaage);
+                $(displayErrors).html(errorMessaage);
 
                 // Remove loading overlay
                 $('#checkout-form').fadeToggle(100);

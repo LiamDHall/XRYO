@@ -27,6 +27,8 @@
                 <!--Form Heading-->
                 <p class="mb-0"><strong>Please fill the details below.</strong></p>
                 <small class="text-danger">All feilds with a * are required</small>
+                <!-- Form Errors (if any) -->
+                <div class="text-danger form-errors" role="alert"></div>
                 <div id="delivery" class="my-4">
                     <!--Contact Details-->
                     <fieldset class="rounded mb-4">
@@ -118,10 +120,12 @@
                         <!--Order Call To Actions-->
                         <div class="text-center">
                             <p class="my-3">Need to adjust something?</p>
-                            <a href="{% url 'view_bag' %}" class="cta cta--third w-100">
+                            <a href="{% url 'view_bag' %}" class="cta cta--third w-100 mb-2">
                                 <span class="text-uppercase">Back To Bag</span>
                             </a>
-                            <button id="submit-button" class="cta cta--prim text-uppercase w-100 my-3">Place Order</button>
+                            <!-- Form Errors (if any) -->
+                            <div class="text-danger form-errors" role="alert"></div>
+                            <button id="submit-button" class="cta cta--prim text-uppercase w-100 my-2">Place Order</button>
                             <p class="submit-warning small text-danger clear-both p-2">
                                 <i class="fas fa-exclamation-circle"></i>
                                 <span>Your card will be charged <strong>£{{ bag_grand_total|floatformat:2 }}</strong></span>
