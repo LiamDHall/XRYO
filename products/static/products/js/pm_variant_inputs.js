@@ -26,15 +26,14 @@ $('#add-variant').on('click', function(){
     $('#add-variant').before(variantInputs);
     variantCount = variantAmount + 1;
     $('#variant-count').val(variantCount);
-})
+});
 
 // Deletion of New Variant
 $(document).on('click', '.variant-delete', function() {
-    console.log('on delete ran')
     variant = $(this).val();
-    variantNum = variant.split('-')[1]
-    markVariant = `#variant-mark-delete-${variantNum}`
-    $(variant).remove()
+    variantNum = variant.split('-')[1];
+    markVariant = `#variant-mark-delete-${variantNum}`;
+    $(variant).remove();
     variantCount = variantAmount - 1;
     $('#variant-count').val(variantCount);
 
@@ -42,13 +41,12 @@ $(document).on('click', '.variant-delete', function() {
     var variants = document.getElementsByClassName('variant');
 
     for (i = 0; i < variants.length; ++i) {
-        variant = variants[i]
+        variant = variants[i];
 
         variant.setAttribute('id', `variant-${i + 1}`);
 
         // Legend
         legend = variant.getElementsByTagName('legend');
-        console.log(legend)
         legend[0].innerHTML = `Variant ${i + 1}`;
 
         input = variant.getElementsByTagName('input');
@@ -73,28 +71,26 @@ $(document).on('click', '.variant-delete', function() {
         // Button
         button[0].setAttribute('value', `#variant-${i + 1}`);
     }
-})
+});
 
 // Toggle indicator to show which image will be set to default on edit page
 $('.image-selector').on('change', function() {
-    $('.image-selector').parent().find('label').removeClass('default')
+    $('.image-selector').parent().find('label').removeClass('default');
     $('.image-selector:radio:checked').next('label').addClass('default');
-})
+});
 
 $('.variant-image-selector').on('change', function() {
-    $('.variant-image-selector').parent().find('label').removeClass('default')
+    $('.variant-image-selector').parent().find('label').removeClass('default');
     $('.variant-image-selector:radio:checked').next('label').addClass('default');
-})
+});
 
 // Show selected product image filename
 $(document).on('change','.images-input', function() {
-    var id = $(this).attr('id')
-    var input = document.getElementById(id) // JQuery didnt work
-    console.log(input.files)
-    $(this).parent().parent().find('p').text('')
+    var id = $(this).attr('id');
+    var input = document.getElementById(id); // JQuery didnt work
+    $(this).parent().parent().find('p').text('');
     for (var i = 0; i < input.files.length; ++i) {
         var name = input.files.item(i).name;
-        console.log(name)
         if (i == 0) {
             $(this).parent().parent().find('p').append(`Images to be uploaded on save:<br>${name}`);
         }

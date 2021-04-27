@@ -138,5 +138,5 @@ form.addEventListener('submit', function(ev) {
         // On POST failure reload page
         // The error will be in django messages
         location.reload();
-    })
+    });
 });

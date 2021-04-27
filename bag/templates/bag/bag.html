@@ -152,10 +152,9 @@
     <script>
         // Update quantity of a product when quantity selector is changed
         $('.qty-selector').on('change', function(e) {
-            console.log('i ran')
             var form = $(this).closest('.form-qty-update');
             form.submit();
-        })
+        });
 
         // Remove product when remove button clicked
         $('.remove-item').click(function(e) {
@@ -170,6 +169,6 @@
                 .done(function() {
                     location.reload();
             });
-        })
+        });
     </script>
 {% endblock %}

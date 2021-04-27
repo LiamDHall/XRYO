@@ -23,7 +23,7 @@ $('.sort__btn').on('click', function() {
 
         window.location.replace(currentUrl);
     }
-})
+});
 
 // Filter Toggler
 $('.filter__btn').on('click', function() {
@@ -42,13 +42,12 @@ $('.filter__btn').on('click', function() {
 
         window.location.replace(currentUrl);
     }
-})
+});
 
 // Size Toggler
 $('.size-btn').on('click', function() {
-    console.log('i ran')
-    $('.size-btn').removeClass('checked')
-    $(this).addClass('checked')
+    $('.size-btn').removeClass('checked');
+    $(this).addClass('checked');
     
-    $(this).children('input').prop('checked', true)
-})
+    $(this).children('input').prop('checked', true);
+});

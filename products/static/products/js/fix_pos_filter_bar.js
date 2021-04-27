@@ -1,16 +1,16 @@
 // Fix Filter to Site Header if Scrolled Pasted
-var filterBottom = $('.filters').offset().top
+var filterBottom = $('.filters').offset().top;
 
 $(window).scroll(function (event) {
     var scroll = $(window).scrollTop();
-    var siteHeaderHeight = $('.site-header').height() 
-    var filterTopPos = filterBottom - siteHeaderHeight
+    var siteHeaderHeight = $('.site-header').height();
+    var filterTopPos = filterBottom - siteHeaderHeight;
     if(scroll > filterTopPos){
-        $('.filters').addClass('attach-to-header')
-        $('.filters').css('top', `${siteHeaderHeight}px`)
+        $('.filters').addClass('attach-to-header');
+        $('.filters').css('top', `${siteHeaderHeight}px`);
     }
     else {
-        $('.filters').removeClass('attach-to-header')
+        $('.filters').removeClass('attach-to-header');
         $('.filters').removeAttr("style");
     }
 });

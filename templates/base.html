@@ -250,26 +250,26 @@
     <script>
         // Toggle initial logo
         $(document).ready(function() {
-            toggleLogo()
-        })
+            toggleLogo();
+        });
 
         // Toggle between desktop and mobile logo
         $(window).resize(function() {
-            toggleLogo()
-        })
+            toggleLogo();
+        });
 
         function toggleLogo() {
             var windowWidth = window.innerWidth;
             
             if(window.innerWidth < 475) {
-                var mediaPath = '{{ MEDIA_URL }}logos/logo_small.png'
+                var mediaPath = '{{ MEDIA_URL }}logos/logo_small.png';
             }
 
             else {
-                var mediaPath = '{{ MEDIA_URL }}logos/logo_full.png'
+                var mediaPath = '{{ MEDIA_URL }}logos/logo_full.png';
             }
 
-            $('#logo-img').prop('src', mediaPath)
+            $('#logo-img').prop('src', mediaPath);
         }
 
         // Show Toast Messages

@@ -4,7 +4,7 @@ var selectedCountry = $('#id_default_country').val();
 // Onload if no country selected set colour of text to silver
 if(!selectedCountry) {
     $('#id_default_country').css('color', 'silver');
-};
+}
 
 // Listen for when country input's selection changes
 $('#id_default_country').change(function() {
