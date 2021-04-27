@@ -7,7 +7,10 @@ from .feilds import IntegerRangeField
 
 from PIL import Image as ImageTool
 
-media_url = settings.MEDIA_URL.lstrip("/")
+import os
+
+if 'USE_AWS' not in os.environ:
+    media_url = settings.MEDIA_URL.lstrip("/")
 
 
 def get_upload_path(instance, filename):
