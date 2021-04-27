@@ -1,144 +1,157 @@
 {% load bag_tools %}
+{% if not product %}
+    <div class="site-message toast rounded-0 border-top-0" data-autohide="false">
+        <div class="toast-header bg-success text-white">
+            <strong class="mr-auto">Success: {{ message }}</strong>
+            <button type="button" class="cta cta--icon text-white" data-dismiss="toast" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
 
-<div class="toast toast--bag rounded-0 border-top-0" data-autohide="false">
-    <div class="toast-header bg-success text-white">
-        <strong class="mr-auto">Success</strong>
-        <button type="button" class="cta cta--icon text-white" data-dismiss="toast" aria-label="Close">
-            <i class="fas fa-times"></i>
-        </button>
+{% else %}
+    <div class="toast toast--bag rounded-0 border-top-0" data-autohide="false">
+        <div class="toast-header bg-success text-white">
+            <strong class="mr-auto">Success</strong>
+            <button type="button" class="cta cta--icon text-white" data-dismiss="toast" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="toast-body">
+            {{ message }}    
+        </div>
+
+        
+        {% if product and variant %}
+            {% for item in bag_content %}
+                {% if item.product == product and item.variant == variant %}
+                    <!--Product Variant Bag Message-->
+                    <div class="row mb-1">
+                        <div class="col-3 col-sm-4 my-1 pr-0">
+                            {% with variant=item.variant product=item.product %}
+                                <img class="w-100" {% include 'includes/products_images/thumbnail_selector.html' %}>
+                            {% endwith %}
+                        </div>
+                        <div class="col-9 col-sm-8 my-1 px-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                                    <p class="my-1">{{ item.variant.name }}</p>
+                                    <p class="my-2">{% if product.has_sizes %}{{ item.size|upper }}{% else %}One Size{% endif %}</p>
+                                    <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
+                                </div>
+                                <div class="col-12">
+                                    <p class="my-0"><strong>Subtotal:</strong> £{{ item.product.price | subtotal_price_calc:item.quantity }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 my-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h5>Bag Total:</h5>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <h5>£{{ bag_grand_total|floatformat:2 }}</h5>
+                                </div>
+                            </div>
+                            <a href="{% url 'view_bag' %}" class="cta cta--third w-100">
+                                <span class="text-uppercase">View Bag</span>
+                            </a>
+                            <a href="{% url 'checkout' %}" class="cta cta--prim mt-3 w-100">
+                                CHECKOUT <span class="pl-2"><i class="fas fa-credit-card"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% elif product.sizes == True %}
+            {% for item in bag_content %}
+                {% if item.product == product and item.size == request.session.lastSize %}
+                    <!--Product Size Bag Message-->
+                    <div class="row mb-1">
+                        <div class="col-3 col-sm-4 my-1 pr-0">
+                            {% with variant=item.variant product=item.product %}
+                                <img class="w-100" {% include 'includes/products_images/thumbnail_selector.html' %}>
+                            {% endwith %}
+                        </div>
+                        <div class="col-9 col-sm-8 my-1 px-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                                    <p class="my-3">{{ request.session.lastSize|upper }}</p>
+                                    <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
+                                </div>
+                                <div class="col-12">
+                                    <p class="my-0"><strong>Subtotal:</strong> £{{ item.product.price | subtotal_price_calc:item.quantity }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 my-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h5>Bag Total:</h5>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <h5>£{{ bag_grand_total|floatformat:2 }}</h5>
+                                </div>
+                            </div>
+                            <a href="{% url 'view_bag' %}" class="cta cta--third w-100">
+                                <span class="text-uppercase">View Bag</span>
+                            </a>
+                            <a href="{% url 'checkout' %}" class="cta cta--prim mt-3 w-100">
+                                CHECKOUT <span class="pl-2"><i class="fas fa-credit-card"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% elif product%}
+            {% for item in bag_content %}
+                {% if item.product == product %}
+                    <!--Product Bag Message-->
+                    <div class="row mb-1">
+                        <div class="col-3 col-sm-4 my-1 pr-0">
+                            {% with variant=item.variant product=item.product %}
+                                <img class="w-100" {% include 'includes/products_images/thumbnail_selector.html' %}>
+                            {% endwith %}  
+                        </div>
+                        <div class="col-9 col-sm-8 my-1 px-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                                    <p class="my-3">{% if product.has_sizes %}{{ item.size|upper }}{% else %}One Size{% endif %}</p>
+                                    <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
+                                </div>
+                                <div class="col-12">
+                                    <p class="my-0"><strong>Subtotal:</strong> £{{ item.product.price | subtotal_price_calc:item.quantity }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 my-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <h5>Bag Total:</h5>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <h5>£{{ bag_grand_total|floatformat:2 }}</h5>
+                                </div>
+                            </div>
+                            <a href="{% url 'view_bag' %}" class="cta cta--third w-100">
+                                <span class="text-uppercase">View Bag</span>
+                            </a>
+                            <a href="{% url 'checkout' %}" class="cta cta--prim mt-3 w-100">
+                                CHECKOUT <span class="pl-2"><i class="fas fa-credit-card"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
-    <div class="toast-body">
-        {{ message }}    
-    </div>
-    {% if product and variant %}
-        {% for item in bag_content %}
-            {% if item.product == product and item.variant == variant %}
-                <!--Product Variant Bag Message-->
-                <div class="row mb-1">
-                    <div class="col-3 col-sm-4 my-1 pr-0">
-                        {% with variant=item.variant product=item.product %}
-                            <img class="w-100" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                        {% endwith %}
-                    </div>
-                    <div class="col-9 col-sm-8 my-1 px-0">
-                        <div class="row">
-                            <div class="col-12">
-                                <p class="my-0"><strong>{{ item.product.name }}</strong></p>
-                                <p class="my-1">{{ item.variant.name }}</p>
-                                <p class="my-2">{% if product.has_sizes %}{{ item.size|upper }}{% else %}One Size{% endif %}</p>
-                                <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
-                            </div>
-                            <div class="col-12">
-                                <p class="my-0"><strong>Subtotal:</strong> £{{ item.product.price | subtotal_price_calc:item.quantity }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 my-3">
-                        <div class="row">
-                            <div class="col-6">
-                                <h5>Bag Total:</h5>
-                            </div>
-                            <div class="col-6 text-right">
-                                <h5>£{{ bag_grand_total|floatformat:2 }}</h5>
-                            </div>
-                        </div>
-                        <a href="{% url 'view_bag' %}" class="cta cta--third w-100">
-                            <span class="text-uppercase">View Bag</span>
-                        </a>
-                        <a href="{% url 'checkout' %}" class="cta cta--prim mt-3 w-100">
-                            CHECKOUT <span class="pl-2"><i class="fas fa-credit-card"></i></span>
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% elif product.sizes == True %}
-        {% for item in bag_content %}
-            {% if item.product == product and item.size == request.session.lastSize %}
-                <!--Product Size Bag Message-->
-                <div class="row mb-1">
-                    <div class="col-3 col-sm-4 my-1 pr-0">
-                        {% with variant=item.variant product=item.product %}
-                            <img class="w-100" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                        {% endwith %}
-                    </div>
-                    <div class="col-9 col-sm-8 my-1 px-0">
-                        <div class="row">
-                            <div class="col-12">
-                                <p class="my-0"><strong>{{ item.product.name }}</strong></p>
-                                <p class="my-3">{{ request.session.lastSize|upper }}</p>
-                                <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
-                            </div>
-                            <div class="col-12">
-                                <p class="my-0"><strong>Subtotal:</strong> £{{ item.product.price | subtotal_price_calc:item.quantity }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 my-3">
-                        <div class="row">
-                            <div class="col-6">
-                                <h5>Bag Total:</h5>
-                            </div>
-                            <div class="col-6 text-right">
-                                <h5>£{{ bag_grand_total|floatformat:2 }}</h5>
-                            </div>
-                        </div>
-                        <a href="{% url 'view_bag' %}" class="cta cta--third w-100">
-                            <span class="text-uppercase">View Bag</span>
-                        </a>
-                        <a href="{% url 'checkout' %}" class="cta cta--prim mt-3 w-100">
-                            CHECKOUT <span class="pl-2"><i class="fas fa-credit-card"></i></span>
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% elif product%}
-        {% for item in bag_content %}
-            {% if item.product == product %}
-                <!--Product Bag Message-->
-                <div class="row mb-1">
-                    <div class="col-3 col-sm-4 my-1 pr-0">
-                        {% with variant=item.variant product=item.product %}
-                            <img class="w-100" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                        {% endwith %}  
-                    </div>
-                    <div class="col-9 col-sm-8 my-1 px-0">
-                        <div class="row">
-                            <div class="col-12">
-                                <p class="my-0"><strong>{{ item.product.name }}</strong></p>
-                                <p class="my-3">{% if product.has_sizes %}{{ item.size|upper }}{% else %}One Size{% endif %}</p>
-                                <p class="mt-2"><strong>Qty:</strong> {{ item.quantity }}</p>
-                            </div>
-                            <div class="col-12">
-                                <p class="my-0"><strong>Subtotal:</strong> £{{ item.product.price | subtotal_price_calc:item.quantity }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 my-3">
-                        <div class="row">
-                            <div class="col-6">
-                                <h5>Bag Total:</h5>
-                            </div>
-                            <div class="col-6 text-right">
-                                <h5>£{{ bag_grand_total|floatformat:2 }}</h5>
-                            </div>
-                        </div>
-                        <a href="{% url 'view_bag' %}" class="cta cta--third w-100">
-                            <span class="text-uppercase">View Bag</span>
-                        </a>
-                        <a href="{% url 'checkout' %}" class="cta cta--prim mt-3 w-100">
-                            CHECKOUT <span class="pl-2"><i class="fas fa-credit-card"></i></span>
-                        </a>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-</div>
+{% endif %}
