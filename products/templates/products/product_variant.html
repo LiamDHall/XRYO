@@ -53,7 +53,7 @@
                     <div class="clearfix">
                         <small class="mb-0 float-left">{{ product.category.display_name }}</small>
                         {% if product.rating %}
-                            <small class="float-right"><i class="fas fa-star mr-1"></i>{{ product.rating|floatformat }} / 5</small>
+                            <small class="float-right">{{ product.rating|floatformat }} / 5 <i class="fas fa-star mr-1"></i></small>
                         {% else %}
                             <small class="float-right">No Rating</small>
                         {% endif %}

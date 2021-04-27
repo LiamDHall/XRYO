@@ -40,6 +40,7 @@
                 <p class="font-weight-bold mb-0 d-inline-block">SORT BY:</p>
                 <button class="sort__btn {%if selected_sorting == 'name_asc' %} current {% endif %}" value="name_asc" type="button">A-Z</button>
                 <button class="sort__btn {%if selected_sorting == 'name_desc' %} current {% endif %}" value="name_desc" type="button">Z-A</button>
+                <button class="sort__btn {%if selected_sorting == 'rating_desc' %} current {% endif %}" value="rating_desc" type="button">Rating</button>
                 <button class="sort__btn {%if selected_sorting == 'price_desc' %} current {% endif %}" value="price_asc" type="button">Price: LOW-HIGH</button>
                 <button class="sort__btn {%if selected_sorting == 'price_asc' %} current {% endif %}" value="price_desc" type="button">Price: HIGH-LOW</button>
             </div>
@@ -81,6 +82,15 @@
                                             <p class="float-left mb-0">{{ variant.name|title }}</p>
                                             <p class="float-right mb-0">£{{ product.price }}</p>
                                         </div>
+                                        <p class="float-right mb-0 clear-both">
+                                            <strong>
+                                                {% if product.rating %}
+                                                    {{ product.rating }} <i class="fas fa-star mr-1"></i> 
+                                                {% else %}
+                                                    No Rating
+                                                {% endif %}
+                                            </strong>
+                                        </p>
                                     </a>
                                 </div>
                             </div> 
@@ -97,6 +107,15 @@
                                         <p class="mb-0 mt-4"><strong>{{ product.name|title }}</strong></p>
                                         <p class="float-right mb-0">£{{ product.price }}</p>
                                     </div>
+                                    <p class="float-right mb-0 clear-both">
+                                        <strong>
+                                            {% if product.rating %}
+                                                {{ product.rating }} <i class="fas fa-star mr-1"></i>
+                                            {% else %}
+                                                No Rating
+                                            {% endif %}
+                                        </strong>
+                                    </p>
                                 </a>
                             </div>
                         </div> 
