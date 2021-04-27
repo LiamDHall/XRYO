@@ -25,7 +25,8 @@ def bag_contents(request):
         else:
             product = get_object_or_404(Product, pk=product_id)
             if 'product_by_variant' in product_data:
-                for variant_id, quantity in product_data['product_by_variant'].items():
+                varis = product_data['product_by_variant'].items()
+                for variant_id, quantity in varis:
                     variant = get_object_or_404(Variant, pk=variant_id)
                     bag_total += quantity * product.price
                     bag_item_count += quantity

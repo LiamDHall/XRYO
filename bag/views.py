@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse, get_object_or_404
+from django.shortcuts import (
+    render, redirect, reverse, HttpResponse, get_object_or_404
+)
 from django.contrib import messages
 
 from products.models import Product, Variant
-
-# Create your views here.
 
 
 def view_bag(request):
@@ -40,26 +40,44 @@ def product_to_bag(request, product_id):
         if product_id in list(bag.keys()):
             if variant_id in bag[product_id]['product_by_variant'].keys():
                 bag[product_id]['product_by_variant'][variant_id] += quantity
-                messages.success(request, f'Updated {product_name} - {variant_name} qauntity')
+                messages.success(
+                    request,
+                    f'Updated {product_name} - {variant_name} qauntity'
+                )
             else:
                 bag[product_id]['product_by_variant'][variant_id] = quantity
-                messages.success(request, f'Added {product_name} - {variant_name} to your bag')
+                messages.success(
+                    request,
+                    f'Added {product_name} - {variant_name} to your bag'
+                )
         else:
             bag[product_id] = {'product_by_variant': {variant_id: quantity}}
-            messages.success(request, f'Added: {product_name} - {variant_name} to your bag')
+            messages.success(
+                request,
+                f'Added: {product_name} - {variant_name} to your bag'
+            )
 
     elif size:
         request.session['lastSize'] = size
         if product_id in list(bag.keys()):
             if size in bag[product_id]['product_by_size'].keys():
                 bag[product_id]['product_by_size'][size] += quantity
-                messages.success(request, f'Updated: {product_name} - {size_cap} qauntity')
+                messages.success(
+                    request,
+                    f'Updated: {product_name} - {size_cap} qauntity'
+                )
             else:
                 bag[product_id]['product_by_size'][size] = quantity
-                messages.success(request, f'Added: {product_name} - {size_cap} to your bag')
+                messages.success(
+                    request,
+                    f'Added: {product_name} - {size_cap} to your bag'
+                )
         else:
             bag[product_id] = {'product_by_size': {size: quantity}}
-            messages.success(request, f'Added: {product_name} - {size_cap} to your bag')
+            messages.success(
+                request,
+                f'Added: {product_name} - {size_cap} to your bag'
+            )
     else:
         if product_id in list(bag.keys()):
             bag[product_id] += quantity
@@ -96,10 +114,16 @@ def update_bag(request, product_id):
 
     if variant_id:
         bag[product_id]['product_by_variant'][variant_id] = quantity
-        messages.success(request, f'Updated: {product_name} - {variant_name} qauntity')
+        messages.success(
+            request,
+            f'Updated: {product_name} - {variant_name} qauntity'
+        )
     elif size:
         bag[product_id]['product_by_size'][size] = quantity
-        messages.success(request, f'Updated: {product_name} - {size_cap} qauntity')
+        messages.success(
+            request,
+            f'Updated: {product_name} - {size_cap} qauntity'
+        )
     else:
         bag[product_id] = quantity
         messages.success(request, f'Updated: {product_name} qauntity')

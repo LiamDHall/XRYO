@@ -110,7 +110,10 @@ class Order(models.Model):
         account delivery charge.
         """
 
-        self.order_total = self.items.aggregate(Sum('item_total'))['item_total__sum'] or 0
+        self.order_total = self.items.aggregate(
+            Sum('item_total')
+        )['item_total__sum'] or 0
+
         if self.order_total < settings.FREE_DELIVERY_MIN:
             self.delivery_charge = settings.DELIVERY_CHARGE
         else:

@@ -71,7 +71,8 @@ def checkout(request):
                         order_item.save()
                     else:
                         if 'product_by_variant' in product_data:
-                            for variant_id, quantity in product_data['product_by_variant'].items():
+                            varis = product_data['product_by_variant'].items()
+                            for variant_id, quantity in varis:
                                 variant = Variant.objects.get(id=variant_id)
                                 order_item = OrderItem(
                                     order=order,
@@ -82,7 +83,8 @@ def checkout(request):
                                 order_item.save()
 
                         elif 'product_by_size' in product_data:
-                            for size, quantity in product_data['product_by_size'].items():
+                            sizes = product_data['product_by_size'].items()
+                            for size, quantity in sizes:
                                 order_item = OrderItem(
                                     order=order,
                                     product=product,
@@ -94,7 +96,8 @@ def checkout(request):
                 # If Product doesn't exist give feeback and redirect to bag
                 except Product.DoesNotExist:
                     messages.error(request, (
-                        "One of the products in your bag wasn't found in our database."
+                        "One of the products in your bag wasn't \
+                            found in our database."
                         "Please call us for assistance!")
                     )
                     order.delete()
@@ -102,7 +105,9 @@ def checkout(request):
 
             # On successful Orders redirect user to Checkout Success Page
             request.session['save_info'] = 'save-info' in request.POST
-            return redirect(reverse('checkout_success', args=[order.order_number]))
+            return redirect(
+                reverse('checkout_success', args=[order.order_number])
+            )
 
         # If form is invalid tell user their is an error and reload checkout
         else:

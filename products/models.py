@@ -65,7 +65,6 @@ class Image(models.Model):
         default_images = Image.objects.all().filter(
             album=album, default=True
         )
-        print(default_images)
 
         if len(default_images) > 1 and self.default is True:
             for image in default_images:

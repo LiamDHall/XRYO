@@ -161,7 +161,8 @@ class StripeWH_Handler:
                         order_item.save()
                     else:
                         if 'product_by_variant' in product_data:
-                            for variant_id, quantity in product_data['product_by_variant'].items():
+                            varis = product_data['product_by_variant'].items()
+                            for variant_id, quantity in varis:
                                 variant = Variant.objects.get(id=variant_id)
                                 order_item = OrderItem(
                                     order=order,
@@ -172,7 +173,8 @@ class StripeWH_Handler:
                                 order_item.save()
 
                         elif 'product_by_size' in product_data:
-                            for size, quantity in product_data['product_by_size'].items():
+                            sizes = product_data['product_by_size'].items()
+                            for size, quantity in sizes:
                                 order_item = OrderItem(
                                     order=order,
                                     product=product,
@@ -195,7 +197,8 @@ class StripeWH_Handler:
         # Send email confirmation
         self._send_email_confirmation(order)
         return HttpResponse(
-            content=f'Webhook received: {event["type"]} | SUCCESS: Order created by webhook',
+            content=f'Webhook received: {event["type"]} \
+                | SUCCESS: Order created by webhook',
             status=200
         )
 

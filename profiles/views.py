@@ -26,7 +26,7 @@ def profile(request):
             messages.error(
                 request,
                 'Update failed. Please check your form inputs.'
-        )
+            )
 
     else:
         # Get saved user detailed

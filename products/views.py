@@ -48,7 +48,9 @@ def all_products(request):
                 messages.error(request, "Empty Search")
                 return redirect(reverse('home'))
 
-            queries = Q(name__icontains=query) | Q(description__icontains=query)
+            queries = Q(name__icontains=query) | \
+                Q(description__icontains=query)
+
             products = products.filter(queries)
 
     selected_sorting = f'{sort}_{direction}'
@@ -406,8 +408,6 @@ def edit_product(request, product_id):
                         delete_state = request.POST.get(
                             f'delete-variant-image-{ image.id }'
                         )
-
-                        print(f'delete state ==== {delete_state}')
 
                         if delete_state == 'on':
                             image.delete()
