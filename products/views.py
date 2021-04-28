@@ -82,6 +82,16 @@ def product_detail(request, product_id):
     """
 
     product = get_object_or_404(Product, pk=product_id)
+    if len(product.variant_set.all()) > 0:
+        variant_id = product.variant_set.all().first().id
+        return redirect(
+            reverse(
+                'product_variant', kwargs={
+                    'product_id': product_id,
+                    'variant_id': variant_id
+                }
+            )
+        )
 
     # Handles Reivew submission
     if request.method == 'POST':
