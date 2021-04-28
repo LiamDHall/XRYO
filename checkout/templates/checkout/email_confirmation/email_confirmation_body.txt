@@ -1,3 +1,5 @@
+{% load bag_tools %}
+
 Thank You {{ order.full_name }}!
 
 This is confirmation of your XRYO order #{{ order.order_number }} 
@@ -7,8 +9,16 @@ Your order information is below:
 Order Number: {{ order.order_number }}
 Order Date: {{ order.date }}
 
+Order Items:
+{% for item in order.items.all %}
+    Product: {{ item.product.name|title }} {% if item.variant %} - {{ item.variant.name|title }} {% endif %}
+    Qty: {{ item.quantity }}
+    Subtotal: £{{ item.product.price | subtotal_price_calc:item.quantity }}
+
+{% endfor %}
+
 Order Total: £{{ order.order_total }}
-Delivery: £{{ order.delivery_cost }}
+Delivery: {% if order.delivery_charge == 0 %}FREE{% else %}£{{ order.delivery_charge }}{% endif %}
 Grand Total: £{{ order.grand_total }}
 
 Delivery Address 
