@@ -141,11 +141,9 @@
                         {% for item in bag_content %}
                             <div class="row mb-3">
                                 <div class="col-4 pl-0 mb-1">
-                                    <a href="{% url 'product_detail' item.product.id %}">
-                                        {% with variant=item.variant product=item.product %}
-                                            <img class="display-image card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
-                                        {% endwith %}
-                                    </a>
+                                    {% with variant=item.variant product=item.product %}
+                                        <img class="display-image card-img rounded-0" {% include 'includes/products_images/thumbnail_selector.html' %}>
+                                    {% endwith %}
                                 </div>
                                 <div class="col-8 px-0 d-flex flex-column justify-content-between">
                                     <p class="my-0"><strong>{{ item.product.name|title}}</strong></p>
