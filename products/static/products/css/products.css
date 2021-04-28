@@ -198,10 +198,11 @@
 }
 
 /*------------------------------------Product Form--*/
-label {
+form label {
     padding-left: 8px;
 }
 
+.size label,
 .image-label,
 .variant-image-label {
     padding-left: 0 !important;
