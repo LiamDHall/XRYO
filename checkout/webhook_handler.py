@@ -81,9 +81,12 @@ class StripeWH_Handler:
         if username != 'AnonymousUser':
             profile = Profile.objects.get(user__username=username)
             if save_info:
-                profile.default_phone_number = shipping_details.phone
-                profile.default_street_address1 = shipping_details.address.line1
-                profile.default_street_address2 = shipping_details.address.line2
+                profile.default_phone_number = \
+                    shipping_details.phone
+                profile.default_street_address1 = \
+                    shipping_details.address.line1
+                profile.default_street_address2 = \
+                    shipping_details.address.line2
                 profile.default_county = shipping_details.address.state
                 profile.default_town_or_city = shipping_details.address.city
                 profile.default_postcode = shipping_details.address.postal_code
@@ -126,7 +129,8 @@ class StripeWH_Handler:
             # Send email confirmation
             self._send_email_confirmation(order)
             return HttpResponse(
-                content=f'Webhook received: {event["type"]} | SUCCESS: Order in database already',
+                content=f'Webhook received: {event["type"]} \
+                    | SUCCESS: Order in database already',
                 status=200
             )
 
