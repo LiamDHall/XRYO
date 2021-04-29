@@ -48,7 +48,7 @@ To use the checkout please use the following card number and details:
     -   [Issues and Bugs](#Issues-and-Bugs)
 - [**Deployment**](#Deployment)
     -   [Local Deployment](#Cloning-Local-Development)
-    -   [Remote Deployment](#GitHub-Pages-Remote-Development)
+    -   [Remote Deployment](#Remote-Development)
 - [**Credits**](#Credits)
 
 ## UX
@@ -170,9 +170,9 @@ I used a CSS Variable to set the primary colour of buttons throughout the site. 
 
 -	**Fix Site Header:** The user always has access to the main site nav as well as the search form.
 
--	**Hero Landing Page** On first arriving to the site; the user will see a large hero image with text that quickly tells the user the purpose of the site.
+-	**Hero Landing Page:** On first arriving to the site; the user will see a large hero image with text that quickly tells the user the purpose of the site.
 
--	**Product Variants.** If a product has variants, each variant is presented to the user on the **view all products** page; instead of them being displayed as a single product. All the variants are still the same product, but when clicked, will take the user to the products detail page where the user will see images specific to that variant and then the product’s image in the image carousel. The option to swap between variants is given to the user in the form of images that show the different variants which when selected reload the page to show the images specific to the selected variant. When variants are added to the bag they are treated as separate items meaning you can update the quantity of one or remove one without affecting the others. Currently in the live site the product can’t have variants and sizes if both are present for an item; the variant will take precedence and the sizes will be ignored.
+-	**Product Variants:** If a product has variants, each variant is presented to the user on the **view all products** page; instead of them being displayed as a single product. All the variants are still the same product, but when clicked, will take the user to the products detail page where the user will see images specific to that variant and then the product’s image in the image carousel. The option to swap between variants is given to the user in the form of images that show the different variants which when selected reload the page to show the images specific to the selected variant. When variants are added to the bag they are treated as separate items meaning you can update the quantity of one or remove one without affecting the others. Currently in the live site the product can’t have variants and sizes if both are present for an item; the variant will take precedence and the sizes will be ignored.
 
 -	**Product Management:** This is a page only accessible by site admins (superusers) where products can be added, updated and deleted. The existing products can be filtered by category. When a product is clicked the admin is taken to the product edit page where they can upload more images, set default images, delete existing images or variants as well as edit and add new variants. The default image for a product  can only be set on the edit page once a new image has been uploaded due to the Image object having to be created before the attribute can be set. Setting a default image will set the default attribute of all other images in the folder to **False**.
 
