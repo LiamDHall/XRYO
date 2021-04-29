@@ -32,12 +32,20 @@ To use the checkout please use the following card number and details:
     -   [User Stories](#User-Stories)
 -   [**Develoyment**](#Development)
     -   [Planning](#Planning)
+    -   [Ideas](#Ideas)
+    -   [CRUD](#CRUD)
+    -   [Templating](#Templating)
+    -   [Console Logs Prints Debug and Variables](#Console-Logs-Prints-Debug-and-Variables)
+    -   [Commit Messages](#Commit-Messages)
+    -   [CSS Variables](#CSS-Variables)
+
 - [**Features**](#Features)
     -   [Live Features](#Live-Features)
     -   [Features Left to Implement](#Features-Left-to-Implement)
 - [**Technologies Used**](#Technologies-Used)
 - [**Testing**](#Testing)
     -   [Functionality](#Functionality-Testing)
+    -   [Issues and Bugs](#Issues-and-Bugs)
 - [**Deployment**](#Deployment)
     -   [Local Deployment](#Cloning-Local-Development)
     -   [Remote Deployment](#GitHub-Pages-Remote-Development)
@@ -67,6 +75,8 @@ Site admins can add, edit and delete products from the product management page, 
 Site admins can keep users up to date with everything that's happening in the XRYO community by writing and posting to the XRYO News Blog. Users can access this page from the site header and is listed in the main site nav. Admins have the option to edit and delete blog posts by clicking the appropriate buttons on the relative post. Users are presented with the posts; the most recent at the top so they get the latest news first.
 
 The user will receive messages from the site as they do certain actions or make errors which are presented to the user just under the site header.
+
+## User Stories
 
 Please find user stories and their fulfillment [here](https://github.com/LiamDHall/XRYO/blob/master/readme_documents/xryo_user_stories.pdf) 
 
@@ -320,7 +330,7 @@ On the product details page where SwiperJS is used a warning appearing the conso
 
 The warning is below
 
-<img src="----------------------">
+<img src="https://github.com/LiamDHall/XRYO/blob/master/readme_images/swiper_console_warning.png">
 
 ### **JS**
 
@@ -441,7 +451,7 @@ This web application is hosted on Heroku. [View Live Site](https://xryo.herokuap
 1. Open the Github repository - <https://github.com/LiamDHall/XRYO>
 2.  Click the green drop down that says **Code**, **Download** or **Clone**.
  
-    <img src="----------------------">
+    <img src="https://github.com/LiamDHall/XRYO/blob/master/readme_images/clone_button.png">
  
 3.  To clone with HTTPS copy the URL in the box. <https://github.com/liamdhall/XRYO.git>
 4.  Open up your Integrated Development Environment (IDE).
