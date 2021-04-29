@@ -457,9 +457,9 @@ This web application is hosted on Heroku. [View Live Site](https://xryo.herokuap
 4.  Open up your Integrated Development Environment (IDE).
 5.  Open your Command Line or equivalent if not already.
 6.  Type **git clone** and paste the copied URL from step 3. 
-    (Should look like **git clone https://github.com/liamdhall/XRYO.git**)
+    (Should look like **https://github.com/LiamDHall/XRYO.git**)
 7.  If you then wanted to copy it to a specific folder add the folder name to the end.
-    (Should look like **git clone https://github.com/liamdhall/XRYO.git <folder-name>**)
+    (Should look like **git clone https://github.com/liamdhall/XRYO.git folder-name**)
 8.  Press Enter and a local clone will be created.
 
 The following steps are then required to make the clone work as intended using Gitpod.
