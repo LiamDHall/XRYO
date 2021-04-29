@@ -108,6 +108,10 @@
     margin: 0;
 }
 
+.social ul {
+    padding: 0;
+}
+
 .social li {
     display: inline;
     font-size: 3rem;
