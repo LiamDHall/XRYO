@@ -174,6 +174,8 @@ I used a CSS Variable to set the primary colour of buttons throughout the site. 
 
 -	**Product Variants:** If a product has variants, each variant is presented to the user on the **view all products** page; instead of them being displayed as a single product. All the variants are still the same product, but when clicked, will take the user to the products detail page where the user will see images specific to that variant and then the product’s image in the image carousel. The option to swap between variants is given to the user in the form of images that show the different variants which when selected reload the page to show the images specific to the selected variant. When variants are added to the bag they are treated as separate items meaning you can update the quantity of one or remove one without affecting the others. Currently in the live site the product can’t have variants and sizes if both are present for an item; the variant will take precedence and the sizes will be ignored.
 
+-   **Swaping Image From Carousel To Preview:** On the products details page the images from the carousel can be swapped with the main image on the page by simply clicking it.
+
 -	**Product Management:** This is a page only accessible by site admins (superusers) where products can be added, updated and deleted. The existing products can be filtered by category. When a product is clicked the admin is taken to the product edit page where they can upload more images, set default images, delete existing images or variants as well as edit and add new variants. The default image for a product  can only be set on the edit page once a new image has been uploaded due to the Image object having to be created before the attribute can be set. Setting a default image will set the default attribute of all other images in the folder to **False**.
 
 -	**Multiple Image Uploading and Albums:** Multiple images can be uploaded in a single product creation or editing session due to a new image model being created for each one on upload. These images are then related to an album object which is then related to a specific product or variant object creating a many to many relationship via the album-image joining table. The album table is created automatically and set as the product or variant’s album on creation of the product or variant. If the product name is changed, the album name will update to match. However the file path for the images already in the album will not update. The old images will remain in the same folder in the local or remote storage. New images added to the album will have the new file path including the new album name. So the new image will be stored in a new folder in the storage.
@@ -428,15 +430,15 @@ Due to the images being stored in an AWS S3 bucket which I would allow the editi
 
 **This feature doesn’t work when the storage for media files is set to a remote storage such as a S3 bunker, however this feature does work in the development environment where the storage is set to local**
 
-#### Error message that the the user can’t checkout as bag is empty appears on the product page
+#### **Error message that the user can’t checkout as bag is empty appears if the user press back on checkout success page**
 
-It is hard to recreate this bug but it has appeared a few times. I think it occurs when a user successfully checks out and then immediately goes to the bag then to a product.
+Due to when the back button is pressed from this page it will try to take the user to the checkout page which can't be reached if the bag is empty.
 
-The message is being sent but not displayed so it's stored then present to the user on the product page.
+The user is redirect back to other page and the error message appears
 
 **This bug is still present in the live site**
 
-#### If a user typed in a product url for a product that has variants and did not specify the variant id in the url the user would be able to add the product to the bag without a variant
+#### **If a user typed in a product url for a product that has variants and did not specify the variant id in the url the user would be able to add the product to the bag without a variant**
 
 Due to there being two different views to handle product and products with variants each rendering a different template. Meaning if the variant id is left off the url the wrong template is loaded for the product.
 
