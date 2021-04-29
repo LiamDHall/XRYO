@@ -88,6 +88,8 @@ Please find the following links to the relevant planning documentation:
 
 [Scope, Strategy and Structure Planning Document](https://github.com/LiamDHall/XRYO/blob/master/readme_documents/xryo_planning_document.pdf).
 
+[Strategy Fulfilment Images](https://github.com/LiamDHall/XRYO/blob/master/readme_images/strategy_fulfilment_images).
+
 [The Data Model and Schema](https://github.com/LiamDHall/XRYO/blob/master/readme_documents/xryo_schema_data_model_labels.pdf). 
 
 I couldn’t find out what data type Django uses for their Foreign Keys so I have represented them as integers that are linked to the corresponding Primary Key (also an integer) of the related model/table to display a relationship. The number in the brackets next to the data type is the max number of characters allowed in that field in a maximum is set. 
