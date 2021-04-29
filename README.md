@@ -86,7 +86,7 @@ Please find user stories and their fulfillment [here](https://github.com/LiamDHa
 
 Please find the following links to the relevant planning documentation:
 
-[Scope, Strategy and Structure Planning Document](--------------------).
+[Scope, Strategy and Structure Planning Document](https://github.com/LiamDHall/XRYO/blob/master/readme_documents/xryo_planning_document.pdf).
 
 [The Data Model and Schema](https://github.com/LiamDHall/XRYO/blob/master/readme_documents/xryo_schema_data_model_labels.pdf). 
 
