@@ -68,7 +68,7 @@ Site admins can keep users up to date with everything that's happening in the XR
 
 The user will receive messages from the site as they do certain actions or make errors which are presented to the user just under the site header.
 
-Please find user stories and their fulfillment [here](--------------------) 
+Please find user stories and their fulfillment [here](https://github.com/LiamDHall/XRYO/blob/master/readme_documents/xryo_user_stories.pdf) 
 
 ## Development
 
@@ -76,15 +76,14 @@ Please find user stories and their fulfillment [here](--------------------)
 
 Please find the following links to the relevant planning documentation:
 
-[Scope, Strategy and Structure planning document](--------------------).
+[Scope, Strategy and Structure Planning Document](--------------------).
 
-[The Data Model and Schema](--------------------). 
+[The Data Model and Schema](https://github.com/LiamDHall/XRYO/blob/master/readme_documents/xryo_schema_data_model_labels.pdf). 
 
 I couldn’t find out what data type Django uses for their Foreign Keys so I have represented them as integers that are linked to the corresponding Primary Key (also an integer) of the related model/table to display a relationship. The number in the brackets next to the data type is the max number of characters allowed in that field in a maximum is set. 
 
-The arrows to 
 
-[Wireframe](--------------------). 
+[Wireframe](https://github.com/LiamDHall/XRYO/blob/master/readme_documents/xryo_wireframes.pdf). 
 
 The wireframe may vary slightly from the live site as when developing the site the layout didn’t work or a better alternative made the site easier to use.
 
