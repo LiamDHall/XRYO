@@ -50,6 +50,20 @@
                         <div class="col-12 my-3">
                             <div class="row">
                                 <div class="col-6">
+                                    <p class="font-weight-bold">Delivery:</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p class="font-weight-bold">
+                                        {% if free_delivery_delta > 0 %}
+                                            £{{ delivery_charge|floatformat:2 }}
+                                        {% else %}
+                                            FREE
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
                                     <h5>Bag Total:</h5>
                                 </div>
                                 <div class="col-6 text-right">
@@ -93,6 +107,20 @@
                         <div class="col-12 my-3">
                             <div class="row">
                                 <div class="col-6">
+                                    <p class="font-weight-bold">Delivery:</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p class="font-weight-bold">
+                                        {% if free_delivery_delta > 0 %}
+                                            £{{ delivery_charge|floatformat:2 }}
+                                        {% else %}
+                                            FREE
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
                                     <h5>Bag Total:</h5>
                                 </div>
                                 <div class="col-6 text-right">
@@ -134,6 +162,20 @@
                     </div>
                     <div class="row">
                         <div class="col-12 my-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="font-weight-bold">Delivery:</p>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <p class="font-weight-bold">
+                                        {% if free_delivery_delta > 0 %}
+                                            £{{ delivery_charge|floatformat:2 }}
+                                        {% else %}
+                                            FREE
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-6">
                                     <h5>Bag Total:</h5>
