@@ -394,7 +394,7 @@ I have tested the site in following browsers: [Google Chrome](https://www.google
 
 The website works the same across all the browsers.
 
-### Issue and Bugs
+### Issues and Bugs
 
 #### **Variants of products not displaying on the view products page.**
 
