@@ -34,6 +34,7 @@ To use the checkout please use the following card number and details:
     -   [Planning](#Planning)
     -   [Ideas](#Ideas)
     -   [CRUD](#CRUD)
+    -   [Adding and Editing Product Form Validation and Image Validation](#Adding-and-Editing-Product-Form-Validation-and-Image-Validation)
     -   [Templating](#Templating)
     -   [Console Logs Prints Debug and Variables](#Console-Logs-Prints-Debug-and-Variables)
     -   [Commit Messages](#Commit-Messages)
@@ -118,6 +119,14 @@ Users can create profiles by signing up to the site and create orders by going t
 
 Site admins have the ability to add, edit and delete products from the product management page. The admin can add multiple images and variants for a single product and/or variant.
 
+### Adding and Editing Product Form Validation and Image Validation
+
+The Adding / Editing Product Form has validation for the selection related to the product. The view that handles the form submission will check if the form inputs for the product section are valid so they can be entered into the database. If the form isn't valid then a error message is displayed to the user telling them to check the data they have entered.
+
+When uploading images the view will try to open them to check if they are in fact images and that they are of PNG or JPG image type. If the image isn't one of those types the Image record won't be created and the user will receive an error message saying the images have not been uploaded and that it is not of the correct type. If the file isn't an image at all, an error message will be received by the user telling them the file isn't a known image. If the file uploaded isn't an image, again no Image record will be created. 
+
+If the form is submitted with non image files, or images of the wrong type, selected for upload the form will still submit but those files will not have records created for them. The files that didn't have records created for them will have their names in their respective error messages so the user can easily know which files failed.
+
 ### Templating
 
 The webpages for this site have been created using Django templating. A base template has been created including the Doctype, head, site header and footer into which the rest of the templates extend.
@@ -127,6 +136,7 @@ Using python in an HTML file allows the ability to show specific elements to a s
 Templating also reduces the overall amount of code as most elements only need to be coded once. This allows editing of the code to be a lot easier; as again there is only one instance of the code that needs to be updated. 
 
 The ability to access variables passed by the view to the template means database objects or attributes of the object can be easily displayed to the user. Groups of objects can be looped through in the code to display the information and that code only needs to be written once.
+
 
 ### Console Logs Prints Debug and Variables
 
